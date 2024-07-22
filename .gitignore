@@ -1,0 +1,18 @@
+venv/
+*.sqlite3
+__pycache__/
+migrations/
+media/
+*.pyc
+debug.log
+# If you are using PyCharm
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+.idea/
+
+.DS_store
+set_database.py
+server.txt
