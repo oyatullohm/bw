@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-zlfkgg-b@5!b^x$@&mi@x5%p+2jc5%h#9rp2u5#n%17gwb+#$r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://oyatilla.pythonanywhere.com/']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
