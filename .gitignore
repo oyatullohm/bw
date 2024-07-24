@@ -12,7 +12,8 @@ debug.log
 .idea/**/dictionaries
 .idea/**/shelf
 .idea/
-
+.gpj
+jpg/
 .DS_store
 set_database.py
 server.txt

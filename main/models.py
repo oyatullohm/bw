@@ -30,14 +30,14 @@ class Teacher(AbstractUser):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='teachers')
     phone = models.CharField(max_length=15) 
     hired_date = models.DateField(null=True, blank=True)
-    type = models.CharField(max_length=1, choices=TYPE, default=1)
+    type = models.PositiveIntegerField( choices=TYPE, default=1)
     is_payment = models.BooleanField(default=False)
     is_salary = models.BooleanField(default=False)
     is_child = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     
     def __str__(self):
-        return self.first_name
+        return self.username
 
 class Child(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='children')
