@@ -1,4 +1,5 @@
 venv/
+staticfiles
 *.sqlite3
 __pycache__/
 migrations/

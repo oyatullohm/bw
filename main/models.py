@@ -34,7 +34,7 @@ class Teacher(AbstractUser):
     is_payment = models.BooleanField(default=False)
     is_salary = models.BooleanField(default=False)
     is_child = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    # is_active = models.BooleanField(default=True)
     
     def __str__(self):
         return self.username
@@ -53,8 +53,8 @@ class Child(models.Model):
 class Group(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='groups')
     name = models.CharField(max_length=100)
-    teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, related_name='group_teachers')
-    helper = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, related_name='group_helper')
+    teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True,  related_name='group_teachers')
+    helper = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True, related_name='group_helper')
     children = models.ManyToManyField(Child, related_name='group_children', blank=True)
     is_active = models.BooleanField(default=True)
 
