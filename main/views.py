@@ -12,8 +12,8 @@ class TeacherView(View):
     def get(self,request, pk):
 
 
-        company_id = request.user.company.id
         user = Teacher.objects.get(id =pk)
+        company_id =user.company.id
         # group = Group.objects.filter(company_id=company_id)
         group = Group.objects.filter(company_id=company_id, teacher=user) | Group.objects.filter(company_id=company_id,helper=user)
         other_groups = Group.objects.exclude(pk__in=group)
