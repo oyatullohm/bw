@@ -1,10 +1,18 @@
 {% extends 'wrapper.html' %}
 {% block content %}
-
-
 <section class="section">
-    <div class="row" id="table-inverse">
-        <h5>Tarbiyachilar</h5>
+    <div class="row" id="table-inverse">            
+        <div class="container mt-5">
+            <div class="d-flex justify-content-between">
+              <div class="text-start">
+                <h5 class="text-bold-500">Tarbiyachilar</h5>
+              </div>
+              <div class="text-end">
+                <button  class="btn btn-primary">Qo'shish</button>
+              </div>
+            </div>
+          </div>
+
         <div class="col-12">
             <div class="card">
 
@@ -17,12 +25,12 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>NAME</th>
+                                    <th>Name</th>
                                     <th>Phone</th>
                                     <th>Lavozimi</th>
                                     <th>Group</th>
                                     <th>Maosh</th>
-                                    <th>ACTION</th>
+                                    <th>Malumot</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -42,7 +50,7 @@
                                             {% endif %}
                                         </td>
                                         <td>{{ i.salaries.amount }}</td>
-                                        <td><a href="#"> Info</a>
+                                        <td><a href="{% url 'teacher_detail' i.id %}"> Info</a>
                                         </td>
                                     </tr>
                                 {% endfor %}

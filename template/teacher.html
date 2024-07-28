@@ -7,25 +7,14 @@
 
     <section class="section">
         <div class="row">
-            <div class="col-12 col-lg-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-center align-items-center flex-column">
-                            <div class="avatar avatar-2xl">
-                                <img src="/static/assets/compiled/jpg/2.jpg" alt="Avatar">
-                            </div>
-                            <h3 class="mt-3">{{teacher.username}}</h3> <p class="text-small">{{teacher.group_teachers.all.0}}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="col-12 col-lg-8">
                 <div class="card">
                     <div class="card-body">
-                        <form action="#" method="get">
+                        <form method="post">
+                            {% csrf_token %}
                             <div class="form-group">
                                 <label for="name" class="form-label">Name</label>
-                                <input type="text" name="name" id="name" class="form-control" placeholder="Your Name" value="{{teacher.username}}">
+                                <input type="text" name="username" id="name" class="form-control" placeholder="Your Name" value="{{teacher.username}}">
                             </div>
                             <div class="form-group">
                                 <label for="phone" class="form-label">Phone</label>
@@ -35,9 +24,20 @@
                                 <label for="birthday" class="form-label">Birthday</label>
                                 <input type="text" name="birthday" id="birthday" class="form-control" value="{{teacher.hired_date}}" placeholder=" Hired date">
                             </div> 
+                              <div class="form-group">
+                                <label for="birthday" class="form-label">Lavozimi</label>
+                                <select name="type" id="gender" class="form-control">
+                                    <option value="{{teacher.type}}">{{teacher.get_type_display}}</option>
+                                    {% for i in type %}
+                                    {% if i.0 != teacher.type %}
+                                            <option value="{{ i.0}}">{{ i.1}}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div> 
                             <div class="form-group">
                                 <label for="gender" class="form-label">Group</label>
-                                <select name="gender" id="gender" class="form-control">
+                                <select name="group" id="gender" class="form-control">
                                 {% for i in group %}
                                     <option value="{{ i.id }}">{{ i.name }}</option>
                                 {% endfor %}
@@ -51,26 +51,42 @@
 
                                 <div class="row">
                                     <div class="form-check form-switch col-3">
-                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Payment</label>
+                                        <input class="form-check-input" name="payment" type="checkbox" {% if teacher.is_payment %}checked{% endif %} id="flexSwitchCheckDefault" >
+                                        <label class="form-check-label" for="flexSwitchCheckDefault" > Payment</label>
                                     </div> 
                                     <div class="form-check form-switch col-3">
-                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                        <input class="form-check-input"  name="salary"  type="checkbox" {% if teacher.is_salary %}checked{% endif %} id="flexSwitchCheckDefault" >
                                         <label class="form-check-label" for="flexSwitchCheckDefault"> Salary</label>
                                     </div> 
                                     <div class="form-check form-switch col-3">
-                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                        <input class="form-check-input" name="child" type="checkbox" {% if teacher.is_child %}checked{% endif %} id="flexSwitchCheckDefault">
                                         <label class="form-check-label" for="flexSwitchCheckDefault">Child</label>
                                     </div>   
                                      <div class="form-check form-switch col-3">
-                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                        <input class="form-check-input" name="active"  type="checkbox" {% if teacher.is_active %}checked{% endif %} id="flexSwitchCheckDefault">
                                         <label class="form-check-label" for="flexSwitchCheckDefault">Active</label>
                                     </div>
                                 </div><br>
 
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>  
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="{% url 'edit_password' teacher.id %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" name="password" id="password" class="form-control" placeholder="Password">
                             </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>  
                         </form>
                     </div>
                 </div>
@@ -78,6 +94,5 @@
         </div>
     </section>
 </div>
-
 
 {% endblock content %}
