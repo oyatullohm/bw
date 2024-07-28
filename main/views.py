@@ -1,28 +1,29 @@
 from django.shortcuts import render
+from django.conf import settings
 from django.views import View
 from .models import *
-# Create your views here.
-class HomeView(View):
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
+
+
+class HomeView(LoginRequiredMixin,View):
+    login_url = settings.LOGIN_URL
     def get(self,request):
         return render (request , 'index.html')
 
 
 
-class TeacherView(View):
-    def get(self,request, pk):
+class TeacherView(LoginRequiredMixin,View):
+    login_url = settings.LOGIN_URL
+    def get(self,request) :
+        company_id = request.user.company.id
 
-
-        user = Teacher.objects.get(id =pk)
-        company_id =user.company.id
-        # group = Group.objects.filter(company_id=company_id)
-        group = Group.objects.filter(company_id=company_id, teacher=user) | Group.objects.filter(company_id=company_id,helper=user)
-        other_groups = Group.objects.exclude(pk__in=group)
+        teacher = Teacher.objects.filter(company_id=company_id)
         context = {
-            'teacher':user,
-            'group':group,
-            'other_groups':other_groups,
+            'teacher':teacher,
         }
-        return render (request , 'teacher.html',context)
+        return render (request , 'teacher-all.html',context)
     
 # class TeacherView(View):
 #     def get(self,request):
