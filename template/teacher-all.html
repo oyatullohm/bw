@@ -1,26 +1,100 @@
 {% extends 'wrapper.html' %}
 {% block content %}
+
+
+
+
+
 <section class="section">
-    <div class="row" id="table-inverse">            
+    <div class="row" id="table-head">
         <div class="container mt-5">
             <div class="d-flex justify-content-between">
               <div class="text-start">
                 <h5 class="text-bold-500">Tarbiyachilar</h5>
               </div>
               <div class="text-end">
-                <button  class="btn btn-primary">Qo'shish</button>
+                <div class="col-md-6 col-12">
+                                <div class="form-group">
+    
+                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                                        data-bs-target="#inlineForm">
+                                            Qo'shish
+                                    </button>
+    
+                                    <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="myModalLabel33">Tarbiyachi Qo'shish</h4>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{% url 'add_teacher' %}" method="post">
+                                                        {% csrf_token %}
+                                                        <div class="form-group mb-1">
+                                                            <label for="username" class="form-label">Username</label>
+                                                            <input type="text" name="username" required id="username" class="form-control" placeholder="Username">
+                                                        </div>
+                                                        <div class="form-group mb-1">
+                                                            <label for="phone" class="form-label">Phone</label>
+                                                            <input type="text" name="phone"  required id="phone" class="form-control" placeholder="Phone">
+                                                        </div>
+                                                        <div class="form-group mb-1">
+                                                            <label for="type" class="form-label">Lavozimi</label>
+                                                            <select name="type" id="type" class="form-control">
+                                                                {% for i in type %}
+                                                                <option value="{{ i.0 }}">{{ i.1 }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group mb-1">
+                                                            <label for="password" class="form-label">Password</label>
+                                                            <input type="password" name="password" required id="password" class="form-control">
+                                                        </div> 
+                                                        <div class="form-group mb-1">
+                                                            <label for="password_2" class="form-label">Takror Password</label>
+                                                            <input type="password" name="password_2" required id="password_2" class="form-control" >
+                                                        </div>
+                                                        
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                                                <i class="bx bx-x d-block d-sm-none"></i>
+                                                                <span class="d-none d-sm-block">Close</span>
+                                                            </button>
+                                                            <button type="submit" class="btn btn-primary ms-1">
+                                                                <i class="bx bx-check d-block d-sm-none"></i>
+                                                                <span class="d-none d-sm-block">Save</span>
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                        
+                                </div>
+         
+                </div>
               </div>
             </div>
           </div>
+          <br>
+          <br>
+          <br>
+          <br>
+
 
         <div class="col-12">
+
+            
             <div class="card">
 
                 <div class="card-content">
-
-
+                   
+                    <!-- table head dark -->
                     <div class="table-responsive">
-                        <table class="table table-dark mb-0">
+                        <table class="table mb-0">
 
                             <thead>
                                 <tr>
@@ -56,6 +130,7 @@
                                 {% endfor %}
 
                             </tbody>
+
                         </table>
                     </div>
                 </div>
