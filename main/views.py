@@ -71,6 +71,7 @@ class TeacherDetailView(LoginRequiredMixin,View):
             group.teacher = user
             group.save()
         if int(user.type) == 3:
+            group =  get_object_or_404(Group, id=group)
             if Group.objects.filter(helper=user).exists():
                 group_helpers = user.group_helpers
                 group_helpers.helper = None
