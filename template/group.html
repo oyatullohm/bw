@@ -1,0 +1,107 @@
+{% extends 'wrapper.html' %}
+{% block content %}
+
+
+
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}  text-danger">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+ <!-- Basic Tables start -->
+ <section class="section">
+    <div class="row" id="basic-table">
+        <div class="col-12 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Gruppa</h4>
+                    <div class="container mt-5">
+                        <div class="d-flex justify-content-between">
+                          <div class="text-start">
+                            <h5 class="text-bold-500">Tarbiyachilar</h5>
+                          </div>
+                          <div class="text-end">
+                            <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                
+                                                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#inlineForm">
+                                                        Qo'shish
+                                                </button>
+                
+                                                <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title" id="myModalLabel33">Gruppa Qoshish</h4>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form method="post">
+                                                                    {% csrf_token %}
+                                                                    <div class="form-group mb-1">
+                                                                        <label for="name" class="form-label">Name</label>
+                                                                        <input type="text" name="name" required id="name" class="form-control" placeholder="Name">
+                                                                    </div>
+
+                                                                    
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                                                            <i class="bx bx-x d-block d-sm-none"></i>
+                                                                            <span class="d-none d-sm-block">Close</span>
+                                                                        </button>
+                                                                        <button type="submit" class="btn btn-primary ms-1">
+                                                                            <i class="bx bx-check d-block d-sm-none"></i>
+                                                                            <span class="d-none d-sm-block">Save</span>
+                                                                        </button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+                <div class="card-content">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-lg">
+                                <thead>
+                                    <tr>
+                                        <th>NAME</th>
+                                        <th>Teacher</th>
+                                        <th>Helper</th>
+                                        <th>Bolalar</th>
+                                        <th> Info </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for i in group %}
+                                    <tr>
+                                        <td class="text-bold-500">{{i.name}}</td>
+                                        <td class="text-bold-500">{{i.teacher}}</td>
+                                        <td class="text-bold-500">{{i.helper}}</td>
+                                        <td class="text-bold-500">{{i.children.all.count}}</td>
+                                        <td class="text-bold-500"><a href="{% url '' %}">Info</a></td>
+                                    </tr>
+                                   {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Basic Tables end -->
+
+
+{% endblock content %}

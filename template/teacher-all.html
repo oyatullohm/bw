@@ -4,7 +4,13 @@
 
 
 
-
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}  text-danger">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 <section class="section">
     <div class="row" id="table-head">
         <div class="container mt-5">
@@ -94,7 +100,7 @@
                    
                     <!-- table head dark -->
                     <div class="table-responsive">
-                        <table class="table mb-0">
+                        <table class="table table-lg">
 
                             <thead>
                                 <tr>

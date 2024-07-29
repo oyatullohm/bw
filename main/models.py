@@ -57,15 +57,20 @@ class Group(models.Model):
     children = models.ManyToManyField(Child, related_name='group_children', blank=True)
     is_active = models.BooleanField(default=True)
 
+    
+    @property
+    def count_children(self):
+        return self.children.filter(is_active=True).count()
+    
     def __str__(self):
         return self.name
-# ish haqqi 
+# ish haqqi yoki bola puli
 class Salary(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='salaries')
     child = models.OneToOneField(Child, on_delete=models.SET_NULL, null=True, blank=True, related_name='salaries') 
     teacher = models.OneToOneField(Teacher, on_delete=models.SET_NULL, null=True, blank=True, related_name='salaries')
-    month = models.DateField()
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    month = models.DateField(null=True,blank=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2,default=0)
     is_active = models.BooleanField(default=True)
     
     def __str__(self):
@@ -82,15 +87,17 @@ class Attendance(models.Model):
     def __str__(self):
         return f"{self.date.strftime('%Y-%m-%d')}"
 
+
+
 class Payment(models.Model):
     TYPE_CHOICES = (
         ('1', 'Kirim'),
         ('2', 'Chiqim'),
     )
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='payments')
-    user = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='payments_user')
+    user = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='payments_user')# chiqim qilayotgan user
     child = models.ForeignKey(Child, on_delete=models.CASCADE, null=True, blank=True, related_name='payments')
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True, blank=True, related_name='payment_teachers')
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True, blank=True, related_name='payment_teachers') # oylik ilishi 
     date = models.DateField(default=timezone.now)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_type = models.CharField(max_length=10, choices=TYPE_CHOICES)

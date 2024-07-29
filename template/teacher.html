@@ -7,7 +7,7 @@
 
     <section class="section">
         <div class="row">
-            <div class="col-12 col-lg-8">
+            <div class="col-6 col-lg-6">
                 <div class="card">
                     <div class="card-body">
                         <form method="post">
@@ -38,18 +38,22 @@
                             <div class="form-group">
                                 <label for="gender" class="form-label">Group</label>
                                 <select name="group" id="gender" class="form-control">
-                                {% for i in group %}
-                                    <option value="{{ i.id }}">{{ i.name }}</option>
-                                {% endfor %}
+                                {% if  group %}
+                                    {% for i in group %}
 
+                                    <option value="{{ i.id }}">{{ i.name }}</option>
+                                    {% endfor %}
+                                {% else %}
+                                    <option > None</option>
+                                {% endif %}
                                 {% for group in other_groups %}
-                                    <option value="{{ group.id }}">{{ group.name }}</option>
+                                <option value="{{ group.id }}">{{ group.name }}</option>
                                 {% endfor %}
       
                                 </select>
                             </div>
 
-                                <div class="row">
+                            <div class="row">
                                     <div class="form-check form-switch col-3">
                                         <input class="form-check-input" name="payment" type="checkbox" {% if teacher.is_payment %}checked{% endif %} id="flexSwitchCheckDefault" >
                                         <label class="form-check-label" for="flexSwitchCheckDefault" > Payment</label>
@@ -75,14 +79,15 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-8">
+            <div class="col-6 col-lg-6">
+
                 <div class="card">
                     <div class="card-body">
                         <form action="{% url 'edit_password' teacher.id %}" method="post">
                             {% csrf_token %}
                             <div class="form-group">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+                                <input type="password" required name="password" id="password" class="form-control" placeholder="Password">
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Save</button>
@@ -90,7 +95,27 @@
                         </form>
                     </div>
                 </div>
-            </div>
+                <div class="card">
+                    <div class="card-body">
+                        <form action="{% url 'edit_amount' teacher.id %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="amount" class="form-label">Maosh</label>
+                                <input type="text" name="amount" id="amount" class="form-control" value="{{teacher.salaries.amount}}" placeholder="Maosh">
+                            </div> 
+                            <div class="form-group">
+                                <label for="amount" class="form-label">Ohirgi Yangilanish -   {{teacher.salaries.month}}</label>
+                            
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>  
+                        </form>
+                    </div>
+                </div>
+            </div>    
+
+        
         </div>
     </section>
 </div>
