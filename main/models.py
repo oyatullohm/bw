@@ -39,10 +39,15 @@ class Teacher(AbstractUser):
         return self.username
 
 class Child(models.Model):
+    STATUS = (
+        (1,"yigit"),
+        (2,"qiz")
+    )
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='children')
     name = models.CharField(max_length=100)
     birth_date = models.DateField()
     phone = models.CharField(max_length=15)
+    status = models.PositiveIntegerField(default=1)
     group = models.ForeignKey('Group', on_delete=models.SET_NULL, null=True, related_name='child_groups')
     is_active = models.BooleanField(default=True)
 

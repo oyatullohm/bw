@@ -120,7 +120,7 @@ def add_teacher(request):
     return redirect ('/teacher')
 
 
-class CroupView(LoginRequiredMixin,View):
+class GroupView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self,request,*args, **kwargs):
         company = request.user.company 
@@ -133,3 +133,16 @@ class CroupView(LoginRequiredMixin,View):
             company=request.user.company,
         )
         return redirect('/group')
+    
+
+class ChildView(LoginRequiredMixin,View):
+    login_url = settings.LOGIN_URL
+    def get(self, request , *args, **kwargs):
+        child = Child.objects.filter(company = request.user.company)
+        return render (request , 'child.html', {'child':child})
+    
+
+
+# for group in Group.objects.all():
+#             if child in group.children.all():
+#                 group.children.remove(child)
