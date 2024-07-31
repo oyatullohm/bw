@@ -38,6 +38,14 @@ class Teacher(AbstractUser):
     def __str__(self):
         return self.username
 
+class Group(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='groups')
+    name = models.CharField(max_length=100)
+    teacher = models.OneToOneField(Teacher, on_delete=models.SET_NULL, null=True, blank=True,  related_name='group_teachers')
+    helper = models.OneToOneField(Teacher, on_delete=models.SET_NULL, null=True, blank=True, related_name='group_helpers')
+    is_active = models.BooleanField(default=True)
+
+    
 class Child(models.Model):
     STATUS = (
         (1,"yigit"),
@@ -48,21 +56,12 @@ class Child(models.Model):
     birth_date = models.DateField()
     phone = models.CharField(max_length=15)
     status = models.PositiveIntegerField(default=1)
-    group = models.ForeignKey('Group', on_delete=models.SET_NULL, null=True, related_name='child_groups')
+    group = models.OneToOneField(Group, on_delete=models.CASCADE, related_name='child', null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
 
-class Group(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='groups')
-    name = models.CharField(max_length=100)
-    teacher = models.OneToOneField(Teacher, on_delete=models.SET_NULL, null=True, blank=True,  related_name='group_teachers')
-    helper = models.OneToOneField(Teacher, on_delete=models.SET_NULL, null=True, blank=True, related_name='group_helpers')
-    children = models.ManyToManyField(Child, related_name='group_children', blank=True)
-    is_active = models.BooleanField(default=True)
-
-    
     @property
     def count_children(self):
         return self.children.filter(is_active=True).count()

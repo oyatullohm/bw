@@ -73,21 +73,9 @@
                 </a>
 
             </li>
-            <li  class="sidebar-item  has-sub">
-            <a href="#" class='sidebar-link'>
-                <i class="bi bi-person-circle"></i>
-                <span>Employee</span>
-            </a>
-            
-            <ul class="submenu ">
-                
-                <li class="submenu-item  ">
-                    <a href="{% url 'teacher' %}" class="submenu-link">Teacher</a>
-                    
-                </li>
-                
-            </ul>
-            
+        
+          
+        
             
             <li
                 class="sidebar-item  has-sub">
@@ -97,9 +85,17 @@
                 </a>
                 
                 <ul class="submenu ">
+                    <li class="submenu-item  ">
+                        <a href="{% url 'teacher' %}" class="submenu-link">Teacher</a>
+                        
+                    </li>
+
                     
                     <li class="submenu-item  ">
                         <a href="{% url 'group' %}" class="submenu-link">Group</a>
+                    </li>
+                    <li class="submenu-item  ">
+                        <a href="{% url 'child' %}" class="submenu-link">Bolalar</a>
                     </li>
                     
                 </ul>
@@ -161,7 +157,7 @@
                 class="sidebar-item  ">
                 <a href="application-checkout.html" class='sidebar-link'>
                    <i class="bi bi-sliders"></i>
-                    <span>Tariff</span>
+                    <span>Tarif</span>
                 </a>
                 
 
@@ -197,7 +193,13 @@
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
-
+{% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}  text-danger">{{ message }}</li>
+                {% endfor %}
+            </ul>
+    {% endif %}
 
 {% block content %}
 

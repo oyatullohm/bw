@@ -1,55 +1,179 @@
 {% extends 'wrapper.html' %}
 {% block content %}
+<div class="form-group">
+    
+    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+        data-bs-target="#inlineForm">
+            Qo'shish
+    </button>
+
+    <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel33">Bola Qo'shish</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="form-group mb-1">
+                            <label for="name" class="form-label">Ism Familys</label>
+                            <input type="text" name="name" required id="name" class="form-control" placeholder="Ism Familys">
+                        </div>
+                        <div class="form-group mb-1">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="text" name="phone"  required id="phone" class="form-control" placeholder="Phone">
+                        </div>
+                        <div class="form-group mb-1">
+                            <label for="date" class="form-label">Tug'ilgan Sana</label>
+                            <input type="date" name="date" required id="date" class="form-control">
+                            
+                        </div> 
+
+                        <div class="form-group mb-1">
+                            <label for="group" class="form-label">Group</label>
+                            <select name="group" id="group" class="form-control">
+                                {% for i in group %}
+                                <option value="{{ i.id }}">{{ i.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                <i class="bx bx-x d-block d-sm-none"></i>
+                                <span class="d-none d-sm-block">Close</span>
+                            </button>
+                            <button type="submit" class="btn btn-primary ms-1">
+                                <i class="bx bx-check d-block d-sm-none"></i>
+                                <span class="d-none d-sm-block">Save</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>  
 
 <div class="page-heading">
     <section class="section">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Basic Comment</h4>
+                <h4 class="card-title">Bolalar</h4>
             </div>
             <div class="card-body">
+                {% for i in child %}
                 <div class="comment">
                     <div class="comment-header">
                         <div class="pr-50">
                             <div class="avatar avatar-2xl">
-                                <img src="static/assets/compiled/jpg/2.jpg" alt="Avatar">    
+                                <img src="static/assets/compiled/jpg/qwa.jpg" alt="Avatar">    
                             </div>
                         </div>
                         <div class="comment-body">
-                            <div class="comment-profileName">Muhammad Alfian </div>
-                            <div class="comment-time">8 seconds ago</div>
-                            <div class="comment-message">
-                                <p class="list-group-item-text truncate mb-20">Your <a href="https://github.com/alfianchii/confess" target="_blank">confession</a> will be processed. Stay tuned!</p>
-                            </div>
+                            <div class="comment-profileName">  <h4> {{i.name}}</h4> </div>
+                            <div class="comment-time">{{i.phone}}</div>
+                            <div class="comment-profileName"><h4> {{i.birth_date}}</h4> </div>
+                            <div class="comment-profileName"> <h4>{{ i.group.name }}</h4>  </div>
                             <div class="comment-actions">
                                 <!-- <button class="btn icon icon-left btn-primary me-2 text-nowrap"><i class="bi bi-eye-fill"></i> Show</button> -->
                                 <button class="btn icon icon-left btn-warning me-2 text-nowrap"><i class="bi bi-pencil-square"></i> Edit</button>
                                 <button class="btn icon icon-left btn-danger me-2 text-nowrap"><i class="bi bi-x-circle"></i> Remove</button>
+                                
                             </div>
-                        </div>
-					</div>
-                </div>
-                <div class="comment">
-                    <div class="comment-header">
-                        <div class="pr-50">
-                            <div class="avatar avatar-2xl">
-                                <img src="static/assets/compiled/jpg/3.jpg" alt="Avatar">    
-                            </div>
-                        </div>
+
+                        </div> 
+                        <div class="comment-body"></div>
+                        <div class="comment-body"></div>
+                        <div class="comment-body"></div>
                         <div class="comment-body">
-                            <div class="comment-profileName"> Sana Fatima </div>
-                            <div class="comment-time">4 minutes ago</div>
-                            <div class="comment-message">
-                                <p class="list-group-item-text truncate mb-20">I have looked into your matter and will respond soon.</p>
-                            </div>
+                            
+                            <div class="comment-profileName">  <h4> {{i.name}}</h4> </div>
+                            <div class="comment-time">{{i.phone}}</div>
+                            <div class="comment-profileName"><h4> {{i.birth_date}}</h4> </div>
+                            <div class="comment-profileName"> <h4>{{ i.group.name }}</h4>  </div>
                             <div class="comment-actions">
-                                <button class="btn icon icon-left btn-primary me-2 text-nowrap"><i class="bi bi-eye-fill"></i> Show</button>
+                                <!-- <button class="btn icon icon-left btn-primary me-2 text-nowrap"><i class="bi bi-eye-fill"></i> Show</button> -->
                                 <button class="btn icon icon-left btn-warning me-2 text-nowrap"><i class="bi bi-pencil-square"></i> Edit</button>
                                 <button class="btn icon icon-left btn-danger me-2 text-nowrap"><i class="bi bi-x-circle"></i> Remove</button>
+                                
                             </div>
                         </div>
+
                 	</div>
             	</div>
+                {% endfor %}
+                {% if child.paginator.num_pages > 1 %}
+                <nav aria-label="Page navigation example ">
+                    <ul class="pagination pagination-primary justify-content-end">
+                        {% if child.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1" aria-label="First">
+                                    <span aria-hidden="true"><i class="bi bi-chevron-double-left"></i></span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ child.previous_page_number }}" aria-label="Previous">
+                                    <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="First">
+                                    <span aria-hidden="true"><i class="bi bi-chevron-double-left"></i></span>
+                                </a>
+                            </li>
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
+                                </a>
+                            </li>
+                        {% endif %}
+                
+                        {% for num in child.paginator.page_range %}
+                            {% if child.number == num %}
+                                <li class="page-item active">
+                                    <a class="page-link" href="#">{{ num }}</a>
+                                </li>
+                            {% elif num > child.number|add:-3 and num < child.number|add:3 %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                
+                        {% if child.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ child.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ child.paginator.num_pages }}" aria-label="Last">
+                                    <span aria-hidden="true"><i class="bi bi-chevron-double-right"></i></span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                                </a>
+                            </li>
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Last">
+                                    <span aria-hidden="true"><i class="bi bi-chevron-double-right"></i></span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+                
+                
+
             </div>
         </div>
     </section>

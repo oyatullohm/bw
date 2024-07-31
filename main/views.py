@@ -6,7 +6,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from decimal import Decimal
-
+from django.db.models import OuterRef, Subquery
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage 
 class HomeView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self,request):
@@ -138,10 +139,33 @@ class GroupView(LoginRequiredMixin,View):
 class ChildView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self, request , *args, **kwargs):
-        child = Child.objects.filter(company = request.user.company)
-        return render (request , 'child.html', {'child':child})
+        page = request.GET.get('page')
+        child = Child.objects.filter(company = request.user.company).order_by('-id')
+        group = Group.objects.filter(company = request.user.company)
+        paginator = Paginator(child,5)  #
+        try:
+            children = paginator.page(page)
+        except PageNotAnInteger:
+            children = paginator.page(1)
+        except EmptyPage:
+            children = paginator.page(paginator.num_pages)
+        return render (request ,'child.html', {'child':children,"group":group})
     
-
+    def post(self,request):
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        date = request.POST.get('date')
+        group = request.POST.get('group')
+        group = Group.objects.get(id=int(group))
+        child = Child.objects.create(
+            company = request.user.company,
+            name=name,
+            phone=phone,
+            birth_date = date,
+            group = group
+        )
+        messages.error(request, f"{child.name} Qo'shildi {group.name} ga")
+        return redirect('/child')
 
 # for group in Group.objects.all():
 #             if child in group.children.all():
