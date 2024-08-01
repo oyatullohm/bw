@@ -66,6 +66,65 @@
             </div>
             <div class="card-body">
                 {% for i in child %}
+                <div class="form-group">
+    
+
+                
+                    <div class="modal fade text-left" id="inlineForm{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel33">Tahtirlash</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        <div class="form-group mb-1">
+                                            <label for="name" class="form-label">Ism Familys</label>
+                                            <input type="text" name="name" required id="name" class="form-control"  value="{{i.name}}" placeholder="Ism Familys">
+                                        </div>
+                                        <div class="form-group mb-1">
+                                            <label for="phone" class="form-label">Phone</label>
+                                            <input type="text" name="phone"  required id="phone" class="form-control" value="{{i.phone}}" placeholder="Phone">
+                                        </div>
+                                        <div class="form-group mb-1">
+                                            <label for="date" class="form-label">Tug'ilgan Sana {{ i.birth_date}}</label>
+                                            <input   name="date" required id="date" value="{{ i.birth_date}}"class="form-control">
+                                            
+                                        </div> 
+                
+                                        <div class="form-group mb-1">
+                                            <label for="group" class="form-label">Group</label>
+                                            <select name="group" id="group" class="form-control">
+                                                <option value="{{ i.group.id }}">{{ i.group.name }}</option>
+                                                {% for f in group %}
+                                                {% if i.group == f %}
+                                                {% else %}
+                                                <option value="{{ f.id }}">{{ f.name }}</option>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                                <i class="bx bx-x d-block d-sm-none"></i>
+                                                <span class="d-none d-sm-block">Close</span>
+                                            </button>
+                                            <button type="submit" class="btn btn-primary ms-1">
+                                                <i class="bx bx-check d-block d-sm-none"></i>
+                                                <span class="d-none d-sm-block">Save</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                </div>  
+
                 <div class="comment">
                     <div class="comment-header">
                         <div class="pr-50">
@@ -80,7 +139,8 @@
                             <div class="comment-profileName"> <h4>{{ i.group.name }}</h4>  </div>
                             <div class="comment-actions">
                                 <!-- <button class="btn icon icon-left btn-primary me-2 text-nowrap"><i class="bi bi-eye-fill"></i> Show</button> -->
-                                <button class="btn icon icon-left btn-warning me-2 text-nowrap"><i class="bi bi-pencil-square"></i> Edit</button>
+                                <button class="btn icon icon-left btn-warning me-2 text-nowrap" data-bs-toggle="modal"
+                                data-bs-target="#inlineForm{{i.id}}"  ><i class="bi bi-pencil-square"></i> Edit</button>
                                 <button class="btn icon icon-left btn-danger me-2 text-nowrap"><i class="bi bi-x-circle"></i> Remove</button>
                                 
                             </div>
@@ -170,6 +230,8 @@
                         {% endif %}
                     </ul>
                 </nav>
+
+
                 {% endif %}
                 
                 

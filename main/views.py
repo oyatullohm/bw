@@ -102,7 +102,7 @@ def salary(request, pk):
     salary.save()
     return redirect(f'/teacher/{pk}/')
         
-    
+
 @login_required
 def add_teacher(request):
     company = request.user.company
@@ -142,7 +142,7 @@ class ChildView(LoginRequiredMixin,View):
         page = request.GET.get('page')
         child = Child.objects.filter(company = request.user.company).order_by('-id')
         group = Group.objects.filter(company = request.user.company)
-        paginator = Paginator(child,5)  #
+        paginator = Paginator(child,2)  
         try:
             children = paginator.page(page)
         except PageNotAnInteger:
@@ -166,6 +166,8 @@ class ChildView(LoginRequiredMixin,View):
         )
         messages.error(request, f"{child.name} Qo'shildi {group.name} ga")
         return redirect('/child')
+
+
 
 # for group in Group.objects.all():
 #             if child in group.children.all():
