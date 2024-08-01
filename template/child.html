@@ -66,10 +66,45 @@
             </div>
             <div class="card-body">
                 {% for i in child %}
-                <div class="form-group">
-    
-
+                <div class="modal-danger me-1 mb-1 d-inline-block">
+                    <div class="modal fade text-left" id="danger{{i.id}}" tabindex="-1" role="dialog"
+                        aria-labelledby="myModalLabel120" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+                            role="document">
+                            <div class="modal-content">
+                                <div class="modal-header bg-danger">
+                                    <h5 class="modal-title white" id="myModalLabel120">Delete
+                                    </h5>
+                                    <button type="button" class="close" data-bs-dismiss="modal"
+                                        aria-label="Close">
+                                        <i data-feather="x"></i>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                   {{i}}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light-secondary"
+                                        data-bs-dismiss="modal">
+                                        <i class="bx bx-x d-block d-sm-none"></i>
+                                        <span class="d-none d-sm-block">Close</span>
+                                    </button>
+                                    <form action="{% url 'delete_chaild' i.id %}" method="post">
+                                        {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger ms-1"
+                                        data-bs-dismiss="modal">
+                                        <i class="bx bx-check d-block d-sm-none"></i>
+                                        <span class="d-none d-sm-block">Delete</span>
+                                    </button>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
+                
+                <div class="form-group">
                     <div class="modal fade text-left" id="inlineForm{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                             <div class="modal-content">
@@ -78,7 +113,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="" method="post">
+                                    <form action="{% url 'chaild_edit' i.id %}" method="post">
                                         {% csrf_token %}
                                         <div class="form-group mb-1">
                                             <label for="name" class="form-label">Ism Familys</label>
@@ -141,7 +176,8 @@
                                 <!-- <button class="btn icon icon-left btn-primary me-2 text-nowrap"><i class="bi bi-eye-fill"></i> Show</button> -->
                                 <button class="btn icon icon-left btn-warning me-2 text-nowrap" data-bs-toggle="modal"
                                 data-bs-target="#inlineForm{{i.id}}"  ><i class="bi bi-pencil-square"></i> Edit</button>
-                                <button class="btn icon icon-left btn-danger me-2 text-nowrap"><i class="bi bi-x-circle"></i> Remove</button>
+                                <button class="btn icon icon-left btn-danger me-2 text-nowrap" data-bs-toggle="modal"
+                                data-bs-target="#danger{{i.id}}"><i class="bi bi-x-circle"></i> Remove</button>
                                 
                             </div>
 

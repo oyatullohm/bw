@@ -56,7 +56,7 @@ class Child(models.Model):
     birth_date = models.DateField()
     phone = models.CharField(max_length=15)
     status = models.PositiveIntegerField(default=1)
-    group = models.OneToOneField(Group, on_delete=models.CASCADE, related_name='child', null=True, blank=True)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='child', null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):

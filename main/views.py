@@ -8,6 +8,8 @@ from django.contrib import messages
 from decimal import Decimal
 from django.db.models import OuterRef, Subquery
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage 
+
+
 class HomeView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self,request):
@@ -19,7 +21,7 @@ class TeacherView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self,request) :
         company_id = request.user.company.id
-        teacher = Teacher.objects.filter(company_id=company_id)\
+        teacher = Teacher.objects.filter(company_id=company_id, is_active=True)\
                     .prefetch_related('salaries', 'group_teachers','group_helpers')
         context = {
             'teacher':teacher,
@@ -140,8 +142,8 @@ class ChildView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self, request , *args, **kwargs):
         page = request.GET.get('page')
-        child = Child.objects.filter(company = request.user.company).order_by('-id')
-        group = Group.objects.filter(company = request.user.company)
+        child = Child.objects.filter(company = request.user.company, is_active=True).order_by('-id')
+        group = Group.objects.filter(company = request.user.company, is_active=True)
         paginator = Paginator(child,2)  
         try:
             children = paginator.page(page)
@@ -157,6 +159,9 @@ class ChildView(LoginRequiredMixin,View):
         date = request.POST.get('date')
         group = request.POST.get('group')
         group = Group.objects.get(id=int(group))
+        print(group)
+        print(group)
+        print(group)
         child = Child.objects.create(
             company = request.user.company,
             name=name,
@@ -167,8 +172,23 @@ class ChildView(LoginRequiredMixin,View):
         messages.error(request, f"{child.name} Qo'shildi {group.name} ga")
         return redirect('/child')
 
+@login_required
+def chaild_edit(request,pk):
+    chaild = Child.objects.get(id=pk)
+    name = request.POST.get('name')
+    phone = request.POST.get('phone')
+    group = request.POST.get('group')
+    chaild.name  = name
+    chaild.phone  = phone
+    chaild.group_id  = group
+    chaild.save()
+    messages.error(request, f"ozgarishlar amalga oshdi ")
+    return redirect('child')
 
-
-# for group in Group.objects.all():
-#             if child in group.children.all():
-#                 group.children.remove(child)
+@login_required
+def delete_chaild(request,pk):
+    chaild = Child.objects.get(id=pk)
+    chaild.is_active = False
+    chaild.save()
+    messages.error(request, f"{chaild.name} O'chirildi ")
+    return redirect('child')

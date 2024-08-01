@@ -11,4 +11,6 @@ urlpatterns = [
     path('edit-amount/<int:pk>/',salary,name='edit_amount'),
     path('group',GroupView.as_view(),name='group'),
     path('child',ChildView.as_view(),name='child'),
+    path('chaild-edit/<int:pk>/',chaild_edit,name='chaild_edit'),
+    path('delete-chaild/<int:pk>/',delete_chaild,name='delete_chaild'),
 ]
