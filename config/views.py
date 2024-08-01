@@ -2,7 +2,7 @@ from django.views import View
 from django.shortcuts import render , redirect
 from main.models import *
 from django.contrib.auth import authenticate, login 
-
+from django.contrib.auth.hashers import make_password, check_password
 class LoginView(View):
     def get(self,request):
         return render(request, 'login.html')
@@ -44,7 +44,7 @@ class RegisterView(View):
         if password == password_2:
             tarif = Tarif.objects.get(name='standart')
             company = Company.objects.create(tarif=tarif,name=company)
-            user = Teacher.objects.create_user(
+            Teacher.objects.create_user(
                         company=company,
                         username=username,
                         phone=phone,
@@ -52,7 +52,8 @@ class RegisterView(View):
                         type = 1,
                         is_payment = True,
                         is_salary = True,
-                        is_child = True,                   
+                        is_child = True, 
+                        password=password                  
             )
         
             return redirect('/login')
