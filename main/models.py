@@ -27,7 +27,7 @@ class Teacher(AbstractUser):
         (2, 'tarbiyachi'),
         (3, 'yordamchi')
     )
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='teachers')
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True , related_name='teachers')
     phone = models.CharField(max_length=15) 
     hired_date = models.DateField(null=True, blank=True)
     type = models.PositiveIntegerField( choices=TYPE, default=1)
