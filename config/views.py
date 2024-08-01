@@ -1,8 +1,13 @@
 from django.views import View
 from django.shortcuts import render , redirect
 from main.models import *
-from django.contrib.auth import authenticate, login 
+from django.contrib.auth import authenticate, login  , logout
 from django.contrib.auth.hashers import make_password, check_password
+
+def logout_(request):
+    logout(request)
+    return redirect('login')
+
 class LoginView(View):
     def get(self,request):
         return render(request, 'login.html')
