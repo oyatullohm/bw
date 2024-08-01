@@ -12,7 +12,7 @@ urlpatterns = [
     path('login/',LoginView.as_view(),name='login'),
     path('register/',RegisterView.as_view(),name='register'),
     path('register/',RegisterView.as_view(),name='reset_password'),
-    path('logout/', LogoutView.as_view(next_page=settings.LOGIN_URL), name='logout'),
+    path('logout/', LogoutView.as_view(next_page='/login/'), name='logout'),
     path('admin/', admin.site.urls),
 ]
 urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT )
