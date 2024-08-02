@@ -100,8 +100,16 @@
                         <form action="{% url 'edit_amount' teacher.id %}" method="post">
                             {% csrf_token %}
                             <div class="form-group">
-                                <label for="amount" class="form-label">Maosh</label>
-                                <input type="text" name="amount" id="amount" class="form-control" value="{{teacher.salaries.amount}}" placeholder="Maosh">
+                                <label for="amount" class="form-label">Tarif :  {{teacher.tarif.amount}} </label>
+                                <select name="tarif" id="tarif" class="form-control">
+                                    {% for i in tarif %}
+                                    {% if teacher.tarif == i %}
+                                    <option value="{{ i.id }}">{{ i.name}}</option>
+                                    {% else %}
+                                    <option value="{{ i.id }}">{{ i.name }}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
                             </div> 
                             <div class="form-group">
                                 <label for="amount" class="form-label">Ohirgi Yangilanish -   {{teacher.salaries.month}}</label>

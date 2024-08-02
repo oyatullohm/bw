@@ -14,5 +14,6 @@ urlpatterns = [
     path('tarif',TarifCompanyView.as_view(),name='tarif'),
     path('edit-tarif/<int:pk>/',edit_tarif,name='edit_tarif'),
     path('chaild-edit/<int:pk>/',chaild_edit,name='chaild_edit'),
+    path('chaild-edit-tarif/<int:pk>/',chaild_edit_tarif,name='chaild_edit_tarif'),
     path('delete-chaild/<int:pk>/',delete_chaild,name='delete_chaild'),
 ]

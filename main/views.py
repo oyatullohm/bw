@@ -39,11 +39,14 @@ class TeacherDetailView(LoginRequiredMixin,View):
             .select_related('teacher','helper','children')
         other_groups = Group.objects.exclude(pk__in=group).select_related('teacher','helper')
         type = Teacher.TYPE
+        tarif = TarifCompany.objects.filter(company_id=company_id,status =1)
+
         context = {
             'teacher':teacher,
             'group':group,
             'other_groups':other_groups,
             'type':type,
+            'tarif':tarif
         }
         return render (request , 'teacher.html',context)
     
@@ -93,15 +96,12 @@ def password(request,pk):
 
 @login_required
 def salary(request, pk):
-    # user = get_object_or_404(Teacher, id=pk)
-    # salary, created = Salary.objects.get_or_create(
-    #     company=request.user.company,
-    #     teacher=user
-    # )
-    # amount = request.POST.get('amount')
-    # salary.month = timezone.now()
-    # salary.amount = Decimal(amount)
-    # salary.save()
+    user = get_object_or_404(Teacher, id=pk)
+    tarif =request.POST.get('tarif')
+    tarif = get_object_or_404(TarifCompany, id=tarif)
+    user.tarif = tarif
+    user.save()
+    messages.error(request, 'tarif almashdi ')
     return redirect(f'/teacher/{pk}/')
         
 
@@ -145,13 +145,14 @@ class ChildView(LoginRequiredMixin,View):
         child = Child.objects.filter(company = request.user.company, is_active=True).order_by('-id')
         group = Group.objects.filter(company = request.user.company, is_active=True)
         paginator = Paginator(child,2)  
+        tarif = TarifCompany.objects.filter(company = request.user.company, is_active=True,status=2)
         try:
             children = paginator.page(page)
         except PageNotAnInteger:
             children = paginator.page(1)
         except EmptyPage:
             children = paginator.page(paginator.num_pages)
-        return render (request ,'child.html', {'child':children,"group":group})
+        return render (request ,'child.html', {'child':children,"group":group ,'tarif':tarif})
     
     def post(self,request):
         name = request.POST.get('name')
@@ -226,3 +227,13 @@ def edit_tarif(request,pk):
     tarif.save()
     messages.error(request, f"Tarif O'zgardi ")
     return redirect('tarif')
+
+@login_required
+def chaild_edit_tarif(request,pk):
+    child = get_object_or_404(Child , id=pk)
+    tarif = request.POST.get('tarif')
+    tarif = get_object_or_404( TarifCompany , id=tarif)
+    child.tarif = tarif
+    child.save()
+    messages.error(request, f"Tarif O'zgardi ")
+    return redirect('child')

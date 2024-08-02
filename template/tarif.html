@@ -120,12 +120,16 @@
                                                                 <label for="status" class="form-label">Status</label>
                                                                 <select name="status" id="status" class="form-control">
                                                                     {% for f in status %}
+                                                                    {% if i.get_status_display  == f.1 %}
+                                                                    <option value="{{ i }}">{{ i.get_status_display }}</option>
+                                                                    {% else %}
                                                                     <option value="{{ f.0 }}">{{ f.1 }}</option>
+                                                                    {% endif %}
                                                                     {% endfor %}
                                                                 </select>
                                                             </div>
                                                             <div class="form-group mb-1">
-                                                                <label for="amount" class="form-label">Summa</label>
+                                                                <label for="amount" class="form-label">Summa </label>
                                                                 <input type="number" name="amount" required id="amount" value="{{i.amount}}" class="form-control">
                                                             </div> 
     

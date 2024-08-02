@@ -21,6 +21,21 @@ class Company(models.Model):
     def __str__(self):
         return self.name
 
+
+class TarifCompany(models.Model):
+    STATUS = (
+        (1,'Ishchilar'),
+        (2,'Bolalar')
+    )
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='salaries')
+    name = models.CharField(max_length=100)
+    status = models.PositiveIntegerField(default=1,choices=STATUS)
+    amount = models.DecimalField(max_digits=10, decimal_places=2,default=0)
+    created = models.DateField()
+    is_active = models.BooleanField(default=True)
+    def __str__(self):
+        return f"{self.name}"
+
 class Teacher(AbstractUser):
     TYPE = (
         (1, 'direktor'),
@@ -29,6 +44,7 @@ class Teacher(AbstractUser):
     )
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True , related_name='teachers')
     phone = models.CharField(max_length=15) 
+    tarif = models.ForeignKey(TarifCompany, on_delete=models.SET_NULL, null=True, blank=True,)
     hired_date = models.DateField(null=True, blank=True)
     type = models.PositiveIntegerField( choices=TYPE, default=1)
     is_payment = models.BooleanField(default=False)
@@ -53,6 +69,7 @@ class Child(models.Model):
     )
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='children')
     name = models.CharField(max_length=100)
+    tarif = models.ForeignKey(TarifCompany, on_delete=models.SET_NULL, null=True, blank=True,)
     birth_date = models.DateField()
     phone = models.CharField(max_length=15)
     status = models.PositiveIntegerField(default=1)
@@ -71,21 +88,7 @@ class Child(models.Model):
     
     
 
-class TarifCompany(models.Model):
-    STATUS = (
-        (1,'Ishchilar'),
-        (2,'Bolalar')
-    )
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='salaries')
-    name = models.CharField(max_length=100)
-    status = models.PositiveIntegerField(default=1,choices=STATUS)
-    teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True, related_name='salaries')
-    child = models.ForeignKey(Child, on_delete=models.SET_NULL, null=True, blank=True, related_name='salaries') 
-    amount = models.DecimalField(max_digits=10, decimal_places=2,default=0)
-    created = models.DateField()
-    is_active = models.BooleanField(default=True)
-    def __str__(self):
-        return f"{self.name}"
+
 #davomat
 class Attendance(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='attendances')

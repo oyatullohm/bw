@@ -17,7 +17,7 @@
     
                                     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                                         data-bs-target="#inlineForm">
-                                            Qo'shish {{type}}
+                                            Qo'shish    
                                     </button>
     
                                     <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
@@ -102,7 +102,7 @@
                                     <th>Phone</th>
                                     <th>Lavozimi</th>
                                     <th>Group</th>
-                                    <th>Maosh</th>
+                                    <th>Tarif</th>
                                     <th>Malumot</th>
                                 </tr>
                             </thead>
@@ -122,7 +122,7 @@
                                                 None
                                             {% endif %}
                                         </td>
-                                        <td>{{ i.salaries.amount }}</td>
+                                        <td>{{ i.salaries.0.mount}}</td>
                                         <td><a href="{% url 'teacher_detail' i.id %}"> Info</a>
                                         </td>
                                     </tr>
