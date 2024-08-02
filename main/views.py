@@ -93,15 +93,15 @@ def password(request,pk):
 
 @login_required
 def salary(request, pk):
-    user = get_object_or_404(Teacher, id=pk)
-    salary, created = Salary.objects.get_or_create(
-        company=request.user.company,
-        teacher=user
-    )
-    amount = request.POST.get('amount')
-    salary.month = timezone.now()
-    salary.amount = Decimal(amount)
-    salary.save()
+    # user = get_object_or_404(Teacher, id=pk)
+    # salary, created = Salary.objects.get_or_create(
+    #     company=request.user.company,
+    #     teacher=user
+    # )
+    # amount = request.POST.get('amount')
+    # salary.month = timezone.now()
+    # salary.amount = Decimal(amount)
+    # salary.save()
     return redirect(f'/teacher/{pk}/')
         
 
@@ -159,9 +159,6 @@ class ChildView(LoginRequiredMixin,View):
         date = request.POST.get('date')
         group = request.POST.get('group')
         group = Group.objects.get(id=int(group))
-        print(group)
-        print(group)
-        print(group)
         child = Child.objects.create(
             company = request.user.company,
             name=name,
@@ -174,21 +171,58 @@ class ChildView(LoginRequiredMixin,View):
 
 @login_required
 def chaild_edit(request,pk):
-    chaild = Child.objects.get(id=pk)
+    child = Child.objects.get(id=pk)
     name = request.POST.get('name')
     phone = request.POST.get('phone')
     group = request.POST.get('group')
-    chaild.name  = name
-    chaild.phone  = phone
-    chaild.group_id  = group
-    chaild.save()
+    child.name  = name
+    child.phone  = phone
+    child.group_id  = group
+    child.save()
     messages.error(request, f"ozgarishlar amalga oshdi ")
     return redirect('child')
 
 @login_required
 def delete_chaild(request,pk):
-    chaild = Child.objects.get(id=pk)
-    chaild.is_active = False
-    chaild.save()
-    messages.error(request, f"{chaild.name} O'chirildi ")
+    child = Child.objects.get(id=pk)
+    child.is_active = False
+    child.save()
+    messages.error(request, f"{child.name} O'chirildi ")
     return redirect('child')
+
+
+class TarifCompanyView(LoginRequiredMixin,View):
+    login_url = settings.LOGIN_URL
+    def get(self,request):
+        tarif_company = TarifCompany.objects.filter(company = request.user.company,is_active = True)
+        status = request.GET.get('status')
+        if status:
+            tarif_company = tarif_company.filter(status=status)
+        status = TarifCompany.STATUS
+        return render(request,'tarif.html',{'tarif':tarif_company,'status':status})
+    def post (self,request):
+        name = request.POST.get('name')
+        status = request.POST.get('status')
+        amount = request.POST.get('amount')
+        TarifCompany.objects.create(
+            company = request.user.company,
+            name = name,
+            status = status,
+            amount = amount,
+            created = timezone.now()
+        )
+        messages.error(request, f"Tarif Qo'shildi ")
+        return redirect('tarif')
+@login_required
+def edit_tarif(request,pk):
+    tarif = TarifCompany.objects.get(id=pk)
+    name = request.POST.get('name')
+    status = request.POST.get('status')
+    amount = request.POST.get('amount')
+    tarif.name = name
+    tarif.status = status
+    tarif.amount = amount
+    tarif.created = timezone.now()
+    tarif.save()
+    messages.error(request, f"Tarif O'zgardi ")
+    return redirect('tarif')

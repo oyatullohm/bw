@@ -52,17 +52,17 @@ class GroupViewSet(viewsets.ModelViewSet):
         queryset.save()
         return  Response({'success':True})
 
-class SalaryViewSet(viewsets.ModelViewSet):
-    def get_queryset(self):
-        company_id = self.request.user.company_id
-        queryset = Salary.objects.filter(company_id=company_id)
-        return queryset
-    serializer_class = SalarySerializer
-    def destroy(self, request, *args, **kwargs):
-        queryset = self.get_object()
-        queryset.is_active = False
-        queryset.save()
-        return  Response({'success':True})
+# class SalaryViewSet(viewsets.ModelViewSet):
+#     def get_queryset(self):
+#         company_id = self.request.user.company_id
+#         queryset = Salary.objects.filter(company_id=company_id)
+#         return queryset
+#     serializer_class = SalarySerializer
+#     def destroy(self, request, *args, **kwargs):
+#         queryset = self.get_object()
+#         queryset.is_active = False
+#         queryset.save()
+#         return  Response({'success':True})
 
 class AttendanceViewSet(viewsets.ModelViewSet):
     def get_queryset(self):

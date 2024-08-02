@@ -68,22 +68,29 @@ class Child(models.Model):
     
     def __str__(self):
         return self.name
-# ish haqqi yoki bola puli
-class Salary(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='salaries')
-    child = models.OneToOneField(Child, on_delete=models.SET_NULL, null=True, blank=True, related_name='salaries') 
-    teacher = models.OneToOneField(Teacher, on_delete=models.SET_NULL, null=True, blank=True, related_name='salaries')
-    month = models.DateField(null=True,blank=True)
-    amount = models.DecimalField(max_digits=10, decimal_places=2,default=0)
-    is_active = models.BooleanField(default=True)
     
-    def __str__(self):
-        return f"{self.month.strftime('%Y-%m')}"
+    
 
+class TarifCompany(models.Model):
+    STATUS = (
+        (1,'Ishchilar'),
+        (2,'Bolalar')
+    )
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='salaries')
+    name = models.CharField(max_length=100)
+    status = models.PositiveIntegerField(default=1,choices=STATUS)
+    teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True, related_name='salaries')
+    child = models.ForeignKey(Child, on_delete=models.SET_NULL, null=True, blank=True, related_name='salaries') 
+    amount = models.DecimalField(max_digits=10, decimal_places=2,default=0)
+    created = models.DateField()
+    is_active = models.BooleanField(default=True)
+    def __str__(self):
+        return f"{self.name}"
+#davomat
 class Attendance(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='attendances')
-    child = models.OneToOneField(Child, on_delete=models.CASCADE, null=True, blank=True, related_name='attendances')
-    teacher = models.OneToOneField(Teacher, on_delete=models.CASCADE, null=True, blank=True, related_name='attendances')
+    child = models.ForeignKey(Child, on_delete=models.CASCADE, null=True, blank=True, related_name='attendances')
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True, blank=True, related_name='attendances')
     date = models.DateField(auto_now_add=True)
     presence = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)

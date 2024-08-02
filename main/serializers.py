@@ -21,10 +21,10 @@ class GroupSerializer(serializers.ModelSerializer):
         model = Group
         fields = '__all__'
 
-class SalarySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Salary
-        fields = '__all__'
+# class SalarySerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Salary
+#         fields = '__all__'
 
 class AttendanceSerializer(serializers.ModelSerializer):
     class Meta:
