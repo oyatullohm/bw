@@ -19,5 +19,7 @@ urlpatterns = [
     path('chaild-edit/<int:pk>/',chaild_edit,name='chaild_edit'),
     path('chaild-edit-tarif/<int:pk>/',chaild_edit_tarif,name='chaild_edit_tarif'),
     path('delete-chaild/<int:pk>/',delete_chaild,name='delete_chaild'),
+    path('calendar/<int:pk>/',calendar,name='calendar'),
+    
 
 ]

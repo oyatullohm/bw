@@ -9,6 +9,9 @@ from decimal import Decimal
 from django.db.models import OuterRef, Subquery
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage 
 from django.db.models import Count
+import json
+from datetime import datetime, timedelta
+
 
 class HomeView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
@@ -281,3 +284,31 @@ def chaild_edit_tarif(request,pk):
     messages.error(request, f"Tarif O'zgardi ")
     return redirect('child')
 
+@login_required
+def calendar(request,pk):
+    child = Child.objects.get(id=pk)
+    
+    today = datetime.today()
+    first_day_of_current_month = today.replace(day=1)
+  
+    first_day_of_previous_month = (first_day_of_current_month - timedelta(days=1)).replace(day=1)
+
+    attendance = Attendance.objects.filter(
+        child=child,
+        is_active=True,
+        date__range=[first_day_of_previous_month, today]
+    )
+    
+
+    events = []
+    for record in attendance:
+        events.append({
+            'id': record.id,
+            'title': f'Keldi  {record.child.name}',  
+            'start': record.date.strftime('%Y-%m-%dT%H:%M:%S'), 
+            'allDay': True,
+            'className': 'info',
+            })
+    events_json = json.dumps(events)
+    
+    return render(request, 'fullcalendar.html', {'events_json': events_json})
