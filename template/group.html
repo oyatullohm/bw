@@ -2,15 +2,6 @@
 {% block content %}
 
 
-
-
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li class="{{ message.tags }}  text-danger">{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
  <!-- Basic Tables start -->
  <section class="section">
     <div class="row" id="basic-table">
@@ -88,8 +79,8 @@
                                         <td class="text-bold-500">{{i.name}}</td>
                                         <td class="text-bold-500">{{i.teacher}}</td>
                                         <td class="text-bold-500">{{i.helper}}</td>
-                                        <td class="text-bold-500">{{i.children.all.count}}</td>
-                                        <td class="text-bold-500"><a href="#">Info</a></td>
+                                        <td class="text-bold-500">{{i.child.all.count}}</td>
+                                        <td class="text-bold-500"><a href="{% url 'group_detail' i.id %}">Info</a></td>
                                     </tr>
                                    {% endfor %}
                                 </tbody>

@@ -102,9 +102,9 @@
                             <div class="form-group">
                                 <label for="amount" class="form-label">Tarif :  {{teacher.tarif.amount}} </label>
                                 <select name="tarif" id="tarif" class="form-control">
+                                    <option value="{{ teacher.tarif.id }}">{{ teacher.tarif.name}}</option>
                                     {% for i in tarif %}
                                     {% if teacher.tarif == i %}
-                                    <option value="{{ i.id }}">{{ i.name}}</option>
                                     {% else %}
                                     <option value="{{ i.id }}">{{ i.name }}</option>
                                     {% endif %}
@@ -112,7 +112,7 @@
                                 </select>
                             </div> 
                             <div class="form-group">
-                                <label for="amount" class="form-label">Ohirgi Yangilanish -   {{teacher.salaries.month}}</label>
+                                <label for="amount" class="form-label">Ohirgi Yangilanish -   {{teacher.tarif.created }}</label>
                             
                             </div>
                             <div class="form-group">

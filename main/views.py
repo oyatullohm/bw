@@ -8,7 +8,7 @@ from django.contrib import messages
 from decimal import Decimal
 from django.db.models import OuterRef, Subquery
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage 
-
+from django.db.models import Count
 
 class HomeView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
@@ -22,7 +22,7 @@ class TeacherView(LoginRequiredMixin,View):
     def get(self,request) :
         company_id = request.user.company.id
         teacher = Teacher.objects.filter(company_id=company_id, is_active=True)\
-                    .prefetch_related('salaries', 'group_teachers','group_helpers')
+                    .prefetch_related('group_teachers','group_helpers')
         context = {
             'teacher':teacher,
             'type':Teacher.TYPE
@@ -138,6 +138,49 @@ class GroupView(LoginRequiredMixin,View):
         return redirect('/group')
     
 
+class GroupDetailView(LoginRequiredMixin, View):
+    login_url = settings.LOGIN_URL
+    
+    def get(self, request, pk, *args, **kwargs):
+        page = request.GET.get('page')
+        group = Group.objects.get(id=pk)
+        children = Child.objects.filter(group=group).select_related('tarif')
+        today = timezone.now().date()
+
+        # All relevant attendance records for today
+        attendances = Attendance.objects.filter(child__in=children, date=today)
+        attendance_dict = {att.child_id: att for att in attendances}
+        start_of_month = today.replace(day=1)
+
+        attendance_counts = Attendance.objects.filter(
+            child__in=children,
+            is_active=True,
+            date__gte=start_of_month,
+            presence=True
+        ).values('child_id').annotate(count=Count('id'))
+
+        attendance_dict_count = {att['child_id']: att['count'] for att in attendance_counts}
+
+
+        paginator = Paginator(children, 2)
+        try:
+            children = paginator.page(page)
+        except PageNotAnInteger:
+            children = paginator.page(1)
+        except EmptyPage:
+            children = paginator.page(paginator.num_pages)
+        
+        children_attendance = []
+        for child in children:
+            attendance = attendance_dict.get(child.id, None)
+            attendance_counts = attendance_dict_count.get(child.id, 0)
+            children_attendance.append({
+                'child': child,
+                'attendance': attendance,
+                'attendance_counts':attendance_counts,
+            })
+
+        return render(request, 'group-detail.html', {'group': group, 'children_attendance': children_attendance, 'paginator': paginator, 'page_obj': children})
 class ChildView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self, request , *args, **kwargs):
@@ -237,3 +280,4 @@ def chaild_edit_tarif(request,pk):
     child.save()
     messages.error(request, f"Tarif O'zgardi ")
     return redirect('child')
+
