@@ -60,7 +60,7 @@
                                                 <input class="form-check-input" name="attendance_{{ item.child.id }}" type="checkbox" id="flexSwitchCheckDefault_{{ item.child.id }}" {% if item.attendance  and item.attendance.is_active %}checked{% endif %} onchange="updateAttendance(`{{ item.child.id }}`, this.checked)">
                                                 <label class="form-check-label" for="flexSwitchCheckDefault_{{ item.child.id }}">Davomat</label>
                                             </td>
-                                    <td class="text-bold-500"><a href="{% url 'calendar' item.child.id %}">info{{item.child.id}}</a></td>
+                                    <td class="text-bold-500"><a href="{% url 'calendar_child' item.child.id %}">info{{item.child.id}}</a></td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -158,12 +158,12 @@
         .then(response => response.json())
         .then(data => {
             if (data.status !== 'success') {
-                alert('Davomat yangilanmadi!');
+                // alert('Davomat yangilanmadi!');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Davomat yangilanmadi!');
+            // alert('Davomat yangilanmadi!');
         });
     }
 </script>

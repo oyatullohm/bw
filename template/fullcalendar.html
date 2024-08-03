@@ -19,7 +19,6 @@
 		var m = date.getMonth();
 		var y = date.getFullYear();
 		const events = JSON.parse('{{ events_json|escapejs }}');
-		console.log(events)
 		$('#external-events div.external-event').each(function() {
 
 
@@ -156,7 +155,7 @@
 <!-- <div id='wrap'> -->
 <div class="container">
 	<div class="row"><div class="col">
-		 <h1><a href=""> {{event}}</a></h1>
+		 <h1><a href="{% url 'home' %}">Home</a></h1>
 	</div></div>
 </div>
 <div id='calendar'></div>

@@ -12,14 +12,16 @@ urlpatterns = [
     path('edit-amount/<int:pk>/',salary,name='edit_amount'),
     path('group',GroupView.as_view(),name='group'),
     path('group-detail/<int:pk>/',GroupDetailView.as_view(),name='group_detail'),
-    path('update-attendance/', UpdateAttendanceView.as_view(), name='update-attendance'),
+    path('update-attendance-child/', UpdateAttendanceChildView.as_view(), name='update-attendance'),
+    path('update-attendance-teacher/', UpdateAttendanceTeacherView.as_view(), name='update-attendance-teacer'),
     path('child',ChildView.as_view(),name='child'),
     path('tarif',TarifCompanyView.as_view(),name='tarif'),
     path('edit-tarif/<int:pk>/',edit_tarif,name='edit_tarif'),
     path('chaild-edit/<int:pk>/',chaild_edit,name='chaild_edit'),
     path('chaild-edit-tarif/<int:pk>/',chaild_edit_tarif,name='chaild_edit_tarif'),
     path('delete-chaild/<int:pk>/',delete_chaild,name='delete_chaild'),
-    path('calendar/<int:pk>/',calendar,name='calendar'),
+    path('calendar/child/<int:pk>/',calendar_child,name='calendar_child'),
+    path('calendar/teacher/<int:pk>/',calendar_teacher,name='calendar_teacher'),
     
 
 ]

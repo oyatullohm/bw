@@ -103,30 +103,38 @@
                                     <th>Lavozimi</th>
                                     <th>Group</th>
                                     <th>Tarif</th>
-                                    <th>Malumot</th>
+                                   
+                                    <th>Davomat</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for i in teacher %}
-                                    <tr>
-                                        <td>{{forloop.counter}}</td>
-                                        <td class="text-bold-500">{{i.username}}</td>
-                                        <td>{{i.phone}} </td>
-                                        <td>{{i.get_type_display}}</td>
-                                        <td >
-                                            {% if i.group_teachers %}
-                                                {{i.group_teachers.name }}
-                                            {% elif i.group_helpers  %}
-                                                {{ i.group_helpers  }}
-                                            {% else %}
-                                                None
-                                            {% endif %}
-                                        </td>
-                                        <td>{{ i.salaries.0.mount}}</td>
-                                        <td><a href="{% url 'teacher_detail' i.id %}"> Info</a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
+                                {% for item in teacher_attendance %}
+<tr>
+    <td>{{ forloop.counter }}</td>
+    <td class="text-bold-500"> 
+        <a href="{% url 'teacher_detail' item.teacher.id %}"> {{ item.teacher.username }}</a>
+    </td>
+    <td>{{ item.teacher.phone }} </td>
+    <td>{{ item.teacher.get_type_display }}</td>
+    <td>
+        {% if item.teacher.group_teachers %}
+            {{ item.teacher.group_teachers.name }}
+        {% elif item.teacher.group_helpers %}
+            {{ item.teacher.group_helpers.name }}
+        {% else %}
+            None
+        {% endif %}
+    </td>
+    <td>{{ item.teacher.tarif }} </td>
+    <td>
+        <div class="form-check form-switch col-3">
+            <input class="form-check-input" name="attendance_{{ item.teacher.id }}" type="checkbox" id="flexSwitchCheckDefault_{{ item.teacher.id }}" 
+            {% if item.attendance and item.attendance.is_active %}checked{% endif %} onchange="updateAttendance(`{{ item.teacher.id }}`, this.checked)">
+            <label class="form-check-label" for="flexSwitchCheckDefault_{{ item.teacher.id }}">Davomat</label>
+        </div>
+    </td>
+</tr>
+{% endfor %}
 
                             </tbody>
 
@@ -137,5 +145,30 @@
         </div>
     </div>
 </section>
+<script>
+function updateAttendance(teacer_id, is_active) {
+    fetch('{% url "update-attendance-teacer" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: new URLSearchParams({
+            'teacer_id': teacer_id,
+            'is_active': is_active
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status !== 'success') {
+            // alert('Davomat yangilanmadi!');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // alert('Davomat yangilanmadi!');
+    });
+}
+</script>
 
 {% endblock content %}

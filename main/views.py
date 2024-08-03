@@ -22,16 +22,31 @@ class HomeView(LoginRequiredMixin,View):
 
 class TeacherView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
-    def get(self,request) :
+    def get(self, request):
         company_id = request.user.company.id
         teacher = Teacher.objects.filter(company_id=company_id, is_active=True)\
-                    .prefetch_related('group_teachers','group_helpers')
+                    .prefetch_related('group_teachers', 'group_helpers')
+        
+        today = timezone.now().date()
+        attendances = Attendance.objects.filter(teacher__in=teacher, date=today)
+        attendance_dict = {att.teacher_id: att for att in attendances}
+        teacher_attendance = []
+        for t in teacher:
+            attendance = attendance_dict.get(t.id, None)
+            teacher_attendance.append({
+                'teacher': t,
+                'attendance': attendance,
+            })
         context = {
-            'teacher':teacher,
-            'type':Teacher.TYPE
+            'teacher': teacher,
+            'type': Teacher.TYPE,
+            'teacher_attendance': teacher_attendance
         }
-        return render (request , 'teacher-all.html',context)
-    
+        return render(request, 'teacher-all.html', context)
+
+     
+
+
 class TeacherDetailView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self,request,pk) :
@@ -150,7 +165,6 @@ class GroupDetailView(LoginRequiredMixin, View):
         children = Child.objects.filter(group=group).select_related('tarif')
         today = timezone.now().date()
 
-        # All relevant attendance records for today
         attendances = Attendance.objects.filter(child__in=children, date=today)
         attendance_dict = {att.child_id: att for att in attendances}
         start_of_month = today.replace(day=1)
@@ -182,8 +196,13 @@ class GroupDetailView(LoginRequiredMixin, View):
                 'attendance': attendance,
                 'attendance_counts':attendance_counts,
             })
-
-        return render(request, 'group-detail.html', {'group': group, 'children_attendance': children_attendance, 'paginator': paginator, 'page_obj': children})
+        context = {
+            'group': group, 
+            'page_obj': children,
+            'paginator': paginator, 
+            'children_attendance': children_attendance, 
+            }
+        return render(request, 'group-detail.html',context)
 class ChildView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self, request , *args, **kwargs):
@@ -267,7 +286,7 @@ def edit_tarif(request,pk):
     status = request.POST.get('status')
     amount = request.POST.get('amount')
     tarif.name = name
-    tarif.status = status
+    tarif.status = int(status)
     tarif.amount = amount
     tarif.created = timezone.now()
     tarif.save()
@@ -285,7 +304,7 @@ def chaild_edit_tarif(request,pk):
     return redirect('child')
 
 @login_required
-def calendar(request,pk):
+def calendar_child(request,pk):
     child = Child.objects.get(id=pk)
     
     today = datetime.today()
@@ -299,12 +318,38 @@ def calendar(request,pk):
         date__range=[first_day_of_previous_month, today]
     )
     
-
     events = []
     for record in attendance:
         events.append({
             'id': record.id,
             'title': f'Keldi  {record.child.name}',  
+            'start': record.date.strftime('%Y-%m-%dT%H:%M:%S'), 
+            'allDay': True,
+            'className': 'info',
+            })
+    events_json = json.dumps(events)
+    
+    return render(request, 'fullcalendar.html', {'events_json': events_json})@login_required
+
+def calendar_teacher(request,pk):
+    teacher = Teacher.objects.get(id=pk)
+    
+    today = datetime.today()
+    first_day_of_current_month = today.replace(day=1)
+  
+    first_day_of_previous_month = (first_day_of_current_month - timedelta(days=1)).replace(day=1)
+
+    attendance = Attendance.objects.filter(
+        teacher=teacher,
+        is_active=True,
+        date__range=[first_day_of_previous_month, today]
+    )
+    
+    events = []
+    for record in attendance:
+        events.append({
+            'id': record.id,
+            'title': f'Keldi  {record.teacher}',  
             'start': record.date.strftime('%Y-%m-%dT%H:%M:%S'), 
             'allDay': True,
             'className': 'info',
