@@ -1,0 +1,136 @@
+{% extends 'wrapper.html' %}
+{% block content %}
+
+<section class="section">
+    <div class="row" id="basic-table">
+        <div class="col-12 col-md-12">
+            <div class="card">
+
+                <div class="card-content">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-lg">
+                                <thead>
+                                    <tr>
+                                        <th>Sana</th>
+                                        <th>Oy</th>
+                                        <th>Bola</th>
+                                        <th>Summa</th>
+                                        <th>Kim Oldi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for p in payment%}
+                                    <tr>
+                                        <td class="text-bold-500">{{ p.date }}</td>
+                                        <td class="text-bold-500">{{p.date_minth |date:"M" }} </td>
+                                        <td class="text-bold-500">{{p.child.name }} </td>
+                                        <td class="text-bold-500">{{p.amount}}</td>
+                                        <td class="text-bold-500">{{p.user}}</td>
+                  
+                                    </tr>
+
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Basic Tables end -->
+
+
+{% if payment.paginator.num_pages > 1 %}
+<nav aria-label="Page navigation example">
+    <ul class="pagination pagination-primary justify-content-end">
+        {% if payment.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="First">
+                    <span aria-hidden="true"><i class="bi bi-chevron-double-left"></i></span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ payment.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#" aria-label="First">
+                    <span aria-hidden="true"><i class="bi bi-chevron-double-left"></i></span>
+                </a>
+            </li>
+            <li class="page-item disabled">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
+                </a>
+            </li>
+        {% endif %}
+
+        {% for num in payment.paginator.page_range %}
+            {% if payment.number == num %}
+                <li class="page-item active">
+                    <a class="page-link" href="#">{{ num }}</a>
+                </li>
+            {% elif num > payment.number|add:-3 and num < payment.number|add:3 %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if payment.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ payment.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ payment.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true"><i class="bi bi-chevron-double-right"></i></span>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
+                </a>
+            </li>
+            <li class="page-item disabled">
+                <a class="page-link" href="#" aria-label="Last">
+                    <span aria-hidden="true"><i class="bi bi-chevron-double-right"></i></span>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+// URL-dan type parametrini olish
+const urlParams = new URLSearchParams(window.location.search);
+const typeParam = urlParams.get('type'); // 'default_value' ni kerakli qiymatga almashtiring
+
+// Paginatsiya linklariga type parametrini qo'shish
+const pageLinks = document.querySelectorAll('.page-link');
+pageLinks.forEach(function(link) {
+    let href = link.getAttribute('href');
+    if (href.includes('?')) {
+        href += `&type=${typeParam}`;
+    } else {
+        href += `?type=${typeParam}`;
+    }
+    link.setAttribute('href', href);
+});
+});
+</script>
+
+
+
+
+{% endblock content %}

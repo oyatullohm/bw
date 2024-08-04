@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
+from datetime import datetime, timedelta , date
+from django.db.models import Q, Sum, Case, When, DecimalField , F ,Prefetch
 
 class Tarif(models.Model):
     name = models.CharField(max_length=155)
@@ -30,7 +32,7 @@ class TarifCompany(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='salaries')
     name = models.CharField(max_length=100)
     status = models.PositiveIntegerField(default=1,choices=STATUS)
-    amount = models.DecimalField(max_digits=10, decimal_places=2,default=0)
+    amount = models.DecimalField(max_digits=10, decimal_places=0,default=0)
     created = models.DateField()
     is_active = models.BooleanField(default=True)
     def __str__(self):
@@ -75,20 +77,17 @@ class Child(models.Model):
     status = models.PositiveIntegerField(default=1)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='child', null=True, blank=True)
     is_active = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.name
-
-    @property
-    def count_children(self):
-        return self.children.filter(is_active=True).count()
     
-    def __str__(self):
-        return self.name
+    # @property
+    # def month_paymment(self):
+    #     return bool(self.tarif.amount <= sum([ i.amount for i in  self.payments.filter(date_minth__gte=date.today().replace(day=1))]))
+    # @property
+    # def summa_paymment(self):
+    #     return self.tarif.amount - sum([ i.amount for i in  self.payments.filter(date_minth__gte=date.today().replace(day=1))])
     
+    # def __str__(self):
+    #     return self.name
     
-
-
 #davomat
 class Attendance(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='attendances')
@@ -113,6 +112,7 @@ class Payment(models.Model):
     child = models.ForeignKey(Child, on_delete=models.CASCADE, null=True, blank=True, related_name='payments')
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True, blank=True, related_name='payment_teachers') # oylik ilishi 
     date = models.DateField(default=timezone.now)
+    date_minth = models.DateField(null=True ,blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_type = models.CharField(max_length=10, choices=TYPE_CHOICES)
     description = models.TextField(blank=True, null=True)
@@ -143,7 +143,7 @@ class Transfer(models.Model):
 
 class Cash(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='cashes')
-    amount = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    amount = models.DecimalField(max_digits=15, decimal_places=0, default=0)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='cash_teachers')
     is_active = models.BooleanField(default=True)
 

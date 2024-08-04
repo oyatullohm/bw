@@ -4,15 +4,39 @@ from main.models import *
 from django.contrib.auth import authenticate, login  , logout
 from django.contrib.auth.hashers import make_password, check_password
 
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework_simplejwt.tokens import RefreshToken
+
 def logout_(request):
     logout(request)
     return redirect('login')
 
+
+@api_view(['POST'])
+def login(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+
+    try:
+        user = Teacher.objects.get(username=username)
+    except Teacher.DoesNotExist:
+        user = None
+
+    if user is not None and user.check_password(password):
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        })
+    else:
+        return Response({'error': 'Invalid credentials'}, status=400)
+from django.contrib.auth import authenticate, login  , logout
 class LoginView(View):
     def get(self,request):
         return render(request, 'login.html')
-    
-     
     def post(self, request):
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -49,7 +73,7 @@ class RegisterView(View):
         if password == password_2:
             tarif = Tarif.objects.get(name='standart')
             company = Company.objects.create(tarif=tarif,name=company)
-            Teacher.objects.create_user(
+            teacher=Teacher.objects.create_user(
                         company=company,
                         username=username,
                         phone=phone,
@@ -60,7 +84,10 @@ class RegisterView(View):
                         is_child = True, 
                         password=password                  
             )
-        
+            Cash.objects.get_or_create(
+                company=company,
+                teacher=teacher,
+            )
             return redirect('/login')
         return redirect('/register')
 

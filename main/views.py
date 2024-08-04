@@ -11,13 +11,15 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
 import json
 from datetime import datetime, timedelta
-
+from .permitsion import get_token_from_request , is_token_valid
 
 class HomeView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
-    def get(self,request):
-        return render (request , 'index.html')
-
+    def get(self, request):
+        # token = get_token_from_request(request)
+        # if not is_token_valid(token):
+        #     return redirect('/login/')
+        return render(request, 'index.html')
 
 
 class TeacherView(LoginRequiredMixin,View):
@@ -128,7 +130,7 @@ def add_teacher(request):
     company = request.user.company
     if not Teacher.objects.filter(username=request.POST.get('username')).exists() \
         and  request.POST.get('password') == request.POST.get('password_2') :
-        Teacher.objects.create_user(
+        teacher = Teacher.objects.create_user(
         company = company,
         username=request.POST.get('username'),
         phone=request.POST.get('phone'),
@@ -136,6 +138,10 @@ def add_teacher(request):
         password=request.POST.get('password'),
         type = request.POST.get('type')
         )
+        Cash.objects.get_or_create(
+                company=company,
+                teacher=teacher,
+            )
         return redirect ('/teacher')
     messages.error(request, 'usename  band  yoki parollar birhil emass ')
     return redirect ('/teacher')
@@ -160,16 +166,25 @@ class GroupDetailView(LoginRequiredMixin, View):
     login_url = settings.LOGIN_URL
     
     def get(self, request, pk, *args, **kwargs):
+        company = request.user.company
         page = request.GET.get('page')
         group = Group.objects.get(id=pk)
-        children = Child.objects.filter(group=group).select_related('tarif')
+        children = Child.objects.filter(company=company, group=group).select_related('tarif').prefetch_related('payments')
         today = timezone.now().date()
-
-        attendances = Attendance.objects.filter(child__in=children, date=today)
-        attendance_dict = {att.child_id: att for att in attendances}
         start_of_month = today.replace(day=1)
 
+        attendances = Attendance.objects.filter(
+             company=company, 
+            child__in=children, 
+            date=today
+        ).select_related('child')
+
+
+        attendance_dict = {att.child_id: att for att in attendances}
+
+
         attendance_counts = Attendance.objects.filter(
+            company=company, 
             child__in=children,
             is_active=True,
             date__gte=start_of_month,
@@ -179,7 +194,16 @@ class GroupDetailView(LoginRequiredMixin, View):
         attendance_dict_count = {att['child_id']: att['count'] for att in attendance_counts}
 
 
-        paginator = Paginator(children, 2)
+        payment_summa = Payment.objects.filter(
+            company=company, 
+            child__in=children,
+            date_minth__gte=start_of_month
+        ).values('child_id').annotate(amount=Sum('amount'))
+
+        payment_summa_dict = {pay['child_id']: pay['amount'] for pay in payment_summa}
+
+        
+        paginator = Paginator(children, 25)
         try:
             children = paginator.page(page)
         except PageNotAnInteger:
@@ -191,18 +215,25 @@ class GroupDetailView(LoginRequiredMixin, View):
         for child in children:
             attendance = attendance_dict.get(child.id, None)
             attendance_counts = attendance_dict_count.get(child.id, 0)
+            payment_summa_value = payment_summa_dict.get(child.id, 0) 
+            tarif_amount = child.tarif.amount if child.tarif else 0
+            remaining_amount = tarif_amount - payment_summa_value
             children_attendance.append({
                 'child': child,
                 'attendance': attendance,
-                'attendance_counts':attendance_counts,
+                'attendance_counts': attendance_counts,
+                'payment_summa': payment_summa_value,
+                'remaining_amount':remaining_amount
             })
+
         context = {
             'group': group, 
             'page_obj': children,
             'paginator': paginator, 
             'children_attendance': children_attendance, 
-            }
-        return render(request, 'group-detail.html',context)
+        }
+        return render(request, 'group-detail.html', context)
+
 class ChildView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self, request , *args, **kwargs):
@@ -306,12 +337,9 @@ def chaild_edit_tarif(request,pk):
 @login_required
 def calendar_child(request,pk):
     child = Child.objects.get(id=pk)
-    
     today = datetime.today()
     first_day_of_current_month = today.replace(day=1)
-  
     first_day_of_previous_month = (first_day_of_current_month - timedelta(days=1)).replace(day=1)
-
     attendance = Attendance.objects.filter(
         child=child,
         is_active=True,
@@ -329,8 +357,9 @@ def calendar_child(request,pk):
             })
     events_json = json.dumps(events)
     
-    return render(request, 'fullcalendar.html', {'events_json': events_json})@login_required
+    return render(request, 'fullcalendar.html', {'events_json': events_json})
 
+@login_required
 def calendar_teacher(request,pk):
     teacher = Teacher.objects.get(id=pk)
     
@@ -357,3 +386,47 @@ def calendar_teacher(request,pk):
     events_json = json.dumps(events)
     
     return render(request, 'fullcalendar.html', {'events_json': events_json})
+
+@login_required
+def payment_child(request, pk):
+    child =  get_object_or_404( Child , id=pk)
+    summa = request.POST.get('summa') 
+    date_minth= request.POST.get('date_minth')  
+    description = request.POST.get('description', None)
+    payment = Payment.objects.create(
+        company = request.user.company,  
+        user=request.user,
+        child = child,
+        amount = summa,
+        payment_type = 1,
+        date_minth = date_minth,
+        description = description ,
+        
+    )
+    cash = Cash.objects.get(teacher=request.user)
+    cash.amount += Decimal(payment.amount)
+    payment.save()
+    messages.error(request, f"{child} Tplov Qildi ")
+    return redirect(f'/group-detail/{child.group.id}/')
+
+class PaymentView(LoginRequiredMixin,View):
+    def get(self, request):
+        payment_type = request.GET.get('type')  # `type` o'zgaruvchisini to'g'ri belgilash
+        page = request.GET.get('page')
+
+
+        payments = Payment.objects.filter(company=request.user.company, payment_type=payment_type)\
+            .select_related('child','teacher','user')
+        paginator = Paginator(payments, 10)  # Sahifalarni 25 tadan ko'rsatish
+        try:
+            payment_page = paginator.page(page)
+        except PageNotAnInteger:
+            payment_page = paginator.page(1)
+        except EmptyPage:
+            payment_page = paginator.page(paginator.num_pages)
+
+        context = {
+            'payment': payment_page,
+            'payment_type':payment_type,
+        }
+        return render(request, 'payment.html', context)
