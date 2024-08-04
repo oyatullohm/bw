@@ -11,7 +11,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
 import json
 from datetime import datetime, timedelta
-from .permitsion import get_token_from_request , is_token_valid
+# from .permitsion import get_token_from_request , is_token_valid
 
 class HomeView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
