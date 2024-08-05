@@ -4,6 +4,7 @@ from django.utils import timezone
 from datetime import datetime, timedelta , date
 from django.db.models import Q, Sum, Case, When, DecimalField , F ,Prefetch
 
+
 class Tarif(models.Model):
     name = models.CharField(max_length=155)
     summa = models.PositiveIntegerField(default=0)
@@ -16,7 +17,11 @@ class Tarif(models.Model):
 
 class Company(models.Model):
     tarif = models.ForeignKey(Tarif, on_delete=models.CASCADE, related_name='companies')
-    name = models.CharField(max_length=155)
+    name = models.CharField(max_length=155,default=0)
+    phone = models.CharField(max_length=15)
+    working_day = models.PositiveIntegerField(default=22) 
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
     created = models.DateTimeField(default=timezone.now)
 
@@ -47,7 +52,6 @@ class Teacher(AbstractUser):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True , related_name='teachers')
     phone = models.CharField(max_length=15) 
     tarif = models.ForeignKey(TarifCompany, on_delete=models.SET_NULL, null=True, blank=True,)
-    hired_date = models.DateField(null=True, blank=True)
     type = models.PositiveIntegerField( choices=TYPE, default=1)
     is_payment = models.BooleanField(default=False)
     is_salary = models.BooleanField(default=False)

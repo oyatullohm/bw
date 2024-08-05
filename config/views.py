@@ -8,31 +8,12 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-# from rest_framework_simplejwt.tokens import RefreshToken
 
 def logout_(request):
     logout(request)
     return redirect('login')
 
 
-# @api_view(['POST'])
-# def login(request):
-#     username = request.data.get('username')
-#     password = request.data.get('password')
-
-#     try:
-#         user = Teacher.objects.get(username=username)
-#     except Teacher.DoesNotExist:
-#         user = None
-
-#     if user is not None and user.check_password(password):
-#         refresh = RefreshToken.for_user(user)
-#         return Response({
-#             'refresh': str(refresh),
-#             'access': str(refresh.access_token),
-#         })
-#     else:
-#         return Response({'error': 'Invalid credentials'}, status=400)
 from django.contrib.auth import authenticate, login  , logout
 
 class LoginView(View):
@@ -73,7 +54,9 @@ class RegisterView(View):
         password_2 = request.POST.get('password_2')
         if password == password_2:
             tarif = Tarif.objects.get(name='standart')
-            company = Company.objects.create(tarif=tarif,name=company)
+            company = Company.objects.create(tarif=tarif,name=company,
+                                             phone=phone,start_date=timezone.now(),
+                                             end_date=timezone.now()+timedelta(days=30))
             teacher=Teacher.objects.create_user(
                         company=company,
                         username=username,
