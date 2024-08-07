@@ -12,10 +12,23 @@ from django.db.models import Count
 import json
 from datetime import datetime, timedelta
 # from .permitsion import get_token_from_request , is_token_valid
+from django.core.mail import send_mail
+
+from django.conf import settings
 
 class HomeView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self, request):
+        # send_mail(subject = "Assalomu alekum, sizni maxfiy kodingiz: 154879",
+        #           message="Salom",from_email=settings.EMAIL_HOST_USER,
+        #           recipient_list=['marzoyahoni@gmail.com'])
+        # send_mail(
+        #     subject = '<YOUR SUBJECT TEXT>',
+        #     message = '<YOUR EMAIL MESSAGE>',
+        #     recipient_list = ['marzoyahoni@gmail.com'],
+        #     from_email = None,
+        #     fail_silently=False,
+        # )
         # token = get_token_from_request(request)
         # if not is_token_valid(token):
         #     return redirect('/login/')
@@ -391,7 +404,7 @@ def calendar_teacher(request,pk):
 def payment_child(request, pk):
     child =  get_object_or_404( Child , id=pk)
     summa = request.POST.get('summa') 
-    date_minth= request.POST.get('date_minth')  
+    date_month= request.POST.get('date_month')  
     description = request.POST.get('description', None)
     payment = Payment.objects.create(
         company = request.user.company,  
@@ -399,14 +412,15 @@ def payment_child(request, pk):
         child = child,
         amount = summa,
         payment_type = 1,
-        date_minth = date_minth,
+        date_month = date_month,
         description = description ,
         
     )
     cash = Cash.objects.get(teacher=request.user)
     cash.amount += Decimal(payment.amount)
+    cash.save()
     payment.save()
-    messages.error(request, f"{child} Tplov Qildi ")
+    messages.error(request, f"{child.name} Tplov Qildi ")
     return redirect(f'/group-detail/{child.group.id}/')
 
 class PaymentView(LoginRequiredMixin,View):

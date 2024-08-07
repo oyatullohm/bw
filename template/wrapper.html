@@ -23,61 +23,7 @@
 </head>
 
 <body>
-    <script>
-        function getCookie(name) {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        }
 
-        async function fetchToken(username, password) {
-            try {
-                const response = await fetch('/api/token/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken') // CSRF tokenni yuborish
-                    },
-                    body: JSON.stringify({
-                        username: username,
-                        password: password
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Token olishda xato yuz berdi');
-                }
-
-                const data = await response.json();
-                document.cookie = `token=${data.access}`; // Tokenni cookie ga saqlash
-                console.log('Token:', data.access);
-            } catch (error) {
-                console.error('Xato:', error);
-            }
-        }
-
-        async function makeAuthenticatedRequest() {
-            const token = getCookie('token');
-            try {
-                const response = await fetch('/some-protected-endpoint/', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error('So\'rovda xato yuz berdi');
-                }
-
-                const data = await response.json();
-                console.log('Ma\'lumotlar:', data);
-            } catch (error) {
-                console.error('Xato:', error);
-            }
-        }
-    </script>
 
     <script src="/static/assets/static/js/initTheme.js"></script>
     <div id="app">

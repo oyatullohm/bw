@@ -31,7 +31,7 @@ class Company(models.Model):
 
 class TarifCompany(models.Model):
     STATUS = (
-        (1,'Ishchilar'),
+        (1,'Hodimlar'),
         (2,'Bolalar')
     )
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='salaries')
@@ -82,15 +82,7 @@ class Child(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='child', null=True, blank=True)
     is_active = models.BooleanField(default=True)
     
-    # @property
-    # def month_paymment(self):
-    #     return bool(self.tarif.amount <= sum([ i.amount for i in  self.payments.filter(date_minth__gte=date.today().replace(day=1))]))
-    # @property
-    # def summa_paymment(self):
-    #     return self.tarif.amount - sum([ i.amount for i in  self.payments.filter(date_minth__gte=date.today().replace(day=1))])
-    
-    # def __str__(self):
-    #     return self.name
+
     
 #davomat
 class Attendance(models.Model):
@@ -112,14 +104,15 @@ class Payment(models.Model):
         ('2', 'Chiqim'),
     )
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='payments')
-    user = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='payments_user')# chiqim qilayotgan user
-    child = models.ForeignKey(Child, on_delete=models.CASCADE, null=True, blank=True, related_name='payments')
+    user = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='payments_user')# chiqim qilayotgan user Yoki krim 
+    child = models.ForeignKey(Child, on_delete=models.CASCADE, null=True, blank=True, related_name='payments') 
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True, blank=True, related_name='payment_teachers') # oylik ilishi 
     date = models.DateField(default=timezone.now)
-    date_minth = models.DateField(null=True ,blank=True)
+    date_month = models.DateField(null=True ,blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_type = models.CharField(max_length=10, choices=TYPE_CHOICES)
     description = models.TextField(blank=True, null=True)
+    is_edit = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):

@@ -140,6 +140,32 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.yandex.ru'  # Masalan, smtp.gmail.com
+# EMAIL_PORT = 587  # Yoki 465 (SSL uchun)
+# EMAIL_USE_TLS = True  # Agar TLS ishlatilsa
+# # EMAIL_USE_SSL = False  # Agar SSL ishlatilsa
+# EMAIL_HOST_USER = 'smarttizim@yandex.ru'
+# EMAIL_HOST_PASSWORD = 'stizim@1202780'
+# DEFAULT_FROM_EMAIL = 'smarttizim@yandex.ru'
+# SERVER_EMAIL = 'smarttizim@yandex.ru'
+
+
+# EMAIL_BACKEND       = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST          = 'smtp.yandex.ru'
+# # DEFAULT_FROM_EMAIL  = 'oyatulloh1988@yandex.com'
+# EMAIL_HOST_USER     = 'oyatulloh1988@yandex.com'
+# # SERVER_EMAIL        = 'oyatulloh1988@yandex.com'
+# EMAIL_HOST_PASSWORD = 'Aa@9005233'
+# EMAIL_PORT          = 587
+# EMAIL_USE_TLS       = True
+# EMAIL_USE_SSL = False
+
+# EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
+# SENDGRID_API_KEY = "YOUR_SENDGRID_API_KEY"
+# SENDGRID_SANDBOX_MODE_IN_DEBUG = False
+# DEFAULT_FROM_EMAIL = 'marziyahoni@gmail.com'
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -167,20 +193,20 @@ STATICFILES_DIRS = (
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'main.Teacher'
-# LOGGING = {
-#     'version':1,
-#     'handlers':{
-#          'file': {
-#             'level': 'DEBUG',
-#             'class': 'logging.FileHandler',
-#             'filename': 'debug.log'
-#         },
-#         'console':{'class':'logging.StreamHandler'}
-#     },
-#     'loggers':{
-#         'django.db.backends':{
-#             'handlers':['file'],
-#             'level':'DEBUG'
-#                     }
-#                }
-# }  
+LOGGING = {
+    'version':1,
+    'handlers':{
+         'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log'
+        },
+        'console':{'class':'logging.StreamHandler'}
+    },
+    'loggers':{
+        'django.db.backends':{
+            'handlers':['file'],
+            'level':'DEBUG'
+                    }
+               }
+}  

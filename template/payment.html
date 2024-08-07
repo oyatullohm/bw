@@ -17,19 +17,58 @@
                                         <th>Bola</th>
                                         <th>Summa</th>
                                         <th>Kim Oldi</th>
+                                        <th>Izoh</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for p in payment%}
+                                    {% for p in payment %}
                                     <tr>
-                                        <td class="text-bold-500">{{ p.date }}</td>
-                                        <td class="text-bold-500">{{p.date_minth |date:"M" }} </td>
-                                        <td class="text-bold-500">{{p.child.name }} </td>
-                                        <td class="text-bold-500">{{p.amount}}</td>
-                                        <td class="text-bold-500">{{p.user}}</td>
-                  
+                                        <td class="text-bold-500 " data-bs-toggle="modal" data-bs-target="#inlineForm{{ p.id }}">
+                                            <a style="color: blue;">{{ p.date }}</a>
+                                        </td>
+                                        <td class="text-bold-500">{{ p.date_month | date:"M" }} </td>
+                                        <td class="text-bold-500">{{ p.child.name }} </td>
+                                        <td class="text-bold-500">{{ p.amount }}</td>
+                                        <td class="text-bold-500">{{ p.user }}</td>
+                                        <td class="text-bold-500">{{ p.description}}</td>
                                     </tr>
-
+                                    <div class="form-group">
+                                        <div class="modal fade text-left" id="inlineForm{{ p.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="myModalLabel33">Tahrirlash {{ p.child.name }} uchun</h4>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form method="post" id="paymentForm{{ p.id }}" onsubmit="event.preventDefault(); updatePayment('{{ p.id }}');">
+                                                            {% csrf_token %}
+                                                            <div class="form-group mb-1">
+                                                                <label for="summa" class="form-label"> Summa </label>
+                                                                <input type="number" required id="summa{{ p.id }}" name="amount" value="{{ p.amount }}" class="form-control" placeholder="summa">
+                                                            </div>
+                                                            <div class="form-group mb-1">
+                                                                <label for="date_month{{ p.id }}" class="form-label">Tanlangan oy {{ p.date_month | date:"M" }}</label>
+                                                                <input type="date" id="date_month{{ p.id }}" name="date_month" required class="form-control" value="{{ p.date_month|date:'Y-m-d' }}">
+                                                            </div>
+                                                            <div class="form-group mb-1">
+                                                                <label for="description{{ p.id }}" class="form-label">Izoh</label>
+                                                                <input type="text" id="description{{ p.id }}" name="description" value="{{ p.description }}" class="form-control" placeholder="Izoh">
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                                                    <span class="d-none d-sm-block">Close</span>
+                                                                </button>
+                                                                <button type="submit" class="btn btn-primary ms-1">
+                                                                    <span class="d-none d-sm-block">Save</span>
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     {% endfor %}
                                 </tbody>
                             </table>
@@ -111,10 +150,51 @@
 {% endif %}
 
 <script>
+
+
+function updatePayment(paymentId) {
+        const amount = document.getElementById(`summa${paymentId}`).value;
+        const dateMonth = document.getElementById(`date_month${paymentId}`).value;
+        const description = document.getElementById(`description${paymentId}`).value;
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        fetch('{% url "update-payment" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrfToken
+            },
+            body: new URLSearchParams({
+                'payment_id': paymentId,
+                'amount': amount,
+                'date_month': dateMonth,
+                'description': description
+            })
+        }).then(response => response.json()).then(data => {
+            if (data.status === 'success') {
+                // Modal oynani yopish
+                var modal = bootstrap.Modal.getInstance(document.getElementById(`inlineForm${paymentId}`));
+                modal.hide();
+                
+                // Jadvaldagi ma'lumotlarni yangilash
+                const row = document.querySelector(`#inlineForm${paymentId}`).closest('tr');
+                row.querySelector('.text-bold-500:nth-child(4)').textContent = data.amount;
+                row.querySelector('.text-bold-500:nth-child(2)').textContent = new Date(data.date_month).toLocaleString('default', { month: 'short' });
+                // Izohni yangilash uchun element qo'shish
+                row.querySelector('.text-bold-500:nth-child(6)').textContent = data.description;
+
+            }})
+     
+    }
+
+
 document.addEventListener("DOMContentLoaded", function() {
 // URL-dan type parametrini olish
 const urlParams = new URLSearchParams(window.location.search);
 const typeParam = urlParams.get('type'); // 'default_value' ni kerakli qiymatga almashtiring
+
+    // Input elementining qiymatini o'rnatish
+
 
 // Paginatsiya linklariga type parametrini qo'shish
 const pageLinks = document.querySelectorAll('.page-link');

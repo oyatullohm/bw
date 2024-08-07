@@ -14,6 +14,7 @@ urlpatterns = [
     path('group-detail/<int:pk>/',GroupDetailView.as_view(),name='group_detail'),
     path('update-attendance-child/', UpdateAttendanceChildView.as_view(), name='update-attendance'),
     path('update-attendance-teacher/', UpdateAttendanceTeacherView.as_view(), name='update-attendance-teacer'),
+    path('update-payment/', UpdateAttendancePaymenntView.as_view(), name='update-payment'),
     path('child',ChildView.as_view(),name='child'),
     path('tarif',TarifCompanyView.as_view(),name='tarif'),
     path('edit-tarif/<int:pk>/',edit_tarif,name='edit_tarif'),
