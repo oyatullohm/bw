@@ -1,15 +1,17 @@
 {% extends 'wrapper.html' %}
 {% block content %}
+
+
 <div class="form-group">
     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#inlineForm">
-        Kirim Qoshish
+        Chiqim Qoshish
     </button>
 
     <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel33">Kirim Qoshish</h4>
+                    <h4 class="modal-title" id="myModalLabel33">Chiqim Qoshish</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -22,7 +24,7 @@
                         <input type="text" name="payment_description" required id="payment_description" class="form-control" placeholder="Izoh">
                     </div>
                     <div style="display: none !important;">
-                        <input type="number" name="payment_payment_type" value="1" id="payment_payment_type">
+                        <input type="number" name="payment_payment_type" value="2" id="payment_payment_type">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
@@ -46,15 +48,13 @@
                 <div class="card-content">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <h4>Kirimlar</h4>
+                            <h4> Chiqimlar</h4>
                             <table class="table table-lg">
                                 <thead>
                                     <tr>
                                         <th>Sana</th>
-                                        <th>Oy</th>
-                                        <th>Bola</th>
                                         <th>Summa</th>
-                                        <th>Kim</th>
+                                        <th>Hodim</th>
                                         <th>Izoh</th>
                                     </tr>
                                 </thead>
@@ -64,8 +64,6 @@
                                         <td class="text-bold-500" data-bs-toggle="modal" data-bs-target="#inlineForm{{ p.id }}">
                                             <a style="color: blue;">{{ p.date }}</a>
                                         </td>
-                                        <td class="text-bold-500">{{ p.date_month | date:"M" }} </td>
-                                        <td class="text-bold-500">{{ p.child.name }} </td>
                                         <td class="text-bold-500">{{ p.amount }}</td>
                                         <td class="text-bold-500">{{ p.user }}</td>
                                         <td class="text-bold-500">{{ p.description}}</td>
@@ -189,8 +187,8 @@
 <script>
 
 
-
-
+   
+    
 
     function updatePayment(paymentId) {
         const amount = document.getElementById(`summa${paymentId}`).value;
@@ -231,8 +229,6 @@
             }
         }).catch(error => console.error('Xato:', error));
     }
-
-
 
 
     document.getElementById('payment_create').addEventListener('click', function() {
@@ -328,6 +324,7 @@
     })
     .catch(error => console.error('Xato:', error));
 });
+
 </script>
 
 

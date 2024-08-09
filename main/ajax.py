@@ -49,23 +49,67 @@ class UpdateAttendancePaymenntView(View):
         description = request.POST.get('description')
 
         try:
+            amount = Decimal(amount)
             payment = Payment.objects.get(id=payment_id, company=request.user.company)
             cash = payment.user.cash_teachers.all().last()
-            if not payment.is_edit : 
-                cash.amount -= payment.amount 
-                cash.amount += Decimal( amount)
-                payment.amount = Decimal (amount)
+
+            if  payment.is_edit : 
+                cash.amount -= payment.amount
+                
+
+                cash.amount += amount
+                
+    
+                payment.amount = amount
                 payment.date_month = date_month
                 payment.description = description
+
                 payment.save()
                 cash.save()
+                
+
+            return JsonResponse({
+                    'status': 'success',
+                    'payment_id': payment.id,
+                    'user':payment.user.username,
+                    'amount': payment.amount,
+                    'date_month': payment.date_month,
+                    'date':payment.date,
+                    'description': payment.description
+                })
+        except Payment.DoesNotExist:
+            return JsonResponse({'status': 'fail', 'message': 'Payment not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'status': 'fail', 'message': str(e)}, status=400)
+
+
+class PaymentCreateView(View):
+    @method_decorator(require_POST)
+    def post(self, request, *args, **kwargs):
+        amount = request.POST.get('amount')
+     
+        payment_type = request.POST.get('paymentType')
+        description = request.POST.get('description')
+
+
+        try:
+            payment =  Payment.objects.create(
+                company=request.user.company,
+                user = request.user,
+                amount = Decimal(amount),
+                date_month=timezone.now(),
+                payment_type = int(payment_type),
+                description = description
+            )
+
 
             return JsonResponse({
                 'status': 'success',
-                'payment_id': payment.id,
+                'date':payment.date,
+                'user':payment.user.username,
                 'amount': payment.amount,
-                'date_month': payment.date_month,
                 'description': payment.description
+                
             })
         except Payment.DoesNotExist:
             return JsonResponse({'status': 'fail', 'message': 'Payment not found'}, status=404)

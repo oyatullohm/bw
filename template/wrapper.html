@@ -15,7 +15,9 @@
     <title>Baby World</title>
 
     <link rel="shortcut icon" style="height: 50px !important; border-radius: 50px !important;"  href="/static/assets/compiled/svg/bw.png" type="image/x-icon">
-
+    <script src="/static/assets/extensions/toastify-js/src/toastify.js"></script>
+    <script src="/static/assets/static/js/pages/toastify.js"></script>
+    <link rel="stylesheet" href="/static/assets/extensions/toastify-js/src/toastify.css">
     <link rel="stylesheet" href="/static/assets/compiled/css/extra-component-comment.css">
   <link rel="stylesheet" href="/static/assets/compiled/css/app.css">
   <link rel="stylesheet" href="/static/assets/compiled/css/app-dark.css">
@@ -163,21 +165,21 @@
                 </a>
                 <ul class="submenu">
                     <li class="submenu-item  ">
-                        <a href="{% url 'payment' %}?type=1" class="submenu-link">  Kirimlar  </a>
+                        <a href="{% url 'payment' %}" class="submenu-link">  Kirimlar  </a>
                         
                     </li>
                     
                     <li class="submenu-item  ">
-                        <a href="{% url 'payment' %}?type=2" class="submenu-link">  Chqimlar </a>
+                        <a href="{% url 'payment_cost' %}" class="submenu-link">  Chqimlar </a>
                         
                     </li>
                 </ul>
             </li>
              <li
                 class="sidebar-item  ">
-                <a href="application-checkout.html" class='sidebar-link'>
+                <a href="{% url 'cash' %}" class='sidebar-link'>
                    <i class="bi bi-currency-dollar"></i>
-                    <span>Salary</span>
+                    <span>Kassa</span>
                 </a>
             </li>
 
@@ -215,7 +217,18 @@
 {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
-                    <li class="{{ message.tags }}  text-danger">{{ message }}</li>
+                <script>
+                    Toastify({
+                        text: "{{ message }}", // Har qanday maxsus belgilarni to'g'ri qabul qilish uchun
+                        duration: 3000,
+                        close: true,
+                        backgroundColor: "#4fbe87",
+                    }).showToast();
+
+         
+        </script>
+                </script>
+               
                 {% endfor %}
             </ul>
 {% endif %}
@@ -239,7 +252,7 @@
     
 <!-- Need: Apexcharts -->
 <script src="/static/assets/extensions/apexcharts/apexcharts.min.js"></script>
-<script src="/static/assets/static/js/pages/dashboard.js"></script>
+<!-- <script src="/static/assets/static/js/pages/dashboard.js"></script> -->
 
 </body>
 

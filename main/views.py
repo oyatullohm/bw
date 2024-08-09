@@ -13,7 +13,8 @@ import json
 from datetime import datetime, timedelta
 # from .permitsion import get_token_from_request , is_token_valid
 from django.core.mail import send_mail
-
+from django.db.models import Sum, Q, Value
+from django.db.models.functions import Coalesce
 from django.conf import settings
 
 class HomeView(LoginRequiredMixin,View):
@@ -101,6 +102,7 @@ class TeacherDetailView(LoginRequiredMixin,View):
         user.is_child = child  == 'on' 
         user.is_active = active == 'on'
         user.save()
+  
         if int(user.type) == 2:
             group =  get_object_or_404(Group, id=group)
             if Group.objects.filter(teacher=user).exists():
@@ -147,7 +149,6 @@ def add_teacher(request):
         company = company,
         username=request.POST.get('username'),
         phone=request.POST.get('phone'),
-        hired_date =timezone.now(),
         password=request.POST.get('password'),
         type = request.POST.get('type')
         )
@@ -155,6 +156,7 @@ def add_teacher(request):
                 company=company,
                 teacher=teacher,
             )
+        messages.error(request, f"{teacher.username} Qoshildi ffffffffff")
         return redirect ('/teacher')
     messages.error(request, 'usename  band  yoki parollar birhil emass ')
     return redirect ('/teacher')
@@ -210,7 +212,7 @@ class GroupDetailView(LoginRequiredMixin, View):
         payment_summa = Payment.objects.filter(
             company=company, 
             child__in=children,
-            date_minth__gte=start_of_month
+            date_month__gte=start_of_month
         ).values('child_id').annotate(amount=Sum('amount'))
 
         payment_summa_dict = {pay['child_id']: pay['amount'] for pay in payment_summa}
@@ -423,14 +425,14 @@ def payment_child(request, pk):
     messages.error(request, f"{child.name} Tplov Qildi ")
     return redirect(f'/group-detail/{child.group.id}/')
 
+
 class PaymentView(LoginRequiredMixin,View):
     def get(self, request):
-        payment_type = request.GET.get('type')  # `type` o'zgaruvchisini to'g'ri belgilash
+
         page = request.GET.get('page')
 
-
-        payments = Payment.objects.filter(company=request.user.company, payment_type=payment_type)\
-            .select_related('child','teacher','user')
+        payments = Payment.objects.filter(company=request.user.company, payment_type=1)\
+            .select_related('child','teacher','user').order_by('-id')
         paginator = Paginator(payments, 10)  # Sahifalarni 25 tadan ko'rsatish
         try:
             payment_page = paginator.page(page)
@@ -441,6 +443,71 @@ class PaymentView(LoginRequiredMixin,View):
 
         context = {
             'payment': payment_page,
-            'payment_type':payment_type,
+          
         }
         return render(request, 'payment.html', context)
+
+class PaymentCostView(LoginRequiredMixin,View):
+    def get(self, request):
+        page = request.GET.get('page')
+
+
+        payments = Payment.objects.filter(company=request.user.company, payment_type=2)\
+            .select_related('child','teacher','user').order_by('-id')
+        paginator = Paginator(payments, 2)  # Sahifalarni 25 tadan ko'rsatish
+        try:
+            payment_page = paginator.page(page)
+        except PageNotAnInteger:
+            payment_page = paginator.page(1)
+        except EmptyPage:
+            payment_page = paginator.page(paginator.num_pages)
+
+        context = {
+            'payment': payment_page,
+    
+        }
+        return render(request, 'payment.cost.html', context)
+
+
+class CashView(LoginRequiredMixin,View):
+    def get(self,request,):
+        company = request.user.company 
+        
+        month = int(request.GET.get('month', datetime.now().month))
+        year = int(request.GET.get('year', datetime.now().year))
+
+        start_date = datetime(year, month, 1)
+        next_month = start_date.replace(day=28) + timedelta(days=4)  # Keyingi oyning birinchi kuni
+        end_date = next_month - timedelta(days=next_month.day)  # Tanlangan oyning oxirgi kuni
+
+        cash = Cash.objects.filter(company=company).annotate(
+            total_kirim=Coalesce(
+                Sum(
+                    'teacher__payments_user__amount',
+                    filter=Q(teacher__payments_user__date__range=(start_date, end_date)) &
+                           Q(teacher__payments_user__payment_type=1),
+                    output_field=DecimalField()
+                ),
+                Value(1),
+                output_field=DecimalField()
+            ),
+            total_chiqim=Coalesce(
+                Sum(
+                    'teacher__payments_user__amount',
+                    filter=Q(teacher__payments_user__date__range=(start_date, end_date)) &
+                           Q(teacher__payments_user__payment_type=2),
+                    output_field=DecimalField()
+                ),
+                Value(1),
+                output_field=DecimalField()
+            ),
+        ).order_by('-total_kirim', '-total_chiqim').select_related('teacher')
+        
+        number_list = [ i for i in range(0,13)] 
+        context = {
+            'cash': cash,
+            'selected_month': month,
+            'selected_year': year,
+            'number_list':number_list
+        } 
+        return render (request, 'cash.html', context)

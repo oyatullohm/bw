@@ -20,10 +20,10 @@
                                 <label for="phone" class="form-label">Phone</label>
                                 <input type="text" name="phone" id="phone" class="form-control" placeholder="Your Phone" value="{{teacher.phone}}">
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="birthday" class="form-label">Ish Boshlandi</label>
                                 <input type="text" name="birthday" id="birthday" class="form-control" value="{{teacher.hired_date}}" placeholder=" Hired date">
-                            </div> 
+                            </div>  -->
                               <div class="form-group">
                                 <label for="birthday" class="form-label">Lavozimi</label>
                                 <select name="type" id="gender" class="form-control">
@@ -36,15 +36,15 @@
                                 </select>
                             </div> 
                             <div class="form-group">
-                                <label for="gender" class="form-label">Group</label>
-                                <select name="group" id="gender" class="form-control">
+                                <label for="gender" class="form-label">Group </label>
+                                <select name="group"  id="gender" class="form-control">
                                 {% if  group %}
                                     {% for i in group %}
 
                                     <option value="{{ i.id }}">{{ i.name }}</option>
                                     {% endfor %}
                                 {% else %}
-                                    <option > None</option>
+                                    
                                 {% endif %}
                                 {% for group in other_groups %}
                                 <option value="{{ group.id }}">{{ group.name }}</option>
@@ -104,7 +104,7 @@
                         <form action="{% url 'edit_amount' teacher.id %}" method="post">
                             {% csrf_token %}
                             <div class="form-group">
-                                <label for="amount" class="form-label">Tarif :  {{teacher.tarif.amount}} </label>
+                                <label for="amount" class="form-label">Tarif :  {{teacher.tarif.amount}}    Ohirgi Yangilanish -   {{teacher.tarif.created }} </label>
                                 <select name="tarif" id="tarif" class="form-control">
                                     <option value="{{ teacher.tarif.id }}">{{ teacher.tarif.name}}</option>
                                     {% for i in tarif %}
@@ -115,10 +115,10 @@
                                     {% endfor %}
                                 </select>
                             </div> 
-                            <div class="form-group">
-                                <label for="amount" class="form-label">Ohirgi Yangilanish -   {{teacher.tarif.created }}</label>
+                           
+
                             
-                            </div>
+                  
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Save</button>
                             </div>  

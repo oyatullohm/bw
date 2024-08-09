@@ -1,14 +1,15 @@
 from django.views import View
 from django.shortcuts import render , redirect
 from main.models import *
-
+import re
 from django.contrib.auth.hashers import make_password, check_password
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
+from django.views.decorators.csrf import csrf_protect
+from django.utils.decorators import method_decorator
 def logout_(request):
     logout(request)
     return redirect('login')
@@ -19,9 +20,10 @@ from django.contrib.auth import authenticate, login  , logout
 class LoginView(View):
     def get(self,request):
         return render(request, 'login.html')
+    @method_decorator(csrf_protect)
     def post(self, request):
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        username = self.sanitize_input(request.POST.get('username'))
+        password = self.sanitize_input(request.POST.get('password'))
         keep_me_logged_in = request.POST.get('keep_me_logged_in')
         try:
             user = Teacher.objects.get(username=username)
@@ -40,6 +42,11 @@ class LoginView(View):
         else:
             # Parol noto'g'ri yoki foydalanuvchi mavjud emas
             return render(request, 'login.html', {'error': 'Invalid username or password'})
+    def sanitize_input(self, value):
+        # Maxsus belgilarni qochirish
+        if value:
+            value = re.sub(r'[^\w\s@.-]', '', value)  # Yaroqsiz belgilarni olib tashlash
+        return value
 
 
 class RegisterView(View):

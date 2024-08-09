@@ -15,6 +15,7 @@ class Tarif(models.Model):
     def __str__(self):
         return self.name
 
+
 class Company(models.Model):
     tarif = models.ForeignKey(Tarif, on_delete=models.CASCADE, related_name='companies')
     name = models.CharField(max_length=155,default=0)
@@ -43,6 +44,7 @@ class TarifCompany(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+
 class Teacher(AbstractUser):
     TYPE = (
         (1, 'direktor'),
@@ -59,6 +61,7 @@ class Teacher(AbstractUser):
     
     def __str__(self):
         return self.username
+    
 
 class Group(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='groups')
@@ -83,8 +86,6 @@ class Child(models.Model):
     is_active = models.BooleanField(default=True)
     
 
-    
-#davomat
 class Attendance(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='attendances')
     child = models.ForeignKey(Child, on_delete=models.CASCADE, null=True, blank=True, related_name='attendances')
@@ -97,11 +98,10 @@ class Attendance(models.Model):
         return f"{self.date.strftime('%Y-%m-%d')}"
 
 
-
 class Payment(models.Model):
     TYPE_CHOICES = (
-        ('1', 'Kirim'),
-        ('2', 'Chiqim'),
+        (1, 'Kirim'),
+        (2, 'Chiqim'),
     )
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='payments')
     user = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='payments_user')# chiqim qilayotgan user Yoki krim 
@@ -110,9 +110,9 @@ class Payment(models.Model):
     date = models.DateField(default=timezone.now)
     date_month = models.DateField(null=True ,blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+    payment_type = models.PositiveIntegerField(default=1,choices=TYPE_CHOICES)
     description = models.TextField(blank=True, null=True)
-    is_edit = models.BooleanField(default=False)
+    is_edit = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -126,6 +126,7 @@ class Payment(models.Model):
     class Meta:
         ordering = ['-date']
 
+
 class Transfer(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='transfers')
     teacher_chief = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='teacher_chiefs')
@@ -138,9 +139,10 @@ class Transfer(models.Model):
     def __str__(self):
         return f'{self.summa} {self.text}'
 
+
 class Cash(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='cashes')
-    amount = models.DecimalField(max_digits=15, decimal_places=0, default=0)
+    amount = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='cash_teachers')
     is_active = models.BooleanField(default=True)
 

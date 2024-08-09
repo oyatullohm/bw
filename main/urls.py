@@ -25,6 +25,9 @@ urlpatterns = [
     path('calendar/teacher/<int:pk>/',calendar_teacher,name='calendar_teacher'),
     path('payment/child/<int:pk>/',payment_child,name='payment_child'),
     path('payment/',PaymentView.as_view(), name='payment'),
+    path('payment-cost/',PaymentCostView.as_view(), name='payment_cost'),
+    path('payment-create/',PaymentCreateView.as_view(), name='payment-create'),
+    path('cash/',CashView.as_view(), name='cash'),
     
 
 ]

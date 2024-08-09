@@ -1,0 +1,78 @@
+{% extends 'wrapper.html' %}
+{% block content %}
+<div class="container">
+    <div class="container mt-4">
+        
+        <form method="get" action="" class="row g-3">
+            <div class="col-1">
+                <label for="month">Oy:</label>
+                <select id="month" name="month" class="form-control">
+                    {% for m in  number_list %}
+                    <option value="{{ m }}" {% if m == selected_month %}selected{% endif %}>{{ m }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-auto">
+                <label for="year">Yil:</label>
+                <input type="number" id="year" name="year" class="form-control" value="{{ selected_year }}">
+            </div>
+            <div class="">
+                <button type="submit" class="btn btn-primary">Filtrlash</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="row mt-4">
+        {% for i in cash %}
+        <div class="col-6 col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4>{{ i.teacher.username }} Balanse \\   {{i.amount}} so'm</h4>
+
+                </div>
+                <div class="card-body">
+                    <div id="chart-visitors-profile-{{ i.id }}"></div>
+                </div>
+            </div>
+        </div>       
+        {% endfor %}
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        {% for i in cash %}
+        let optionsVisitorsProfile{{ i.id }} = {
+            series: [{{ i.total_kirim }},{{i.amount}}, {{i.total_chiqim}} ], // bu yerda haqiqiy qiymatlarni o'zgartirishingiz mumkin
+            labels: ["Kirim", "Summa", "Chiqim"],
+            colors: ["#435ebe", "#55c6e8", "#010101"],
+            chart: {
+                type: "donut",
+                width: "100%",
+                height: "350px",
+            },
+            legend: {
+                position: "bottom",
+            },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: "45%",
+                    },
+                },
+            },
+        };
+
+        var chartVisitorsProfile{{ i.id }} = new ApexCharts(
+            document.querySelector("#chart-visitors-profile-{{ i.id }}"),
+            optionsVisitorsProfile{{ i.id }}
+        );
+
+        chartVisitorsProfile{{ i.id }}.render();
+        {% endfor %}
+    });
+</script>
+
+{% endblock content %}
