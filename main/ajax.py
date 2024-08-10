@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from .models import *
 from decimal import Decimal
+from django.contrib import messages
 @method_decorator(csrf_exempt, name='dispatch')
 class UpdateAttendanceChildView(View):
     @method_decorator(require_POST)
@@ -93,24 +94,33 @@ class PaymentCreateView(View):
 
 
         try:
-            payment =  Payment.objects.create(
-                company=request.user.company,
-                user = request.user,
-                amount = Decimal(amount),
-                date_month=timezone.now(),
-                payment_type = int(payment_type),
-                description = description
-            )
-
-
-            return JsonResponse({
-                'status': 'success',
-                'date':payment.date,
-                'user':payment.user.username,
-                'amount': payment.amount,
-                'description': payment.description
-                
-            })
+            cash = request.user.cash
+            if cash.is_active :
+                payment =  Payment.objects.create(
+                    company=request.user.company,
+                    user = request.user,
+                    amount = Decimal(amount),
+                    date_month=timezone.now(),
+                    payment_type = int(payment_type),
+                    description = description
+                )
+                if payment.payment_type == 1:
+                    cash.amount += payment.amount
+                elif payment.payment_type == 2:
+                    cash.amount -= payment.amount
+                cash.save()
+                    
+                    
+                return JsonResponse({
+                    'status': 'success',
+                    'date':payment.date,
+                    'user':payment.user.username,
+                    'amount': payment.amount,
+                    'description': payment.description
+                    
+                })
+            messages.error(request, ' sizda shahsi kassa yoqilmagan  ')
+            return JsonResponse({'status': 'success',})
         except Payment.DoesNotExist:
             return JsonResponse({'status': 'fail', 'message': 'Payment not found'}, status=404)
         except Exception as e:

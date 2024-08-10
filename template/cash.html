@@ -27,12 +27,13 @@
         <div class="col-6 col-md-4">
             <div class="card">
                 <div class="card-header">
-                    <h4>{{ i.teacher.username }} Balanse \\   {{i.amount}} so'm</h4>
-
+                    <h4><a href="#">{{ i.teacher.username }} </a>  \   {{i.amount}} so'm</h4>
+                    
                 </div>
                 <div class="card-body">
                     <div id="chart-visitors-profile-{{ i.id }}"></div>
                 </div>
+
             </div>
         </div>       
         {% endfor %}
@@ -43,7 +44,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        {% for i in cash %}
+       ` {% for i in cash %}`
         let optionsVisitorsProfile{{ i.id }} = {
             series: [{{ i.total_kirim }},{{i.amount}}, {{i.total_chiqim}} ], // bu yerda haqiqiy qiymatlarni o'zgartirishingiz mumkin
             labels: ["Kirim", "Summa", "Chiqim"],
@@ -71,7 +72,7 @@
         );
 
         chartVisitorsProfile{{ i.id }}.render();
-        {% endfor %}
+       ` {% endfor %}`
     });
 </script>
 

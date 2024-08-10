@@ -20,10 +20,7 @@
                                 <label for="phone" class="form-label">Phone</label>
                                 <input type="text" name="phone" id="phone" class="form-control" placeholder="Your Phone" value="{{teacher.phone}}">
                             </div>
-                            <!-- <div class="form-group">
-                                <label for="birthday" class="form-label">Ish Boshlandi</label>
-                                <input type="text" name="birthday" id="birthday" class="form-control" value="{{teacher.hired_date}}" placeholder=" Hired date">
-                            </div>  -->
+
                               <div class="form-group">
                                 <label for="birthday" class="form-label">Lavozimi</label>
                                 <select name="type" id="gender" class="form-control">
@@ -54,21 +51,28 @@
                             </div>
 
                             <div class="row">
-                                    <div class="form-check form-switch col-3">
+                                    <div class="form-check form-switch col-4">
                                         <input class="form-check-input" name="payment" type="checkbox" {% if teacher.is_payment %}checked{% endif %} id="flexSwitchCheckDefault" >
-                                        <label class="form-check-label" for="flexSwitchCheckDefault" > Payment</label>
+                                        <label class="form-check-label" for="flexSwitchCheckDefault" > Tolovlar</label>
                                     </div> 
-                                    <div class="form-check form-switch col-3">
+                                    <div class="form-check form-switch col-4">
                                         <input class="form-check-input"  name="salary"  type="checkbox" {% if teacher.is_salary %}checked{% endif %} id="flexSwitchCheckDefault" >
-                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Salary</label>
+                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Kassa</label>
                                     </div> 
-                                    <div class="form-check form-switch col-3">
+                                    <div class="form-check form-switch col-4">
                                         <input class="form-check-input" name="child" type="checkbox" {% if teacher.is_child %}checked{% endif %} id="flexSwitchCheckDefault">
-                                        <label class="form-check-label" for="flexSwitchCheckDefault">Child</label>
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Bolalar</label>
                                     </div>   
-                                     <div class="form-check form-switch col-3">
+                             
+                                    <br>
+                                    <br>
+                                     <div class="form-check form-switch col-4 ">
                                         <input class="form-check-input" name="active"  type="checkbox" {% if teacher.is_active %}checked{% endif %} id="flexSwitchCheckDefault">
                                         <label class="form-check-label" for="flexSwitchCheckDefault">Active</label>
+                                    </div>
+                                    <div class="form-check form-switch col-4">
+                                        <input class="form-check-input" name="cahs"  type="checkbox" {% if teacher.cash.is_active %}checked{% endif %} id="flexSwitchCheckDefault">
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Shahsi kassa  </label>
                                     </div>
                                 </div><br>
 

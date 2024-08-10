@@ -30,9 +30,7 @@ class HomeView(LoginRequiredMixin,View):
         #     from_email = None,
         #     fail_silently=False,
         # )
-        # token = get_token_from_request(request)
-        # if not is_token_valid(token):
-        #     return redirect('/login/')
+    
         return render(request, 'index.html')
 
 
@@ -93,6 +91,7 @@ class TeacherDetailView(LoginRequiredMixin,View):
         salary = request.POST.get('salary')
         child = request.POST.get('child')
         active = request.POST.get('active')
+        cahs = request.POST.get('cahs')
         user = get_object_or_404(Teacher, id=pk)
         user.username = username
         user.phone = phone
@@ -101,6 +100,8 @@ class TeacherDetailView(LoginRequiredMixin,View):
         user.is_salary = salary == 'on' 
         user.is_child = child  == 'on' 
         user.is_active = active == 'on'
+        user.cash.is_active = cahs == 'on'
+        user.cash.save()
         user.save()
   
         if int(user.type) == 2:
@@ -155,8 +156,9 @@ def add_teacher(request):
         Cash.objects.get_or_create(
                 company=company,
                 teacher=teacher,
+                is_active = False
             )
-        messages.error(request, f"{teacher.username} Qoshildi ffffffffff")
+        messages.error(request, f"{teacher.username} Qoshildi ")
         return redirect ('/teacher')
     messages.error(request, 'usename  band  yoki parollar birhil emass ')
     return redirect ('/teacher')
@@ -255,7 +257,7 @@ class ChildView(LoginRequiredMixin,View):
         page = request.GET.get('page')
         child = Child.objects.filter(company = request.user.company, is_active=True).order_by('-id')
         group = Group.objects.filter(company = request.user.company, is_active=True)
-        paginator = Paginator(child,2)  
+        paginator = Paginator(child,10)  
         tarif = TarifCompany.objects.filter(company = request.user.company, is_active=True,status=2)
         try:
             children = paginator.page(page)
@@ -278,7 +280,7 @@ class ChildView(LoginRequiredMixin,View):
             birth_date = date,
             group = group
         )
-        messages.error(request, f"{child.name} Qo'shildi {group.name} ga")
+        messages.error(request, f"{child.name} Qoshildi {group.name} ga")
         return redirect('/child')
 
 @login_required
@@ -299,17 +301,19 @@ def delete_chaild(request,pk):
     child = Child.objects.get(id=pk)
     child.is_active = False
     child.save()
-    messages.error(request, f"{child.name} O'chirildi ")
+    messages.error(request, f"{child.name} Ochirildi ")
     return redirect('child')
 
 
 class TarifCompanyView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self,request):
-        tarif_company = TarifCompany.objects.filter(company = request.user.company,is_active = True)
-        status = request.GET.get('status')
-        if status:
-            tarif_company = tarif_company.filter(status=status)
+       
+        tarif_company = TarifCompany.objects.filter(
+            company = request.user.company,
+            is_active = True,
+             )
+        
         status = TarifCompany.STATUS
         return render(request,'tarif.html',{'tarif':tarif_company,'status':status})
     def post (self,request):
@@ -323,7 +327,7 @@ class TarifCompanyView(LoginRequiredMixin,View):
             amount = amount,
             created = timezone.now()
         )
-        messages.error(request, f"Tarif Qo'shildi ")
+        messages.error(request, f"Tarif Qoshildi ")
         return redirect('tarif')
 @login_required
 def edit_tarif(request,pk):
@@ -336,7 +340,7 @@ def edit_tarif(request,pk):
     tarif.amount = amount
     tarif.created = timezone.now()
     tarif.save()
-    messages.error(request, f"Tarif O'zgardi ")
+    messages.error(request, f"Tarif Ozgardi ")
     return redirect('tarif')
 
 @login_required
@@ -346,7 +350,7 @@ def chaild_edit_tarif(request,pk):
     tarif = get_object_or_404( TarifCompany , id=tarif)
     child.tarif = tarif
     child.save()
-    messages.error(request, f"Tarif O'zgardi ")
+    messages.error(request,"Tarif Ozgardi ")
     return redirect('child')
 
 @login_required
@@ -408,25 +412,29 @@ def payment_child(request, pk):
     summa = request.POST.get('summa') 
     date_month= request.POST.get('date_month')  
     description = request.POST.get('description', None)
-    payment = Payment.objects.create(
-        company = request.user.company,  
-        user=request.user,
-        child = child,
-        amount = summa,
-        payment_type = 1,
-        date_month = date_month,
-        description = description ,
-        
-    )
-    cash = Cash.objects.get(teacher=request.user)
-    cash.amount += Decimal(payment.amount)
-    cash.save()
-    payment.save()
-    messages.error(request, f"{child.name} Tplov Qildi ")
+    cash = request.user.cash
+    if cash.is_active :
+        payment = Payment.objects.create(
+            company = request.user.company,  
+            user=request.user,
+            child = child,
+            amount = summa,
+            payment_type = 1,
+            date_month = date_month,
+            description = description ,
+            
+        )
+        cash = Cash.objects.get(teacher=request.user)
+        cash.amount += Decimal(payment.amount)
+        cash.save()
+        payment.save()
+        messages.error(request, f"{child.name} Tplov Qildi ")
+    messages.error(request, ' sizda shahsi kassa yoqilmagan  ')
     return redirect(f'/group-detail/{child.group.id}/')
 
 
 class PaymentView(LoginRequiredMixin,View):
+    login_url = settings.LOGIN_URL
     def get(self, request):
 
         page = request.GET.get('page')
@@ -447,11 +455,12 @@ class PaymentView(LoginRequiredMixin,View):
         }
         return render(request, 'payment.html', context)
 
+
 class PaymentCostView(LoginRequiredMixin,View):
+    login_url = settings.LOGIN_URL
     def get(self, request):
         page = request.GET.get('page')
-
-
+        
         payments = Payment.objects.filter(company=request.user.company, payment_type=2)\
             .select_related('child','teacher','user').order_by('-id')
         paginator = Paginator(payments, 2)  # Sahifalarni 25 tadan ko'rsatish
@@ -470,6 +479,7 @@ class PaymentCostView(LoginRequiredMixin,View):
 
 
 class CashView(LoginRequiredMixin,View):
+    login_url = settings.LOGIN_URL
     def get(self,request,):
         company = request.user.company 
         
@@ -480,7 +490,7 @@ class CashView(LoginRequiredMixin,View):
         next_month = start_date.replace(day=28) + timedelta(days=4)  # Keyingi oyning birinchi kuni
         end_date = next_month - timedelta(days=next_month.day)  # Tanlangan oyning oxirgi kuni
 
-        cash = Cash.objects.filter(company=company).annotate(
+        cash = Cash.objects.filter(company=company, is_active=True).annotate(
             total_kirim=Coalesce(
                 Sum(
                     'teacher__payments_user__amount',
@@ -503,7 +513,7 @@ class CashView(LoginRequiredMixin,View):
             ),
         ).order_by('-total_kirim', '-total_chiqim').select_related('teacher')
         
-        number_list = [ i for i in range(0,13)] 
+        number_list = [ i for i in range(1,13)] 
         context = {
             'cash': cash,
             'selected_month': month,
@@ -511,3 +521,22 @@ class CashView(LoginRequiredMixin,View):
             'number_list':number_list
         } 
         return render (request, 'cash.html', context)
+
+class TransferView(LoginRequiredMixin,View):
+    login_url = settings.LOGIN_URL
+    def get(self,request, *args, **kwargs):
+        page = request.GET.get('page')
+        transfer = Transfer.objects.filter(company=request.user.company)
+        teachar = Teacher.objects.filter(company=request.user.company, cash__is_active = True)
+        paginator = Paginator(transfer, 10)  # Sahifalarni 25 tadan ko'rsatish
+        try:
+            transfer = paginator.page(page)
+        except PageNotAnInteger:
+            transfer = paginator.page(1)
+        except EmptyPage:
+            transfer = paginator.page(paginator.num_pages)
+        context = {
+            'transfer':transfer,
+            'teachar':teachar
+            }
+        return render(request, 'transfer.html',context)

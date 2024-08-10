@@ -28,6 +28,7 @@ urlpatterns = [
     path('payment-cost/',PaymentCostView.as_view(), name='payment_cost'),
     path('payment-create/',PaymentCreateView.as_view(), name='payment-create'),
     path('cash/',CashView.as_view(), name='cash'),
+    path('transfer/',TransferView.as_view(), name='transfer'),
     
 
 ]

@@ -128,22 +128,24 @@ class Payment(models.Model):
 
 
 class Transfer(models.Model):
+    
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='transfers')
-    teacher_chief = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='teacher_chiefs')
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='transfers')
-    text = models.TextField(null=True)
+    user = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='user')
+    teacher_1 = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='teacher_1')
+    teacher_2 = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='transfer_1')
     date = models.DateField(auto_now_add=True)
-    summa = models.PositiveIntegerField(default=0)
+    summa = models.DecimalField(default=0,max_digits=10, decimal_places=2)
+    description = models.TextField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return f'{self.summa} {self.text}'
+        return f'{self.summa} {self.user}'
 
 
 class Cash(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='cashes')
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='cashs')
     amount = models.DecimalField(max_digits=15, decimal_places=2, default=0)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='cash_teachers')
+    teacher = models.OneToOneField(Teacher, on_delete=models.CASCADE, related_name='cash')
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
