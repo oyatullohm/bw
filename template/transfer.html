@@ -1,5 +1,6 @@
 {% extends 'wrapper.html' %}
 {% block content %}
+
 <div class="form-group">
     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#inlineForm">
         Otkazma
@@ -13,13 +14,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group mb-1">
-                        <label for="amount" class="form-label">Summa</label>
-                        <input type="number" name="summa" required id="payment_amount" class="form-control" placeholder="Summa">
-                    </div>
+                <form method="post">
+                        {% csrf_token %}
+                   
                     <div class="form-group mb-1">
                         <label for="description" class="form-label">Kimdan</label>
-                        <select name="teacher_1"  id="gender" class="form-control">
+                        <select name="teacher_1" required  id="teacher_1" class="form-control">
+
                             {% for i in teachar %}
 
                             <option value="{{ i.id }}">{{ i }}</option>
@@ -28,35 +29,41 @@
                     </div> 
                     <div class="form-group mb-1">
                         <label for="description" class="form-label">Kimga</label>
-                        <select name="teacher_2"  id="gender" class="form-control">
+                        <select name="teacher_2"  id="teacher_2" class="form-control">
                             {% for i in teachar %}
-
                             <option value="{{ i.id }}">{{ i }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="form-group mb-1">
+                        <label for="amount" class="form-label">Summa</label>
+                        <input type="number" name="amount" required id="amount" class="form-control"  placeholder="Summa">
+                    </div>
+                    <div class="form-group mb-1">
                         <label for="description" class="form-label">Izoh</label>
-                        <input type="text" name="payment_description" required id="payment_description" class="form-control" placeholder="Izoh">
+                        <input type="text" name="payment_description" required id="transfer_description" class="form-control" placeholder="Izoh">
                     </div>
-                    <div style="display: none !important;">
-                        <input type="number" name="payment_payment_type" value="1" id="payment_payment_type">
-                    </div>
+                 </form>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                             <i class="bx bx-x d-block d-sm-none"></i>
                             <span class="d-none d-sm-block">Close</span>
                         </button>
-                        <button type="button" class="btn btn-primary ms-1" id="payment_create">
+                        <button type="button" class="btn btn-primary ms-1" id="transfer_create">
                             <i class="bx bx-check d-block d-sm-none"></i>
                             <span class="d-none d-sm-block">Save</span>
                         </button>
+                    
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
+
 <section class="section">
     <div class="row" id="basic-table">
         <div class="col-12 col-md-12">
@@ -64,70 +71,44 @@
                 <div class="card-content">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <h4>Kirimlar</h4>
+                            <h4> Chiqimlar</h4>
                             <table class="table table-lg">
                                 <thead>
                                     <tr>
                                         <th>Sana</th>
                                         <th>Hodim</th>
-                                        <th>Otkazdi</th>
-                                        <th>Qabulqildi</th>
+                                        <th>Kimdan</th>
+                                        <th>Kimga</th>
                                         <th>Summa</th>
-                                        <th>Izoh</th>
+                                        <th>Info</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for t in transfer %}
                                     <tr>
-                                        <td class="text-bold-500" data-bs-toggle="modal" data-bs-target="#inlineForm{{ p.id }}">
+                                        <td class="text-bold-500" data-bs-toggle="modal" data-bs-target="#inlineForm{{ t.id }}">
                                             <a style="color: blue;">{{ t.date }}</a>
                                         </td>
                                         <td class="text-bold-500">{{ t.user }} </td>
                                         <td class="text-bold-500">{{ t.teacher_1 }} </td>
                                         <td class="text-bold-500">{{ t.teacher_2 }}</td>
                                         <td class="text-bold-500">{{ t.summa }}</td>
-                                        <td class="text-bold-500">{{ t.description}}</td>
-                                    </tr>
-                                    <tr> <!-- Bu yerda yangi qator -->
-                                        <td colspan="6">
-                                            <div class="modal fade text-left" id="inlineForm{{ p.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title" id="myModalLabel33">Tahrirlash {{ p.child.name }} uchun</h4>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form method="post" id="paymentForm{{ p.id }}" onsubmit="event.preventDefault(); updatePayment('{{ p.id }}');">
-                                                                {% csrf_token %}
-                                                                <div class="form-group mb-1">
-                                                                    <label for="summa{{ p.id }}" class="form-label">Summa</label>
-                                                                    <input type="number" required id="summa{{ p.id }}" name="amount" value="{{ p.amount }}" class="form-control" placeholder="Summa">
-                                                                </div>
-                                                                <div class="form-group mb-1">
-                                                                    <label for="date_month{{ p.id }}" class="form-label">Tanlangan oy {{ p.date_month | date:"M" }}</label>
-                                                                    <input type="date" id="date_month{{ p.id }}" name="date_month" required class="form-control" value="{{ p.date_month|date:'Y-m-d' }}">
-                                                                </div>
-                                                                <div class="form-group mb-1">
-                                                                    <label for="description{{ p.id }}" class="form-label">Izoh</label>
-                                                                    <input type="text" id="description{{ p.id }}" name="description" value="{{ p.description }}" class="form-control" placeholder="Izoh">
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                                                        <span class="d-none d-sm-block">Close</span>
-                                                                    </button>
-                                                                    <button type="submit" class="btn btn-primary ms-1">
-                                                                        <span class="d-none d-sm-block">Save</span>
-                                                                    </button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <td class="text-bold-500"><a href="#"  id="info-{{ t.id }}" 
+                                            data-name_1="{{t.teacher_1}}"
+                                            data-1_before_cas="{{t.teacher_1_before_cash}}"
+                                            data-1_after_cas="{{t.teacher_1_after_cash}}"
+                                            
+                                            data-name_2="{{t.teacher_2}}"
+                                            data-2_after_cas="{{t.teacher_2_after_cash}}"
+                                            data-2_before_cas="{{t.teacher_2_before_cash}}"
+                                            >Info</a>
+                                            
                                         </td>
                                     </tr>
+                                    
+                                    
                                     {% endfor %}
+                                    
                                 </tbody>
                             </table>
                         </div>
@@ -137,6 +118,13 @@
         </div>
     </div>
 </section>
+
+
+
+
+
+<!-- Button to open the modal -->
+
 
 {% if transfer.paginator.num_pages > 1 %}
 <nav aria-label="Page navigation example">
@@ -204,148 +192,121 @@
 </nav>
 {% endif %}
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
+// document.getElementById('inlineForm').addEventListener('shown.bs.modal', function () {
+    document.getElementById('transfer_create').addEventListener('click', function() {
+        const amountElement = document.getElementById('amount');
+        console.log(amountElement)
+        const descriptionElement = document.getElementById('transfer_description');
+        const teacher1Element = document.getElementById('teacher_1');
+        const teacher2Element = document.getElementById('teacher_2');
 
+        if (!amountElement || !descriptionElement || !teacher1Element || !teacher2Element) {
+            console.error('Required elements not found in the DOM.');
+            return;
+        }
 
-
-
-
-    function updatePayment(paymentId) {
-        const amount = document.getElementById(`summa${paymentId}`).value;
-        const dateMonth = document.getElementById(`date_month${paymentId}`).value;
-        const description = document.getElementById(`description${paymentId}`).value;
+        const amount = amountElement.value;
+        console.log(amount)
+        const description = descriptionElement.value;
+        const teacher_1 = teacher1Element.value;
+        const teacher_2 = teacher2Element.value;
+        console.log(teacher_1)
+        console.log(teacher_2)
+        console.log(description)
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-        fetch('{% url "update-payment" %}', {
+        console.log(csrfToken)
+        console.log(22222)
+        fetch('/transfer-create/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'X-CSRFToken': csrfToken
             },
             body: new URLSearchParams({
-                'payment_id': paymentId,
                 'amount': amount,
-                'date_month': dateMonth,
-                'description': description
+                'description': description,
+                'teacher_1': teacher_1,
+                'teacher_2': teacher_2
             })
-        }).then(response => response.json()).then(data => {
-            if (data.status === 'success') {
-                // Modal oynani yopish
-                var modal = bootstrap.Modal.getInstance(document.getElementById(`inlineForm${paymentId}`));
-                modal.hide();
-                
-                // Jadvaldagi ma'lumotlarni yangilash
-                const row = document.querySelector(`#inlineForm${paymentId}`).closest('tr');
-                if (row) {
-                    row.previousElementSibling.querySelector('.text-bold-500:nth-child(2)').textContent = data.date;
-                    row.previousElementSibling.querySelector('.text-bold-500:nth-child(2)').textContent = data.amount;
-                    row.previousElementSibling.querySelector('.text-bold-500:nth-child(3)').textContent = data.user;
-                    row.previousElementSibling.querySelector('.text-bold-500:nth-child(6)').textContent = data.description;
-                } else {
-                    console.error('Element topilmadi!');
-                }
-            } else {
-                console.error('Update failed:', data.message);
-            }
-        }).catch(error => console.error('Xato:', error));
-    }
-
-
-
-
-    document.getElementById('payment_create').addEventListener('click', function() {
-    const amount = document.getElementById('payment_amount').value;
-    const description = document.getElementById('payment_description').value;
-    const paymentType = document.getElementById('payment_payment_type').value;
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    console.log(paymentType)
-    fetch('/payment-create/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'X-CSRFToken': csrfToken
-        },
-        body: new URLSearchParams({
-            'amount': amount,
-            'description': description,
-            'paymentType': paymentType
         })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.status === 'success') {
-            // Modal oynani yopish
-            var modal = bootstrap.Modal.getInstance(document.getElementById('inlineForm'));
-            modal.hide();
-            
-            // Jadvalga yangi qator qo'shish
-            const tableBody = document.querySelector('table tbody');
-            const newRow = document.createElement('tr');
-            const date = new Date(data.date);
-            const options = { year: 'numeric', month: 'short', day: 'numeric' };
-            const formattedDate = date.toLocaleDateString('en-US', options);
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === 'success') {
+                var modal = bootstrap.Modal.getInstance(document.getElementById('inlineForm'));
+                modal.hide();
+            } else {
+                console.error('Create failed:', data.message);
+            }
+        })
+        .catch(error => console.error('Xato:', error));
+    });
+// });
 
-            newRow.innerHTML = `
-                <tr>
-                    <td class="text-bold-500" data-bs-toggle="modal" data-bs-target="#inlineForm${data.payment_id}">
-                        <a style="color: blue;">${formattedDate}</a>
-                    </td>
-                    <td class="text-bold-500">${data.amount}</td>
-                    <td class="text-bold-500">${data.user}</td>
-                    <td class="text-bold-500">${data.description}</td>
-                </tr>
-                <tr>
-                    <td colspan="6">
-                        <div class="modal fade text-left" id="inlineForm${data.payment_id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title" id="myModalLabel33">Tahrirlash uchun</h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form method="post" id="paymentForm${data.payment_id}" onsubmit="event.preventDefault(); updatePayment('${data.payment_id}');">
-                                            {% csrf_token %}
-                                            <div class="form-group mb-1">
-                                                <label for="summa${data.payment_id}" class="form-label">Summa</label>
-                                                <input type="number" required id="summa${data.payment_id}" name="amount" value="${data.amount}" class="form-control" placeholder="Summa">
-                                            </div>
-                                            <div class="form-group mb-1">
-                                                <label for="date_month${data.payment_id}" class="form-label">Tanlangan oy</label>
-                                                <input type="date" id="date_month${data.payment_id}" name="date_month" required class="form-control" value="${data.date_month}">
-                                            </div>
-                                            <div class="form-group mb-1">
-                                                <label for="description${data.payment_id}" class="form-label">Izoh</label>
-                                                <input type="text" id="description${data.payment_id}" name="description" value="${data.description}" class="form-control" placeholder="Izoh">
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                                    <span class="d-none d-sm-block">Close</span>
-                                                </button>
-                                                <button type="submit" class="btn btn-primary ms-1">
-                                                    <span class="d-none d-sm-block">Save</span>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            `;
-            tableBody.appendChild(newRow);
-        } else {
-            console.error('Create failed:', data.message);
-        }
-    })
-    .catch(error => console.error('Xato:', error));
+
+
+
+    document.getElementById('teacher_1').addEventListener('change', function() {
+        var teacherId = this.value;
+        fetch(`/get-teacher-cash/?teacher_id=` + teacherId)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('amount').value = data.cash;
+            });
+    });
+
+
+
+
+
+const Swal2 = Swal.mixin({
+  customClass: {
+    input: 'form-control'
+  }
+})
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+})
+
+
+document.querySelectorAll('[id^="info-"]').forEach(button => {
+  button.addEventListener("click", (e) => {
+    const teacher_1 = e.target.getAttribute('data-name_1');
+    const before_cas_1= e.target.getAttribute('data-1_before_cas');
+    const after_cas_1= e.target.getAttribute('data-1_after_cas');
+    
+    
+    const teacher_2 = e.target.getAttribute('data-name_2');
+    const before_cas_2= e.target.getAttribute('data-2_before_cas');
+    const after_cas_2= e.target.getAttribute('data-2_after_cas');
+
+    Swal2.fire({
+      icon: "info",
+      title: `  ${teacher_1} \nOldin ${before_cas_1} sum    Kegin  ${after_cas_1}
+        \n ${teacher_2} \nOldin ${before_cas_2} sum    Kegin  ${after_cas_2}  `,
+      
+    });
+  });
 });
+
+
+
 </script>
 
 

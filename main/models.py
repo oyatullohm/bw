@@ -108,6 +108,10 @@ class Payment(models.Model):
     child = models.ForeignKey(Child, on_delete=models.CASCADE, null=True, blank=True, related_name='payments') 
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True, blank=True, related_name='payment_teachers') # oylik ilishi 
     date = models.DateField(default=timezone.now)
+    
+    user_before_cash = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    user_after_cash = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    
     date_month = models.DateField(null=True ,blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_type = models.PositiveIntegerField(default=1,choices=TYPE_CHOICES)
@@ -133,6 +137,13 @@ class Transfer(models.Model):
     user = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='user')
     teacher_1 = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='teacher_1')
     teacher_2 = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='transfer_1')
+   
+    teacher_1_before_cash = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    teacher_1_after_cash = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    
+    teacher_2_before_cash = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    teacher_2_after_cash = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+
     date = models.DateField(auto_now_add=True)
     summa = models.DecimalField(default=0,max_digits=10, decimal_places=2)
     description = models.TextField(blank=True, null=True)

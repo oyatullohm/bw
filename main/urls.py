@@ -14,7 +14,7 @@ urlpatterns = [
     path('group-detail/<int:pk>/',GroupDetailView.as_view(),name='group_detail'),
     path('update-attendance-child/', UpdateAttendanceChildView.as_view(), name='update-attendance'),
     path('update-attendance-teacher/', UpdateAttendanceTeacherView.as_view(), name='update-attendance-teacer'),
-    path('update-payment/', UpdateAttendancePaymenntView.as_view(), name='update-payment'),
+    path('update-payment/', UpdatePaymenntView.as_view(), name='update-payment'),
     path('child',ChildView.as_view(),name='child'),
     path('tarif',TarifCompanyView.as_view(),name='tarif'),
     path('edit-tarif/<int:pk>/',edit_tarif,name='edit_tarif'),
@@ -29,6 +29,10 @@ urlpatterns = [
     path('payment-create/',PaymentCreateView.as_view(), name='payment-create'),
     path('cash/',CashView.as_view(), name='cash'),
     path('transfer/',TransferView.as_view(), name='transfer'),
+    path('get-teacher-cash/', get_teacher_cash, name='get_teacher_cash'),
+    path('transfer-create/',TransferCreateView.as_view(), name='transfer_create'),
+    path('search-payment-cost/',search_payment_cost, name='search_payment_cost'),
+    path('search-payment/',search_payment, name='search_payment'),
     
 
 ]

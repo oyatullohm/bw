@@ -6,31 +6,19 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from decimal import Decimal
-from django.db.models import OuterRef, Subquery
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage 
 from django.db.models import Count
 import json
 from datetime import datetime, timedelta
-# from .permitsion import get_token_from_request , is_token_valid
-from django.core.mail import send_mail
-from django.db.models import Sum, Q, Value
+import time
+from django.db.models import Sum, Q, Value , OuterRef, Subquery
 from django.db.models.functions import Coalesce
 from django.conf import settings
 
 class HomeView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self, request):
-        # send_mail(subject = "Assalomu alekum, sizni maxfiy kodingiz: 154879",
-        #           message="Salom",from_email=settings.EMAIL_HOST_USER,
-        #           recipient_list=['marzoyahoni@gmail.com'])
-        # send_mail(
-        #     subject = '<YOUR SUBJECT TEXT>',
-        #     message = '<YOUR EMAIL MESSAGE>',
-        #     recipient_list = ['marzoyahoni@gmail.com'],
-        #     from_email = None,
-        #     fail_silently=False,
-        # )
-    
+
         return render(request, 'index.html')
 
 
@@ -183,73 +171,80 @@ class GroupDetailView(LoginRequiredMixin, View):
     login_url = settings.LOGIN_URL
     
     def get(self, request, pk, *args, **kwargs):
+
+   
+        # start_time = time.time() 
+
         company = request.user.company
         page = request.GET.get('page')
         group = Group.objects.get(id=pk)
-        children = Child.objects.filter(company=company, group=group).select_related('tarif').prefetch_related('payments')
         today = timezone.now().date()
         start_of_month = today.replace(day=1)
 
-        attendances = Attendance.objects.filter(
-             company=company, 
-            child__in=children, 
-            date=today
-        ).select_related('child')
+        children = Child.objects.filter(company=company, group=group).select_related('tarif').prefetch_related('payments')
 
-
-        attendance_dict = {att.child_id: att for att in attendances}
-
-
+        # Attendance counts for today and this month
         attendance_counts = Attendance.objects.filter(
             company=company, 
             child__in=children,
-            is_active=True,
             date__gte=start_of_month,
             presence=True
-        ).values('child_id').annotate(count=Count('id'))
+        ).values('child_id').annotate(
+            today_count=Count('id', filter=Q(date=today)),
+            monthly_count=Count('id')
+        )
 
-        attendance_dict_count = {att['child_id']: att['count'] for att in attendance_counts}
+        attendance_dict_count = {att['child_id']: (att['today_count'], att['monthly_count']) for att in attendance_counts}
 
-
+        # Payment summary
         payment_summa = Payment.objects.filter(
             company=company, 
             child__in=children,
             date_month__gte=start_of_month
-        ).values('child_id').annotate(amount=Sum('amount'))
+        ).values('child_id').annotate(
+            amount=Sum('amount')
+        )
 
         payment_summa_dict = {pay['child_id']: pay['amount'] for pay in payment_summa}
 
-        
+        # Paginate children
         paginator = Paginator(children, 25)
         try:
-            children = paginator.page(page)
+            paginated_children = paginator.page(page)
         except PageNotAnInteger:
-            children = paginator.page(1)
+            paginated_children = paginator.page(1)
         except EmptyPage:
-            children = paginator.page(paginator.num_pages)
-        
+            paginated_children = paginator.page(paginator.num_pages)
+
+        # Combine all data for children
         children_attendance = []
-        for child in children:
-            attendance = attendance_dict.get(child.id, None)
-            attendance_counts = attendance_dict_count.get(child.id, 0)
-            payment_summa_value = payment_summa_dict.get(child.id, 0) 
+        for child in paginated_children:
+            today_count, monthly_count = attendance_dict_count.get(child.id, (0, 0))
+            payment_summa_value = payment_summa_dict.get(child.id, 0)
             tarif_amount = child.tarif.amount if child.tarif else 0
             remaining_amount = tarif_amount - payment_summa_value
             children_attendance.append({
                 'child': child,
-                'attendance': attendance,
-                'attendance_counts': attendance_counts,
+                'attendance_today': today_count,
+                'attendance_monthly': monthly_count,
                 'payment_summa': payment_summa_value,
-                'remaining_amount':remaining_amount
+                'remaining_amount': remaining_amount
             })
 
         context = {
-            'group': group, 
-            'page_obj': children,
-            'paginator': paginator, 
-            'children_attendance': children_attendance, 
+            'group': group,
+            'page_obj': paginated_children,
+            'paginator': paginator,
+            'children_attendance': children_attendance,
         }
+
+        # end_time = time.time() 
+        # duration = end_time - start_time  # So'rovning bajarilish vaqti
+
+
+
         return render(request, 'group-detail.html', context)
+
 
 class ChildView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL

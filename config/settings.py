@@ -140,20 +140,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.yandex.ru'  # Masalan, smtp.gmail.com
-# EMAIL_PORT = 587  # Yoki 465 (SSL uchun)
-# EMAIL_USE_TLS = True  # Agar TLS ishlatilsa
-# # EMAIL_USE_SSL = False  # Agar SSL ishlatilsa
-# EMAIL_HOST_USER = 'smarttizim@yandex.ru'
-# EMAIL_HOST_PASSWORD = 'stizim@1202780'
-# DEFAULT_FROM_EMAIL = 'smarttizim@yandex.ru'
-# SERVER_EMAIL = 'smarttizim@yandex.ru'
-
-
-
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 

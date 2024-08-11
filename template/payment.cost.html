@@ -3,10 +3,24 @@
 
 
 <div class="form-group">
-    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#inlineForm">
-        Chiqim Qoshish
-    </button>
+    <div class="row">
+        <div class="col-3">
 
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#inlineForm">
+              Qoshish
+            </button>
+        </div>
+        <div class="col-5">
+            <div class="input-group">
+
+                <input type="search" id="form1" class="form-control" placeholder="Search">
+            </div>
+        </div>
+ 
+
+  
+
+      </div>
     <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
@@ -55,10 +69,10 @@
                                         <th>Sana</th>
                                         <th>Summa</th>
                                         <th>Hodim</th>
-                                        <th>Izoh</th>
+                                        <th>Info</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="search-results">
                                     {% for p in payment %}
                                     <tr>
                                         <td class="text-bold-500" data-bs-toggle="modal" data-bs-target="#inlineForm{{ p.id }}">
@@ -66,10 +80,15 @@
                                         </td>
                                         <td class="text-bold-500">{{ p.amount }}</td>
                                         <td class="text-bold-500">{{ p.user }}</td>
-                                        <td class="text-bold-500">{{ p.description}}</td>
+                                        <td class="text-bold-500"><a href="#"  id="info-{{p.id}}" 
+                                            data-izoh="{{p.description}}"
+                                            data-user="{{p.user}}"
+                                            data-user_before_cash="{{p.user_before_cash}}"
+                                            data-user_after_cash="{{p.user_after_cash}}"
+                                            >Info</a></td>
                                     </tr>
-                                    <tr> <!-- Bu yerda yangi qator -->
-                                        <td colspan="6">
+                                  
+                                        
                                             <div class="modal fade text-left" id="inlineForm{{ p.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                                                     <div class="modal-content">
@@ -105,8 +124,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </td>
-                                    </tr>
+                                     
                                     {% endfor %}
                                 </tbody>
                             </table>
@@ -183,13 +201,9 @@
     </ul>
 </nav>
 {% endif %}
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-
-
-   
-    
-
     function updatePayment(paymentId) {
         const amount = document.getElementById(`summa${paymentId}`).value;
         const dateMonth = document.getElementById(`date_month${paymentId}`).value;
@@ -275,47 +289,14 @@
                     </td>
                     <td class="text-bold-500">${data.amount}</td>
                     <td class="text-bold-500">${data.user}</td>
-                    <td class="text-bold-500">${data.description}</td>
+                    <td class="text-bold-500"> <a href="#"  
+                         id="info-{{data.id}}" 
+                                            data-izoh="{{data.description}}"
+                                            data-user="{{data.user}}"
+                                            data-user_before_cash="{{data.user_before_cash}}"
+                                            data-user_after_cash="{{data.user_after_cash}}"> info </a> </td>
                 </tr>
-                <tr>
-                    <td colspan="6">
-                        <div class="modal fade text-left" id="inlineForm${data.payment_id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title" id="myModalLabel33">Tahrirlash uchun</h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form method="post" id="paymentForm${data.payment_id}" onsubmit="event.preventDefault(); updatePayment('${data.payment_id}');">
-                                            {% csrf_token %}
-                                            <div class="form-group mb-1">
-                                                <label for="summa${data.payment_id}" class="form-label">Summa</label>
-                                                <input type="number" required id="summa${data.payment_id}" name="amount" value="${data.amount}" class="form-control" placeholder="Summa">
-                                            </div>
-                                            <div class="form-group mb-1">
-                                                <label for="date_month${data.payment_id}" class="form-label">Tanlangan oy</label>
-                                                <input type="date" id="date_month${data.payment_id}" name="date_month" required class="form-control" value="${data.date_month}">
-                                            </div>
-                                            <div class="form-group mb-1">
-                                                <label for="description${data.payment_id}" class="form-label">Izoh</label>
-                                                <input type="text" id="description${data.payment_id}" name="description" value="${data.description}" class="form-control" placeholder="Izoh">
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                                    <span class="d-none d-sm-block">Close</span>
-                                                </button>
-                                                <button type="submit" class="btn btn-primary ms-1">
-                                                    <span class="d-none d-sm-block">Save</span>
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
+              
             `;
             tableBody.appendChild(newRow);
         } else {
@@ -325,6 +306,106 @@
     .catch(error => console.error('Xato:', error));
 });
 
+
+
+const Swal2 = Swal.mixin({
+  customClass: {
+    input: 'form-control'
+  }
+})
+
+
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+})
+
+
+document.querySelectorAll('[id^="info-"]').forEach(button => {
+  button.addEventListener("click", (e) => {
+      const izoh = e.target.getAttribute('data-izoh');
+      console.log(izoh)
+      const user = e.target.getAttribute('data-user');
+      console.log(user)
+      const user_before = e.target.getAttribute('data-user_before_cash');
+      console.log(user_before)
+      const user_after = e.target.getAttribute('data-user_after_cash');
+      console.log(user_after)
+    
+    Swal2.fire({
+      icon: "info",
+      title: ` ${user} oldin ${user_before} Sum \n
+      kegin ${user_after}  Sum \n 
+      ${izoh}`,
+      
+    });
+  });
+});
+
+
+
+$(document).ready(function() {
+    // search inputiga event listener qo'shish
+    $('#form1').on('keyup', function() {
+        let query = $(this).val();
+        if (query.length > 2) {
+            $.ajax({
+                url: '/search-payment-cost/',  // O'z URL manzilingizni kiriting
+                data: {
+                    'query': query
+                },
+                dataType: 'json',
+                success: function(data) {
+                    let tbody = $('#search-results');
+                    tbody.empty();  // Jadvalning tanlangan qismidagi eski natijalarni tozalash
+                    
+                    $.each(data, function(index, item) {
+                        let row = `
+                            <tr>
+                                <td class="text-bold-500" data-bs-toggle="modal" data-bs-target="#inlineForm${index}">
+                                    <a style="color: blue;">${item.date}</a>
+                                </td>
+                                <td class="text-bold-500">${item.amount}</td>
+                                <td class="text-bold-500">${item.user__username}</td>
+                                <td class="text-bold-500">
+                                    <a href="#" id="info-${index}" 
+                                        data-izoh="${item.description}"
+                                        data-user="${item.user__username}"
+                                        data-user_before_cash="${item.user_before_cash || ''}"
+                                        data-user_after_cash="${item.user_after_cash || ''}"
+                                        >Info</a>
+                                </td>
+                            </tr>`;
+                        tbody.append(row);  // Jadval qismiga yangi qator qo'shish
+                    });
+
+                    // Dinamik ravishda yaratilgan elementlar uchun event delegation
+                    $(document).on('click', '[id^="info-"]', function(e) {
+                        const izoh = $(this).data('izoh');
+                        const user = $(this).data('user');
+                        const user_before = $(this).data('user_before_cash');
+                        const user_after = $(this).data('user_after_cash');
+
+                        Swal.fire({
+                            icon: "info",
+                            title: `${user} oldin ${user_before} Sum\n
+                                    kegin ${user_after} Sum\n 
+                                    ${izoh}`,
+                        });
+                    });
+                }
+            });
+        }
+    });
+});
 </script>
 
 
