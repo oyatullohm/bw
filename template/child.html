@@ -1,11 +1,23 @@
 {% extends 'wrapper.html' %}
 {% block content %}
 <div class="form-group">
-    
-    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-        data-bs-target="#inlineForm">
+    <div class="row">
+        <div class="col-2">
+
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+            data-bs-target="#inlineForm">
             Qo'shish
-    </button>
+        </button>
+    </div>
+    
+    <div class="col-5">
+        <div class="input-group">
+            
+            <input type="search" id="form1" class="form-control" placeholder="Search">
+        </div>
+    </div>
+</div>
+
 
     <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
@@ -320,4 +332,62 @@
         </div>
     </section>
 </div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+    // search inputiga event listener qo'shish
+    $('#form1').on('keyup', function() {
+
+        let query = $(this).val();
+        if (query.length > 2) {
+            $.ajax({
+                url: '/search-child/',  // O'z URL manzilingizni kiriting
+                data: {
+                    'query': query
+                },
+                dataType: 'json',
+                success: function(data) {
+                    let tbody = $('#search-results');
+                    tbody.empty();  // Jadvalning tanlangan qismidagi eski natijalarni tozalash
+                    
+                    $.each(data, function(index, item) {
+                        let row = `
+                            <tr>
+                                <td class="text-bold-500" data-bs-toggle="modal" data-bs-target="#inlineForm${index}">
+                                    <a style="color: blue;">${item.date}</a>
+                                </td>
+                             
+                                <td class="text-bold-500">${item.user__username} </td>
+                                <td class="text-bold-500">${item.teacher_1__username}  </td>
+                                <td class="text-bold-500">${item.teacher_2__username}  </td>
+                                <td class="text-bold-500">${item.summa}</td>
+                                <td class="text-bold-500">
+                                    <a href="#" id="info-${index}" 
+                                        data-izoh="${item.description}"
+                                        
+                                        data-name_1="${item.teacher_1__username}"
+                                        data-name_2="${item.teacher_2__username}"
+                                        data-1_before_cash="${item.teacher_1_before_cash || ''}"
+                                        data-1_after_cash="${item.teacher_1_after_cash || ''}" 
+
+                                        data-2_before_cash="${item.teacher_2_before_cash || ''}"
+                                        data-2_after_cash="${item.teacher_2_after_cash || ''}"
+                                        >Info</a>
+                                </td>
+                            </tr>`;
+                        tbody.append(row);  // Jadval qismiga yangi qator qo'shish
+                    });
+
+                    
+                   
+                }
+            });
+        }
+    });
+});
+
+</script>
+
 {% endblock content %}

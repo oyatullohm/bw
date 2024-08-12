@@ -2,9 +2,20 @@
 {% block content %}
 
 <div class="form-group">
-    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#inlineForm">
-        Otkazma
-    </button>
+    <div class="row">
+        <div class="col-2">
+
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#inlineForm">
+                Otkazma
+            </button>
+        </div>
+            <div class="col-5">
+            <div class="input-group">
+                
+                <input type="search" id="form1" class="form-control" placeholder="Search">
+            </div>
+        </div>
+    </div>
 
     <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
@@ -83,7 +94,7 @@
                                         <th>Info</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="search-results">
                                     {% for t in transfer %}
                                     <tr>
                                         <td class="text-bold-500" data-bs-toggle="modal" data-bs-target="#inlineForm{{ t.id }}">
@@ -94,13 +105,14 @@
                                         <td class="text-bold-500">{{ t.teacher_2 }}</td>
                                         <td class="text-bold-500">{{ t.summa }}</td>
                                         <td class="text-bold-500"><a href="#"  id="info-{{ t.id }}" 
+                                            data-izoh="{{t.description}}"
                                             data-name_1="{{t.teacher_1}}"
-                                            data-1_before_cas="{{t.teacher_1_before_cash}}"
-                                            data-1_after_cas="{{t.teacher_1_after_cash}}"
+                                            data-1_before_cash="{{t.teacher_1_before_cash}}"
+                                            data-1_after_cash="{{t.teacher_1_after_cash}}"
                                             
                                             data-name_2="{{t.teacher_2}}"
-                                            data-2_after_cas="{{t.teacher_2_after_cash}}"
-                                            data-2_before_cas="{{t.teacher_2_before_cash}}"
+                                            data-2_after_cash="{{t.teacher_2_after_cash}}"
+                                            data-2_before_cash="{{t.teacher_2_before_cash}}"
                                             >Info</a>
                                             
                                         </td>
@@ -193,7 +205,7 @@
 {% endif %}
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 // document.getElementById('inlineForm').addEventListener('shown.bs.modal', function () {
     document.getElementById('transfer_create').addEventListener('click', function() {
@@ -287,22 +299,101 @@ const Toast = Swal.mixin({
 
 document.querySelectorAll('[id^="info-"]').forEach(button => {
   button.addEventListener("click", (e) => {
+    const izoh = e.target.getAttribute('data-izoh');
     const teacher_1 = e.target.getAttribute('data-name_1');
-    const before_cas_1= e.target.getAttribute('data-1_before_cas');
-    const after_cas_1= e.target.getAttribute('data-1_after_cas');
+    const before_cas_1= e.target.getAttribute('data-1_before_cash');
+    const after_cas_1= e.target.getAttribute('data-1_after_cash');
     
     
     const teacher_2 = e.target.getAttribute('data-name_2');
-    const before_cas_2= e.target.getAttribute('data-2_before_cas');
-    const after_cas_2= e.target.getAttribute('data-2_after_cas');
+    const before_cas_2= e.target.getAttribute('data-2_before_cash');
+    const after_cas_2= e.target.getAttribute('data-2_after_cash');
 
     Swal2.fire({
       icon: "info",
       title: `  ${teacher_1} \nOldin ${before_cas_1} sum    Kegin  ${after_cas_1}
-        \n ${teacher_2} \nOldin ${before_cas_2} sum    Kegin  ${after_cas_2}  `,
+        \n ${teacher_2} \nOldin ${before_cas_2} sum    Kegin  ${after_cas_2} \n
+        ${izoh}  `,
       
     });
   });
+});
+
+
+
+
+
+
+$(document).ready(function() {
+    // search inputiga event listener qo'shish
+    $('#form1').on('keyup', function() {
+        console.log(111111)
+        let query = $(this).val();
+        if (query.length > 2) {
+            $.ajax({
+                url: '/search-transfer/',  // O'z URL manzilingizni kiriting
+                data: {
+                    'query': query
+                },
+                dataType: 'json',
+                success: function(data) {
+                    let tbody = $('#search-results');
+                    tbody.empty();  // Jadvalning tanlangan qismidagi eski natijalarni tozalash
+                    
+                    $.each(data, function(index, item) {
+                        let row = `
+                            <tr>
+                                <td class="text-bold-500" data-bs-toggle="modal" data-bs-target="#inlineForm${index}">
+                                    <a style="color: blue;">${item.date}</a>
+                                </td>
+                             
+                                <td class="text-bold-500">${item.user__username} </td>
+                                <td class="text-bold-500">${item.teacher_1__username}  </td>
+                                <td class="text-bold-500">${item.teacher_2__username}  </td>
+                                <td class="text-bold-500">${item.summa}</td>
+                                <td class="text-bold-500">
+                                    <a href="#" id="info-${index}" 
+                                        data-izoh="${item.description}"
+                                        
+                                        data-name_1="${item.teacher_1__username}"
+                                        data-name_2="${item.teacher_2__username}"
+                                        data-1_before_cash="${item.teacher_1_before_cash || ''}"
+                                        data-1_after_cash="${item.teacher_1_after_cash || ''}" 
+
+                                        data-2_before_cash="${item.teacher_2_before_cash || ''}"
+                                        data-2_after_cash="${item.teacher_2_after_cash || ''}"
+                                        >Info</a>
+                                </td>
+                            </tr>`;
+                        tbody.append(row);  // Jadval qismiga yangi qator qo'shish
+                    });
+
+                    // Dinamik ravishda yaratilgan elementlar uchun event delegation
+                    $(document).on('click', '[id^="info-"]', function(e) {
+                        const teacher_1 = $(this).data('name_1');
+                        
+                        const teacer_1_before = $(this).data('1_before_cash');
+                        const teacher_1_after = $(this).data('1_after_cash');
+                        
+                        const teacher_2 = $(this).data('name_2');
+                        const teacer_2_before = $(this).data('2_before_cash');
+                        const teacher_2_after = $(this).data('1_after_cash');
+                        
+                        const izoh = $(this).data('izoh');
+
+                        Swal.fire({
+                            icon: "info",
+                            title: `${teacher_1} oldin ${teacer_1_before} Sum\n 
+                                    kegin ${teacher_1_after} Sum\n 
+                                    ${teacher_2} Oldin ${teacer_2_before} \n
+                                    ${teacher_2_after} Sum \n
+                                    ${izoh}`,
+                        });
+                    });
+                }
+            });
+        }
+    });
 });
 
 

@@ -191,16 +191,59 @@ def search_payment(request):
 
     if query:
         conditions = Q(user__username__icontains=query) | Q(child__name__icontains=query) | Q(description__icontains=query)
-    
-    # Decimal konversiyasini tekshirish
+
         try:
 
             query_decimal = Decimal(query)
             conditions |= Q(amount=query_decimal)
         except :
-            # Agar `query` raqamga aylantirilsa bo'lmasa, bu shartni qo'shmang
             pass
         results = Payment.objects.filter(conditions, company=request.user.company, payment_type=1)\
         .select_related('user').only('description', 'child__name' ,  'user__username', 'amount','date')
         results = list(results.values('description', 'child__name','user__username', 'amount','date'))  # Natijalarni JSONga moslashtirish
-    return JsonResponse(results, safe=False)
+        return JsonResponse(results, safe=False)
+    return JsonResponse({'status':'success'})
+
+
+
+def search_transfer(request):
+    query = request.GET.get('query', '')
+
+    if query:
+        conditions =   Q(user__username__icontains=query)\
+                    |  Q(description__icontains=query)\
+                    |  Q(teacher_1__username__icontains=query)\
+                    |  Q(teacher_2__username__icontains=query)
+        try: 
+            query_decimal = Decimal(query)
+            conditions |= Q(summa=query_decimal)
+        except :
+            pass
+        results = Transfer.objects.filter(conditions, company=request.user.company)\
+        .select_related('user').only('description',  'user__username',
+                                     'teacher_1__username','teacher_2__username', 'summa',  'date',
+                                     'teacher_1_before_cash','teacher_1_after_cash',
+                                     'teacher_2_before_cash','teacher_2_after_cash')
+        results = list(results.values('description',  'user__username',
+                                     'teacher_1__username','teacher_2__username', 'summa',  'date',
+                                     'teacher_1_before_cash','teacher_1_after_cash',
+                                     'teacher_2_before_cash','teacher_2_after_cash')) 
+        return JsonResponse(results, safe=False)
+    return JsonResponse({'status':'success'})
+
+
+def search_child(request):
+    query = request.GET.get('query', '')
+
+    if query:
+        conditions=  Q(name__icontains=query)\
+                    |Q(phone__icontains=query)\
+                    |Q(group__name__icontains=query)
+                            
+                   
+                
+        results = Child.objects.filter(conditions, company=request.user.company,is_active=True)\
+        .select_related('group').only( 'id', 'name',  'tarif__name','birth_date','phone','group__name')
+        results = list(results.values('id', 'name',  'tarif__name','birth_date','phone','group__name')) 
+        return JsonResponse(results, safe=False)
+    return JsonResponse({'status':'success'})

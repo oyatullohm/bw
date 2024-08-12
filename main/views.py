@@ -521,7 +521,7 @@ class TransferView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self,request, *args, **kwargs):
         page = request.GET.get('page')
-        transfer = Transfer.objects.filter(company=request.user.company)
+        transfer = Transfer.objects.filter(company=request.user.company).order_by('-id')
         teachar = Teacher.objects.filter(company=request.user.company, cash__is_active = True)
         paginator = Paginator(transfer, 10)  # Sahifalarni 25 tadan ko'rsatish
         try:

@@ -85,6 +85,8 @@ class Child(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='child', null=True, blank=True)
     is_active = models.BooleanField(default=True)
     
+    def __str__(self) -> str:
+        return self.name
 
 class Attendance(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='attendances')

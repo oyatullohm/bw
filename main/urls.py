@@ -33,6 +33,8 @@ urlpatterns = [
     path('transfer-create/',TransferCreateView.as_view(), name='transfer_create'),
     path('search-payment-cost/',search_payment_cost, name='search_payment_cost'),
     path('search-payment/',search_payment, name='search_payment'),
+    path('search-transfer/',search_transfer, name='search_transfer'),
+    path('search-child/',search_child, name='search-child'),
     
 
 ]
