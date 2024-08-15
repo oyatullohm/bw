@@ -296,7 +296,7 @@
                                             data-user_before_cash="{{data.user_before_cash}}"
                                             data-user_after_cash="{{data.user_after_cash}}"> info </a> </td>
                 </tr>
-              
+                                                           
             `;
             tableBody.appendChild(newRow);
         } else {
@@ -370,9 +370,10 @@ $(document).ready(function() {
                     $.each(data, function(index, item) {
                         let row = `
                             <tr>
-                                <td class="text-bold-500" data-bs-toggle="modal" data-bs-target="#inlineForm${index}">
-                                    <a style="color: blue;">${item.date}</a>
+                                <td class="text-bold-500" data-bs-toggle="modal" data-bs-target="#inlineForm${item.id}">
+                                    <a style="color: blue;" >${item.date}</a>
                                 </td>
+                                <td class="text-bold-500">${item.cild__name}</td>
                                 <td class="text-bold-500">${item.amount}</td>
                                 <td class="text-bold-500">${item.user__username}</td>
                                 <td class="text-bold-500">
@@ -383,7 +384,46 @@ $(document).ready(function() {
                                         data-user_after_cash="${item.user_after_cash || ''}"
                                         >Info</a>
                                 </td>
-                            </tr>`;
+                            </tr>
+                            
+                             <div class="modal fade text-left" id="inlineForm{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title" id="myModalLabel33">Tahrirlash  </h4>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form method="post" id="paymentForm{{item.id}}" onsubmit="event.preventDefault(); updatePayment('{{ item.id }}');">
+                                                                {% csrf_token %}
+                                                                <div class="form-group mb-1">
+                                                                    <label for="summa{{ p.id }}" class="form-label">Summa</label>
+                                                                    <input type="number" required id="summa{{item.id}}" name="amount" value="{{ item.amount }}" class="form-control" placeholder="Summa">
+                                                                </div>
+                                                                <div class="form-group mb-1">
+                                                                    <label for="date_month{{ p.id }}" class="form-label">Tanlangan oy {{ item.date_month | date:"M" }}</label>
+                                                                    <input type="date" id="date_month{{item.id}}" name="date_month" required class="form-control" value="{{ item.date_month|date:'Y-m-d' }}">
+                                                                </div>
+                                                                <div class="form-group mb-1">
+                                                                    <label for="description{{ p.id }}" class="form-label">Izoh</label>
+                                                                    <input type="text" id="description{{ item.id }}" name="description" value="{{ item.description }}" class="form-control" placeholder="Izoh">
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                                                        <span class="d-none d-sm-block">Close</span>
+                                                                    </button>
+                                                                    <button type="submit" class="btn btn-primary ms-1">
+                                                                        <span class="d-none d-sm-block">Save</span>
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                            `
+                            
+                            ;
                         tbody.append(row);  // Jadval qismiga yangi qator qo'shish
                     });
 

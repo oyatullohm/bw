@@ -1,0 +1,108 @@
+{% extends 'wrapper.html' %}
+{% block content %}
+
+
+            
+<div class="page-heading">
+
+    <section class="section">
+        <div class="row">
+           
+            <div class="col-xl-6  col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4>Tariflar</h4>
+                        <table class="table table-lg">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    
+                                    <th>Summa</th>
+                                    <th>Bola</th>
+                                    <th>Hodim</th>
+                                    <th>Grouppa</th>
+                                </tr>
+                            </thead>
+                            
+                            
+                            <tbody id="search-results">
+                                {% for t in tarif %}
+                               
+                                <tr>
+                                    <td class="text-bold-500">
+                                        {{ t.name}}
+                                    </td>
+                                   
+                                    <td class="text-bold-500">{{ t.summa }} </td>
+                                    <td class="text-bold-500">{{ t.child }}</td>
+                                    <td class="text-bold-500">{{ t.user }}</td>
+                                    <td class="text-bold-500">{{ t.group }}</td>
+                                  
+                                 
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="amount" class="form-label">Tarif  </label>
+                                <select name="tarif" id="tarif" class="form-control">
+                                <option value="{{request.user.company.tarif.id}}">{{request.user.company.tarif}}</option>
+                                    {% for i in tarif %}
+                                    {% if i.id != request.user.company.tarif.id %}
+                                    <option value="{{ i.id }}"> {{ i.name }} </option>   
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div> 
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>  
+                        </form>
+                    </div>
+                </div>  
+              
+            </div>    
+            <div class="col-xl-6  col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="{% url 'working_day' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="amount" class="form-label"> Is kuni  </label>
+                                <select name="working_day" id="tarif" class="form-control">
+                                <option value="{{request.user.company.working_day}}">{{request.user.company.working_day}}</option>
+                                    {% for i in working_day %}
+                                    {% if i != request.user.company.working_day %}
+                                        <option value="{{ i }}">{{ i  }} </option>   
+                                    {% endif %}
+
+                                    {% endfor %}
+                                </select>
+                            </div> 
+                           
+
+                            
+                  
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>  
+                        </form>
+                    </div>
+                </div>  
+              
+            </div>    
+
+
+        
+        </div>
+    </section>
+</div>
+
+{% endblock content %}

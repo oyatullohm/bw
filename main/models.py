@@ -88,6 +88,7 @@ class Child(models.Model):
     def __str__(self) -> str:
         return self.name
 
+
 class Attendance(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='attendances')
     child = models.ForeignKey(Child, on_delete=models.CASCADE, null=True, blank=True, related_name='attendances')
@@ -96,8 +97,8 @@ class Attendance(models.Model):
     presence = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
 
-    def __str__(self):
-        return f"{self.date.strftime('%Y-%m-%d')}"
+    # def __str__(self):
+    #     return f"{self.date.strftime('%Y-%m-%d')}"
 
 
 class Payment(models.Model):

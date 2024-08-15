@@ -35,6 +35,8 @@ urlpatterns = [
     path('search-payment/',search_payment, name='search_payment'),
     path('search-transfer/',search_transfer, name='search_transfer'),
     path('search-child/',search_child, name='search-child'),
+    path('settings/',SettingsView.as_view(), name='settings'),
+    path('working_day/',working_day, name='working_day'),
     
 
 ]

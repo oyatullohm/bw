@@ -181,8 +181,11 @@ def search_payment_cost(request):
             conditions,
             company=request.user.company,
             payment_type=2
-        ).select_related('user').only('description', 'user__username', 'amount','date')
-        results = list(results.values('description', 'user__username', 'amount','date'))  # Natijalarni JSONga moslashtirish
+        ).select_related('user').order_by('-id')\
+            .only( 'id','description', 'user__username',
+                                      'amount','date','date_month','user_before_cash', 'user_after_cash')
+        results = list(results.values('id','description', 'user__username', 
+                                      'amount','date','date_month','user_before_cash', 'user_after_cash'))  # Natijalarni JSONga moslashtirish
     return JsonResponse(results, safe=False)
 
 
@@ -190,7 +193,7 @@ def search_payment(request):
     query = request.GET.get('query', '')
 
     if query:
-        conditions = Q(user__username__icontains=query) | Q(child__name__icontains=query) | Q(description__icontains=query)
+        conditions =   Q(child__name__icontains=query) |Q(user__username__icontains=query)  | Q(description__icontains=query)
 
         try:
 
@@ -199,8 +202,11 @@ def search_payment(request):
         except :
             pass
         results = Payment.objects.filter(conditions, company=request.user.company, payment_type=1)\
-        .select_related('user').only('description', 'child__name' ,  'user__username', 'amount','date')
-        results = list(results.values('description', 'child__name','user__username', 'amount','date'))  # Natijalarni JSONga moslashtirish
+        .select_related('user').order_by('-id')\
+            .only( 'id','child__name','description', 'user__username', 
+                                     'amount','date','date_month','user_before_cash', 'user_after_cash')
+        results = list(results.values('id','child__name','description', 'user__username', 
+                                      'amount','date','date_month' ,'user_before_cash', 'user_after_cash'))  
         return JsonResponse(results, safe=False)
     return JsonResponse({'status':'success'})
 
@@ -219,7 +225,7 @@ def search_transfer(request):
             conditions |= Q(summa=query_decimal)
         except :
             pass
-        results = Transfer.objects.filter(conditions, company=request.user.company)\
+        results = Transfer.objects.filter(conditions, company=request.user.company).order_by('-id')\
         .select_related('user').only('description',  'user__username',
                                      'teacher_1__username','teacher_2__username', 'summa',  'date',
                                      'teacher_1_before_cash','teacher_1_after_cash',

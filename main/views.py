@@ -15,6 +15,7 @@ from django.db.models import Sum, Q, Value , OuterRef, Subquery
 from django.db.models.functions import Coalesce
 from django.conf import settings
 
+
 class HomeView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self, request):
@@ -45,8 +46,6 @@ class TeacherView(LoginRequiredMixin,View):
             'teacher_attendance': teacher_attendance
         }
         return render(request, 'teacher-all.html', context)
-
-     
 
 
 class TeacherDetailView(LoginRequiredMixin,View):
@@ -109,6 +108,7 @@ class TeacherDetailView(LoginRequiredMixin,View):
             group.helper = user
             group.save()
         return redirect (f'/teacher/{pk}/')
+
 
 @login_required
 def password(request,pk):
@@ -188,7 +188,7 @@ class GroupDetailView(LoginRequiredMixin, View):
             company=company, 
             child__in=children,
             date__gte=start_of_month,
-            presence=True
+            is_active = True
         ).values('child_id').annotate(
             today_count=Count('id', filter=Q(date=today)),
             monthly_count=Count('id')
@@ -220,12 +220,15 @@ class GroupDetailView(LoginRequiredMixin, View):
         children_attendance = []
         for child in paginated_children:
             today_count, monthly_count = attendance_dict_count.get(child.id, (0, 0))
+
+            attendance_today = today_count == 1
+
             payment_summa_value = payment_summa_dict.get(child.id, 0)
             tarif_amount = child.tarif.amount if child.tarif else 0
             remaining_amount = tarif_amount - payment_summa_value
             children_attendance.append({
                 'child': child,
-                'attendance_today': today_count,
+                'attendance_today': attendance_today,
                 'attendance_monthly': monthly_count,
                 'payment_summa': payment_summa_value,
                 'remaining_amount': remaining_amount
@@ -278,6 +281,7 @@ class ChildView(LoginRequiredMixin,View):
         messages.error(request, f"{child.name} Qoshildi {group.name} ga")
         return redirect('/child')
 
+
 @login_required
 def chaild_edit(request,pk):
     child = Child.objects.get(id=pk)
@@ -290,6 +294,7 @@ def chaild_edit(request,pk):
     child.save()
     messages.error(request, f"ozgarishlar amalga oshdi ")
     return redirect('child')
+
 
 @login_required
 def delete_chaild(request,pk):
@@ -324,6 +329,8 @@ class TarifCompanyView(LoginRequiredMixin,View):
         )
         messages.error(request, f"Tarif Qoshildi ")
         return redirect('tarif')
+
+
 @login_required
 def edit_tarif(request,pk):
     tarif = TarifCompany.objects.get(id=pk)
@@ -338,6 +345,7 @@ def edit_tarif(request,pk):
     messages.error(request, f"Tarif Ozgardi ")
     return redirect('tarif')
 
+
 @login_required
 def chaild_edit_tarif(request,pk):
     child = get_object_or_404(Child , id=pk)
@@ -347,6 +355,7 @@ def chaild_edit_tarif(request,pk):
     child.save()
     messages.error(request,"Tarif Ozgardi ")
     return redirect('child')
+
 
 @login_required
 def calendar_child(request,pk):
@@ -372,6 +381,7 @@ def calendar_child(request,pk):
     events_json = json.dumps(events)
     
     return render(request, 'fullcalendar.html', {'events_json': events_json})
+
 
 @login_required
 def calendar_teacher(request,pk):
@@ -400,6 +410,7 @@ def calendar_teacher(request,pk):
     events_json = json.dumps(events)
     
     return render(request, 'fullcalendar.html', {'events_json': events_json})
+
 
 @login_required
 def payment_child(request, pk):
@@ -517,6 +528,7 @@ class CashView(LoginRequiredMixin,View):
         } 
         return render (request, 'cash.html', context)
 
+
 class TransferView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self,request, *args, **kwargs):
@@ -535,3 +547,33 @@ class TransferView(LoginRequiredMixin,View):
             'teachar':teachar
             }
         return render(request, 'transfer.html',context)
+
+
+class SettingsView(LoginRequiredMixin,View):
+    def get(self, request,):
+        tarif = Tarif.objects.all()
+        working_day = [ i for i in range(1,32) ]
+        context = {
+            'working_day':working_day,
+            'tarif':tarif
+        }
+        return render (request, 'settings.html', context)
+    
+    def post(self,request,):
+        id = request.POST.get('tarif')
+        company =  request.user.company 
+        tarif  = Tarif.objects.get(id=id)
+        company.tarif = tarif
+        company.save()
+        messages.error(request,'tarif almashdi ')
+        return redirect('/settings')
+
+
+@login_required
+def working_day(request):
+    working_day = request.POST.get('working_day')
+    company =  request.user.company 
+    company.working_day = int(working_day)
+    company.save()
+    messages.error(request,' ish kuni almashdi  ')
+    return redirect('/settings')

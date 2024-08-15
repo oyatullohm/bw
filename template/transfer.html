@@ -98,7 +98,7 @@
                                     {% for t in transfer %}
                                     <tr>
                                         <td class="text-bold-500" data-bs-toggle="modal" data-bs-target="#inlineForm{{ t.id }}">
-                                            <a style="color: blue;">{{ t.date }}</a>
+                                            {{ t.date }}
                                         </td>
                                         <td class="text-bold-500">{{ t.user }} </td>
                                         <td class="text-bold-500">{{ t.teacher_1 }} </td>
@@ -343,8 +343,8 @@ $(document).ready(function() {
                     $.each(data, function(index, item) {
                         let row = `
                             <tr>
-                                <td class="text-bold-500" data-bs-toggle="modal" data-bs-target="#inlineForm${index}">
-                                    <a style="color: blue;">${item.date}</a>
+                                <td class="text-bold-500" >
+                                  ${item.date}
                                 </td>
                              
                                 <td class="text-bold-500">${item.user__username} </td>

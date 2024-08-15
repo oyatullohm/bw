@@ -56,10 +56,10 @@
                                         </td>
                                         <td class="text-bold-500">{{ item.child.phone }}</td>
                                         <td class="text-bold-500"> <span style="color: brown;">{{item.child.tarif.amount}}  </span> // <span style="color: blue;">{{item.payment_summa}} </span>    </td>
-                                        <td class="text-bold-500">  {{item.child.tarif.name}} // {{ item.attendance_counts }}</td>
+                                        <td class="text-bold-500">  {{item.child.tarif.name}} // {{ item.attendance_monthly }}</td>
                                         <td class="text-bold-500">
                                             <div class="form-check form-switch col-3">
-                                                <input class="form-check-input" name="attendance_{{ item.child.id }}" type="checkbox" id="flexSwitchCheckDefault_{{ item.child.id }}" {% if item.attendance and item.attendance.is_active %}checked{% endif %} onchange="updateAttendance(`{{ item.child.id }}`, this.checked)">
+                                                <input class="form-check-input" name="attendance_{{ item.child.id }}" type="checkbox" id="flexSwitchCheckDefault_{{ item.child.id }}" {% if  item.attendance_today == True %}checked{% endif %} onchange="updateAttendance(`{{ item.child.id }}`, this.checked)">
                                                 <label class="form-check-label" for="flexSwitchCheckDefault_{{ item.child.id }}">Davomat</label>
                                             </div>
                                         </td>

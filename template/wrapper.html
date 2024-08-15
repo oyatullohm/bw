@@ -9,8 +9,7 @@
 </style>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
 
     <title>Baby World</title>
 
@@ -100,13 +99,13 @@
                 
                 <ul class="submenu ">
                     <li class="submenu-item  ">
-                        <a href="{% url 'teacher' %}" class="submenu-link">Teacher</a>
+                        <a href="{% url 'teacher' %}" class="submenu-link">Tarbiyachi</a>
                         
                     </li>
 
                     
                     <li class="submenu-item  ">
-                        <a href="{% url 'group' %}" class="submenu-link">Group</a>
+                        <a href="{% url 'group' %}" class="submenu-link">Gruppa</a>
                     </li>
                     <li class="submenu-item  ">
                         <a href="{% url 'child' %}" class="submenu-link">Bolalar</a>
@@ -130,7 +129,7 @@
                 class="sidebar-item  ">
                 <a href="{% url 'transfer' %}" class='sidebar-link'>
                    <i class="bi bi-arrow-left-right"></i>
-                    <span>Transfer</span>
+                    <span>Otkazma</span>
                 </a>
                 
 
@@ -141,7 +140,7 @@
                 <a href="#" class='sidebar-link'>
                    <i class="bi bi-wallet2"></i>
                   
-                    <span>Payment</span>
+                    <span>Tolovlar</span>
                 </a>
                 <ul class="submenu">
                     <li class="submenu-item  ">
@@ -163,15 +162,15 @@
                 </a>
             </li>
 
-        <!-- <li
+        <li
             class="sidebar-item  ">
-            <a href="application-checkout.html" class='sidebar-link'>
+            <a href="{% url 'settings' %}" class='sidebar-link'>
                <i class="bi bi-gear"></i>
                 <span>Settings</span>
             </a>
             
 
-        </li>  -->
+        </li> 
         <li
             class="sidebar-item  ">
             <a href="{% url 'logout' %}" class='sidebar-link'>
@@ -232,7 +231,7 @@
     
 <!-- Need: Apexcharts -->
 <script src="/static/assets/extensions/apexcharts/apexcharts.min.js"></script>
-<!-- <script src="/static/assets/static/js/pages/dashboard.js"></script> -->
+<script src="/static/assets/static/js/pages/dashboard.js"></script>
 
 <script src="/static/assets/extensions/sweetalert2/sweetalert2.min.js"></script>>
 <!-- <script src="/static/assets/static/js/pages/sweetalert2.js"></script>> -->
