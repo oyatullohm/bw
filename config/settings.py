@@ -52,27 +52,27 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     # 'rest_framework_simplejwt',
     'corsheaders',
-    'cachalot',
+    # 'cachalot',
     'main',
 ]
 
 
 
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        }
-    }
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django_redis.cache.RedisCache',
+#         'LOCATION': 'redis://127.0.0.1:6379/1',
+#         'OPTIONS': {
+#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+#         }
+#     }
+# }
 
 
 
-CACHALOT_TIMEOUT = 60  # 1 soat
-CACHALOT_ENABLED = True
+# CACHALOT_TIMEOUT = 60  # 1 soat
+# CACHALOT_ENABLED = True
 
 
 
