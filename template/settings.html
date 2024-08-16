@@ -69,7 +69,54 @@
                 </div>  
               
             </div>    
-            <div class="col-xl-6  col-md-6 col-sm-12">
+            
+              <div class="col-xl-6  col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <span class="id-text">ID</span>
+                             
+                            </div>
+                            <div class="col-md-8 form-group">
+                                <span class="id-text">{{ request.user.company.company_id }}</span>
+                            </div>
+                        </div>              
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <span class="id-text">Name</span>
+                                
+                            </div>
+                            <div class="col-md-8 form-group">
+                                <span class="id-text">{{ request.user.company}}</span>
+                            </div>
+                        </div>             
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <span class="id-text">Ish Boshladi </span>
+                                
+                            </div>
+                            <div class="col-md-8 form-group">
+                                <span class="id-text">{{ request.user.company.created|date:"m d, Y" }}</span>
+                            </div>
+                        </div> 
+                        <div class="row">
+
+                            <div class="col-md-4">
+                                <span class="id-text">Telefon</span>
+                                
+                            </div>
+                            <div class="col-md-8 form-group">
+                                <span class="id-text">{{ request.user.company.phone}}</span>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+             
+
                 <div class="card">
                     <div class="card-body">
                         <form action="{% url 'working_day' %}" method="post">
@@ -95,12 +142,19 @@
                             </div>  
                         </form>
                     </div>
+
+                  
+                     
+                        
+                      
+                    </div>  
+
                 </div>  
               
             </div>    
 
 
-        
+
         </div>
     </section>
 </div>

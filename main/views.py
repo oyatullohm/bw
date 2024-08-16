@@ -14,13 +14,54 @@ import time
 from django.db.models import Sum, Q, Value , OuterRef, Subquery
 from django.db.models.functions import Coalesce
 from django.conf import settings
+from django.db.models.functions import TruncMonth
+from dateutil.relativedelta import relativedelta
 
 
-class HomeView(LoginRequiredMixin,View):
+class HomeView(LoginRequiredMixin, View):
     login_url = settings.LOGIN_URL
-    def get(self, request):
 
-        return render(request, 'index.html')
+    def get(self, request):
+        today = timezone.now()
+        last_12_months = [(today - relativedelta(months=i)).strftime("%Y-%m") for i in range(11, -1, -1)]
+
+    # Kirim va chiqim uchun to'liq so'rovlar
+        payments = Payment.objects.filter(
+            company=request.user.company,
+            date__gte=today - relativedelta(years=1)
+        ).annotate(month=TruncMonth('date')).values('month', 'payment_type').annotate(total_amount=Sum('amount')).order_by('month')
+
+        # Kirim va chiqimni to'plab olish
+        revenue_dict = {item['month'].strftime("%Y-%m"): item['total_amount'] for item in payments if item['payment_type'] == 1}
+        cost_dict = {item['month'].strftime("%Y-%m"): item['total_amount'] for item in payments if item['payment_type'] == 2}
+
+        revenue_data = [float(revenue_dict.get(month, 0)) for month in last_12_months]
+        cost_data = [float(cost_dict.get(month, 0)) for month in last_12_months]
+        profit_data = [revenue - cost for revenue, cost in zip(revenue_data, cost_data)]
+
+        context = {
+            'apex_series': [
+                {
+                    "name": "Kirim",
+                    "data": revenue_data,
+                    "color": "#28a745"  # Yashil rang
+                },
+                {
+                    "name": "Chiqim",
+                    "data": cost_data,
+                    "color": "#dc3545"  # Qizil rang
+                },
+                {
+                    "name": "Foyda",
+                    "data": profit_data,
+                    "color": "#007bff"  # Ko'k rang
+                }
+            ],
+            'last_12_months': last_12_months
+        }
+
+
+        return render(request, 'index.html', context)
 
 
 class TeacherView(LoginRequiredMixin,View):
@@ -28,7 +69,8 @@ class TeacherView(LoginRequiredMixin,View):
     def get(self, request):
         company_id = request.user.company.id
         teacher = Teacher.objects.filter(company_id=company_id, is_active=True)\
-                    .prefetch_related('group_teachers', 'group_helpers')
+                    .prefetch_related('group_teachers','group_teachers__teacher', 'group_helpers','group_helpers__helper')\
+                        .select_related('company', 'tarif')
         
         today = timezone.now().date()
         attendances = Attendance.objects.filter(teacher__in=teacher, date=today)
@@ -156,8 +198,10 @@ class GroupView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self,request,*args, **kwargs):
         company = request.user.company 
-        group =  Group.objects.filter(company=company, is_active = True)
+        group =  Group.objects.filter(company=company, is_active = True)\
+            .select_related('teacher', 'helper')
         return render(request,'group.html',{'group':group}) 
+    
     def post(self,request, *args, **kwargs):
         name = request.POST.get('name')
         Group.objects.create(
@@ -253,10 +297,29 @@ class ChildView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self, request , *args, **kwargs):
         page = request.GET.get('page')
-        child = Child.objects.filter(company = request.user.company, is_active=True).order_by('-id')
-        group = Group.objects.filter(company = request.user.company, is_active=True)
+        company = request.user.company
+
+        child = (
+            Child.objects
+            .filter(company=company, is_active=True)
+            .select_related('group', 'company', 'tarif')
+            .order_by('-id')
+        )
+        
+        group = (
+            Group.objects
+            .filter(company=company, is_active=True)
+            .select_related('company', 'teacher', 'helper')
+            .order_by('-id')
+        )
+        
+        tarif = (
+            TarifCompany.objects
+            .filter(company=company, is_active=True, status=2)
+            .select_related('company')
+        )
+        
         paginator = Paginator(child,10)  
-        tarif = TarifCompany.objects.filter(company = request.user.company, is_active=True,status=2)
         try:
             children = paginator.page(page)
         except PageNotAnInteger:
@@ -435,6 +498,7 @@ def payment_child(request, pk):
         cash.save()
         payment.save()
         messages.error(request, f"{child.name} Tplov Qildi ")
+        return redirect(f'/group-detail/{child.group.id}/')
     messages.error(request, ' sizda shahsi kassa yoqilmagan  ')
     return redirect(f'/group-detail/{child.group.id}/')
 
@@ -533,8 +597,10 @@ class TransferView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self,request, *args, **kwargs):
         page = request.GET.get('page')
-        transfer = Transfer.objects.filter(company=request.user.company).order_by('-id')
-        teachar = Teacher.objects.filter(company=request.user.company, cash__is_active = True)
+        transfer = Transfer.objects.filter(company=request.user.company).order_by('-id')\
+            .select_related('user','teacher_1', 'teacher_2')
+        teachar = Teacher.objects.filter(company=request.user.company, cash__is_active = True)\
+            .select_related('tarif','company')
         paginator = Paginator(transfer, 10)  # Sahifalarni 25 tadan ko'rsatish
         try:
             transfer = paginator.page(page)

@@ -29,7 +29,10 @@ class Company(models.Model):
     def __str__(self):
         return self.name
 
+    def company_id(self):
+        return f"0000{self.id}"
 
+    
 class TarifCompany(models.Model):
     STATUS = (
         (1,'Hodimlar'),

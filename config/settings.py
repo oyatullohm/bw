@@ -52,9 +52,28 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     # 'rest_framework_simplejwt',
     'corsheaders',
-    # 'django_extensions',
+    'cachalot',
     'main',
 ]
+
+
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+
+
+CACHALOT_TIMEOUT = 60  # 1 soat
+CACHALOT_ENABLED = True
+
 
 
 # REST_FRAMEWORK = {
@@ -167,20 +186,21 @@ STATICFILES_DIRS = (
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'main.Teacher'
-LOGGING = {
-    'version':1,
-    'handlers':{
-         'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': 'debug.log'
-        },
-        'console':{'class':'logging.StreamHandler'}
-    },
-    'loggers':{
-        'django.db.backends':{
-            'handlers':['file'],
-            'level':'DEBUG'
-                    }
-               }
-}  
+
+# LOGGING = {
+#     'version':1,
+#     'handlers':{
+#          'file': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': 'debug.log'
+#         },
+#         'console':{'class':'logging.StreamHandler'}
+#     },
+#     'loggers':{
+#         'django.db.backends':{
+#             'handlers':['file'],
+#             'level':'DEBUG'
+#                     }
+#                }
+# }  
