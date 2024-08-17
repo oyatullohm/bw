@@ -3,11 +3,12 @@
 <div class="form-group">
     <div class="row">
         <div class="col-2">
-
+            {% if request.user.is_child %}
             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
             data-bs-target="#inlineForm">
             Qo'shish
         </button>
+        {% endif %}
     </div>
     
     <div class="col-5">
@@ -22,10 +23,12 @@
     <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
+               
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel33">Bola Qo'shish</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+               
                 <div class="modal-body">
                     <form action="" method="post">
                         {% csrf_token %}
@@ -185,12 +188,13 @@
                             <div class="comment-profileName"><h4> {{i.birth_date}}</h4> </div>
                             <div class="comment-profileName"> <h4>{{ i.group.name }}</h4>  </div>
                             <div class="comment-actions">
+                                {% if request.user.is_child %}
                                 <!-- <button class="btn icon icon-left btn-primary me-2 text-nowrap"><i class="bi bi-eye-fill"></i> Show</button> -->
                                 <button class="btn icon icon-left btn-warning me-2 text-nowrap" data-bs-toggle="modal"
                                 data-bs-target="#inlineForm{{i.id}}"  ><i class="bi bi-pencil-square"></i> Edit</button>
                                 <button class="btn icon icon-left btn-danger me-2 text-nowrap" data-bs-toggle="modal"
                                 data-bs-target="#danger{{i.id}}"><i class="bi bi-x-circle"></i> Remove</button>
-                                
+                                {% endif %}
                             </div>
 
                         </div> 
@@ -204,9 +208,11 @@
                             <div class="comment-profileName"><h4> {{i.tarif.created}}</h4> </div>
                             <div class="comment-profileName"> <h4>{{ i.group.name }}</h4>  </div>
                             <div class="comment-actions">
+                                {% if request.user.is_child %}
                                 <!-- <button class="btn icon icon-left btn-primary me-2 text-nowrap"><i class="bi bi-eye-fill"></i> Show</button> -->
                                 <button class="btn icon icon-left  btn-primary me-2 text-nowrap"  data-bs-toggle="modal"
                                 data-bs-target="#inlineForm_tarif{{i.id}}" ><i class="bi bi-pencil-square"></i> Edit</button>
+                                {% endif %}
                                 <div class="form-group">
                                     <div class="modal fade text-left" id="inlineForm_tarif{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">

@@ -125,6 +125,7 @@
             
 
         </li>
+            {% if request.user.is_payment %}
             <li
                 class="sidebar-item  ">
                 <a href="{% url 'transfer' %}" class='sidebar-link'>
@@ -134,7 +135,7 @@
                 
 
             </li>      
-            
+ 
             <li
                 class=" sidebar-item  has-sub ">
                 <a href="#" class='sidebar-link'>
@@ -161,7 +162,8 @@
                     <span>Kassa</span>
                 </a>
             </li>
-
+            {% endif %}
+        {% if request.user.is_main %}
         <li
             class="sidebar-item  ">
             <a href="{% url 'settings' %}" class='sidebar-link'>
@@ -171,6 +173,7 @@
             
 
         </li> 
+        {% endif %}
         <li
             class="sidebar-item  ">
             <a href="{% url 'logout' %}" class='sidebar-link'>

@@ -73,6 +73,7 @@ class RegisterView(View):
                         is_payment = True,
                         is_salary = True,
                         is_child = True, 
+                        is_main  = True,
                         password=password                  
             )
             Cash.objects.get_or_create(

@@ -56,8 +56,8 @@
                                         <label class="form-check-label" for="flexSwitchCheckDefault" > Tolovlar</label>
                                     </div> 
                                     <div class="form-check form-switch col-4">
-                                        <input class="form-check-input"  name="salary"  type="checkbox" {% if teacher.is_salary %}checked{% endif %} id="flexSwitchCheckDefault" >
-                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Kassa</label>
+                                        <input class="form-check-input"  name="main"  type="checkbox" {% if teacher.is_main %}checked{% endif %} id="flexSwitchCheckDefault" >
+                                        <label class="form-check-label" for="flexSwitchCheckDefault"> Asosiy</label>
                                     </div> 
                                     <div class="form-check form-switch col-4">
                                         <input class="form-check-input" name="child" type="checkbox" {% if teacher.is_child %}checked{% endif %} id="flexSwitchCheckDefault">
@@ -69,6 +69,10 @@
                                      <div class="form-check form-switch col-4 ">
                                         <input class="form-check-input" name="active"  type="checkbox" {% if teacher.is_active %}checked{% endif %} id="flexSwitchCheckDefault">
                                         <label class="form-check-label" for="flexSwitchCheckDefault">Active</label>
+                                    </div> 
+                                     <div class="form-check form-switch col-4 ">
+                                        <input class="form-check-input" name="salary"  type="checkbox" {% if teacher.is_salary %}checked{% endif %} id="flexSwitchCheckDefault">
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Statistika </label>
                                     </div>
                                     <div class="form-check form-switch col-4">
                                         <input class="form-check-input" name="cahs"  type="checkbox" {% if teacher.cash.is_active %}checked{% endif %} id="flexSwitchCheckDefault">

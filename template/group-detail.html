@@ -63,9 +63,11 @@
                                                 <label class="form-check-label" for="flexSwitchCheckDefault_{{ item.child.id }}">Davomat</label>
                                             </div>
                                         </td>
+                                        {% if request.user.is_payment %}
                                         <td class="text-bold-500">
                                             <button class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#inlineForm{{item.child.id}}">Tolov</button>
                                         </td>
+                                        {% endif %}
                                     </tr>
                                     
                                     <div class="form-group">

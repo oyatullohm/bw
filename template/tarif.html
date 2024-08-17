@@ -12,12 +12,12 @@
               <div class="text-end">
                 <div class="col-md-6 col-12">
                                 <div class="form-group">
-    
+                                    {% if requesr.user.is_main %}
                                     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                                         data-bs-target="#inlineForm">
                                             Qo'shish
                                     </button>
-    
+                                    {% endif %}
                                     <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                                             <div class="modal-content">
@@ -155,8 +155,8 @@
                     </div>
                                     <tr>
                                         <td>{{forloop.counter}}</td>
-                                        <td class="text-bold-500"><a href=""    data-bs-toggle="modal"
-                                            data-bs-target="#inlineForm{{i.id}}">{{i.name}} </a></td>
+                                        <td class="text-bold-500">   {% if request.user.is_main %}  <a href=""    data-bs-toggle="modal"
+                                            data-bs-target="#inlineForm{{i.id}}">{{i.name}} </a> {% else %}  {{i.name}} {% endif%}</td>
                                         <td>{{i.get_status_display}} </td>
                                         <td >{{i.amount}}</td>
                                         <td>{{ i.created }}</td>

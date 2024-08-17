@@ -82,12 +82,14 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
+                        {% if request.user.is_salary %}
                         <div class="card-header">
                             <h4>Yillik hisobot </h4>
                         </div>
                         <div class="card-body">
                             <div id="chart-profile-visit"></div>
                         </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

@@ -60,6 +60,7 @@ class Teacher(AbstractUser):
     type = models.PositiveIntegerField( choices=TYPE, default=1)
     is_payment = models.BooleanField(default=False)
     is_salary = models.BooleanField(default=False)
+    is_main = models.BooleanField(default=False)
     is_child = models.BooleanField(default=False)
     
     def __str__(self):
