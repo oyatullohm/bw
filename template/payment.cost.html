@@ -37,11 +37,15 @@
                     <div class="form-group mb-1">
                         <label for="description" class="form-label">Izoh</label>
                         <input type="text" name="payment_description" required id="payment_description" class="form-control" placeholder="Izoh">
+                    </div>  
+                    <div style="display: none !important;">
+                        <label for="description" class="form-label">Izoh</label>
+                        <input type="text" name="csrfmiddlewaretoken" value="{{csrf_token}}" >
                     </div>
                     <div style="display: none !important;">
                         <input type="number" name="payment_payment_type" value="2" id="payment_payment_type">
                     </div>
-                
+                    
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                             <i class="bx bx-x d-block d-sm-none"></i>
