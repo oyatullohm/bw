@@ -255,8 +255,13 @@
     console.log(paymentType)
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     console.log(csrfToken)
+    console.log(csrfToken)
+    console.log(111)
+    console.log(csrfToken)
+    console.log(111)
+    console.log(csrfToken)
 
-    fetch('/payment-create/', {
+    fetch('{% url "payment_cost" %}', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
