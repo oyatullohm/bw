@@ -248,10 +248,14 @@
     document.getElementById('payment_create').addEventListener('click', function() {
     console.log(111)
     const amount = document.getElementById('payment_amount').value;
+    console.log(amount)
     const description = document.getElementById('payment_description').value;
+    console.log(description)
     const paymentType = document.getElementById('payment_payment_type').value;
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     console.log(paymentType)
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    console.log(csrfToken)
+
     fetch('/payment-create/', {
         method: 'POST',
         headers: {
