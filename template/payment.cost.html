@@ -28,8 +28,7 @@
                     <h4 class="modal-title" id="myModalLabel33">Chiqim Qoshish</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="post" id="payment-form">
-                    {% csrf_token %}
+                
                 <div class="modal-body">
                     <div class="form-group mb-1">
                         <label for="amount" class="form-label">Summa</label>
@@ -42,7 +41,7 @@
                     <div style="display: none !important;">
                         <input type="number" name="payment_payment_type" value="2" id="payment_payment_type">
                     </div>
-                    </form>
+                
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                             <i class="bx bx-x d-block d-sm-none"></i>
