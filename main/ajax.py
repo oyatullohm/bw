@@ -211,7 +211,6 @@ def search_payment(request):
     return JsonResponse({'status':'success'})
 
 
-
 def search_transfer(request):
     query = request.GET.get('query', '')
 
