@@ -1,7 +1,8 @@
 {% extends 'wrapper.html' %}
 {% block content %}
+{% load i18n %}
 <div class="page-heading">
-    <h3>Statistics</h3>
+    <h3>{% trans 'Statistics' %}</h3>
 </div> 
 
 <div class="page-content"> 
@@ -18,7 +19,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                    <h6 class="text-muted font-semibold">Is kuni</h6>
+                                    <h6 class="text-muted font-semibold"> {% trans 'Working day' %}</h6>
                                     <h6 class="font-extrabold mb-0">{{request.user.company.working_day}}  
 
                                     </h6>
@@ -37,7 +38,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                    <h6 class="text-muted font-semibold">Hodimlar</h6>
+                                    <h6 class="text-muted font-semibold"> {% trans 'Employees' %}</h6>
                                     <h6 class="font-extrabold mb-0">{{request.user.company.teachers.all.count}}</h6>
                                 </div>
                             </div>
@@ -54,7 +55,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                    <h6 class="text-muted font-semibold">Bolalr</h6>
+                                    <h6 class="text-muted font-semibold"> {% trans 'Children' %}</h6>
                                     <h6 class="font-extrabold mb-0">{{request.user.company.children.all.count}}</h6>
                                 </div>
                             </div>
@@ -71,7 +72,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                                    <h6 class="text-muted font-semibold">Gruppalar</h6>
+                                    <h6 class="text-muted font-semibold">{% trans 'Groups' %}</h6>
                                     <h6 class="font-extrabold mb-0">{{request.user.company.groups.all.count}}</h6>
                                 </div>
                             </div>
@@ -84,7 +85,7 @@
                     <div class="card">
                         {% if request.user.is_salary %}
                         <div class="card-header">
-                            <h4>Yillik hisobot </h4>
+                            <h4>{% trans 'Annual report' %} </h4>
                         </div>
                         <div class="card-body">
                             <div id="chart-profile-visit"></div>
@@ -94,27 +95,14 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="col-12 col-lg-3">
-            <div class="card">
-                <div class="card-body py-4 px-4">
-                    <div class="d-flex align-items-center">
-
-                        <div class="ms-3 name">
-                            <h5 class="font-bold">{{request.user.company}}dddddddddddddd dddddddddddddddd</h5>
-                            <h6 class="text-muted mb-0">ID {{request.user.company.company_id}}</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div> -->
+       
     </section>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 <script>
-    // Django viewdan olingan data
+
     var apexSeries = {{ apex_series|safe }};
     var last12Months = {{ last_12_months|safe }};
 

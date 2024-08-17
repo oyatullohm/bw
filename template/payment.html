@@ -1,11 +1,13 @@
 {% extends 'wrapper.html' %}
 {% block content %}
+{% load i18n %}
 <div class="form-group">
     <div class="row">
         <div class="col-3">
 
             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#inlineForm">
-              Qoshish
+             
+              {% trans "Add" %}
             </button>
         </div>
         <div class="col-5">
@@ -21,16 +23,16 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel33">Kirim Qoshish</h4>
+                    <h4 class="modal-title" id="myModalLabel33"> {% trans "Add Payment" %}</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group mb-1">
-                        <label for="amount" class="form-label">Summa</label>
+                        <label for="amount" class="form-label"> {% trans "Som" %}</label>
                         <input type="number" name="amount" required id="payment_amount" class="form-control" placeholder="Summa">
                     </div>
                     <div class="form-group mb-1">
-                        <label for="description" class="form-label">Izoh</label>
+                        <label for="description" class="form-label"> {% trans "Comment" %}</label>
                         <input type="text" name="payment_description" required id="payment_description" class="form-control" placeholder="Izoh">
                     </div>
                     <div style="display: none !important;">
@@ -39,11 +41,11 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                             <i class="bx bx-x d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Close</span>
+                            <span class="d-none d-sm-block"> {% trans "Close" %}</span>
                         </button>
                         <button type="button" class="btn btn-primary ms-1" id="payment_create">
                             <i class="bx bx-check d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Save</span>
+                            <span class="d-none d-sm-block">  {% trans "Save" %}</span>
                         </button>
                     </div>
                 </div>
@@ -62,12 +64,12 @@
                             <table class="table table-lg">
                                 <thead>
                                     <tr>
-                                        <th>Sana</th>
+                                        <th> {% trans "Date" %}</th>
                                         
-                                        <th>Bola</th>
-                                        <th>Summa</th>
-                                        <th>Kim</th>
-                                        <th>Info</th>
+                                        <th> {% trans "Child" %}</th>
+                                        <th>{% trans "Som" %}</th>
+                                        <th> {% trans "Who is" %}</th>
+                                        <th> {% trans "Info" %}</th>
                                     </tr>
                                 </thead>
                                 <tbody id="search-results">
@@ -86,37 +88,37 @@
                                             data-user="{{p.user}}"
                                             data-user_before_cash="{{p.user_before_cash}}"
                                             data-user_after_cash="{{p.user_after_cash}}"
-                                            >Info</a> </td>
+                                            >{% trans "Info" %}</a> </td>
                                     </tr>
                                   
                                             <div class="modal fade text-left" id="inlineForm{{ p.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h4 class="modal-title" id="myModalLabel33">Tahrirlash {{ p.child.name }} uchun</h4>
+                                                            <h4 class="modal-title" id="myModalLabel33">{% trans "Update" %} {{ p.child.name }} </h4>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <form method="post" id="paymentForm{{ p.id }}" onsubmit="event.preventDefault(); updatePayment('{{ p.id }}');">
                                                                 {% csrf_token %}
                                                                 <div class="form-group mb-1">
-                                                                    <label for="summa{{ p.id }}" class="form-label">Summa</label>
+                                                                    <label for="summa{{ p.id }}" class="form-label">{% trans 'Som' %}</label>
                                                                     <input type="number" required id="summa{{ p.id }}" name="amount" value="{{ p.amount }}" class="form-control" placeholder="Summa">
                                                                 </div>
                                                                 <div class="form-group mb-1">
-                                                                    <label for="date_month{{ p.id }}" class="form-label">Tanlangan oy {{ p.date_month | date:"M" }}</label>
+                                                                    <label for="date_month{{ p.id }}" class="form-label">{% trans "Month" %} {{ p.date_month | date:"M" }}</label>
                                                                     <input type="date" id="date_month{{ p.id }}" name="date_month" required class="form-control" value="{{ p.date_month|date:'Y-m-d' }}">
                                                                 </div>
                                                                 <div class="form-group mb-1">
-                                                                    <label for="description{{ p.id }}" class="form-label">Izoh</label>
+                                                                    <label for="description{{ p.id }}" class="form-label">{% trans "Explanation" %}</label>
                                                                     <input type="text" id="description{{ p.id }}" name="description" value="{{ p.description }}" class="form-control" placeholder="Izoh">
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                                                        <span class="d-none d-sm-block">Close</span>
+                                                                        <span class="d-none d-sm-block">{% trans "Close" %}</span>
                                                                     </button>
                                                                     <button type="submit" class="btn btn-primary ms-1">
-                                                                        <span class="d-none d-sm-block">Save</span>
+                                                                        <span class="d-none d-sm-block"> {% trans "Save" %}</span>
                                                                     </button>
                                                                 </div>
                                                             </form>

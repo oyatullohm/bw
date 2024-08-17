@@ -1,6 +1,6 @@
 {% extends 'wrapper.html' %}
 {% block content %}
-
+{% load i18n %}
 
  <!-- Basic Tables start -->
  <section class="section">
@@ -8,11 +8,11 @@
         <div class="col-12 col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Gruppa</h4>
+                    <h4 class="card-title">{% trans "Group" %}</h4>
                     <div class="container mt-5">
                         <div class="d-flex justify-content-between">
                           <div class="text-start">
-                            <h5 class="text-bold-500">Tarbiyachilar</h5>
+                            <h5 class="text-bold-500"> {% trans "Teachers" %}</h5>
                           </div>
                           <div class="text-end">
                             <div class="col-md-6 col-12">
@@ -20,21 +20,21 @@
                                                 {% if request.user.is_main  %}
                                                 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                                                     data-bs-target="#inlineForm">
-                                                        Qo'shish
+                                                        {% trans "Add" %}
                                                 </button>
                                                 {% endif %}
                                                 <div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h4 class="modal-title" id="myModalLabel33">Gruppa Qoshish</h4>
+                                                                <h4 class="modal-title" id="myModalLabel33">{% trans "Add group" %}</h4>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <form method="post">
                                                                     {% csrf_token %}
                                                                     <div class="form-group mb-1">
-                                                                        <label for="name" class="form-label">Name</label>
+                                                                        <label for="name" class="form-label">{% trans "Name" %}</label>
                                                                         <input type="text" name="name" required id="name" class="form-control" placeholder="Name">
                                                                     </div>
 
@@ -42,11 +42,11 @@
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                                                                             <i class="bx bx-x d-block d-sm-none"></i>
-                                                                            <span class="d-none d-sm-block">Close</span>
+                                                                            <span class="d-none d-sm-block"> {% trans "Close" %}</span>
                                                                         </button>
                                                                         <button type="submit" class="btn btn-primary ms-1">
                                                                             <i class="bx bx-check d-block d-sm-none"></i>
-                                                                            <span class="d-none d-sm-block">Save</span>
+                                                                            <span class="d-none d-sm-block"> {% trans "Save" %}</span>
                                                                         </button>
                                                                     </div>
                                                                 </form>
@@ -66,11 +66,11 @@
                             <table class="table table-lg">
                                 <thead>
                                     <tr>
-                                        <th>NAME</th>
-                                        <th>Teacher</th>
-                                        <th>Helper</th>
-                                        <th>Bolalar</th>
-                                        <th> Info </th>
+                                        <th> {% trans "Name" %}</th>
+                                        <th> {% trans "Teacher" %}</th>
+                                        <th> {% trans "Helper" %}</th>
+                                        <th>   {% trans "Chald" %}</th>
+                                        <th>  {% trans "Info" %}</th>
                                     </tr>
                                 </thead>
                                 <tbody>

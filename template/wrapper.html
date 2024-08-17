@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <style>
     .logo img {
         height: 50px !important;
@@ -30,7 +31,7 @@
 </head>
 
 <body>
-
+{% load i18n %}
 
     <script src="/static/assets/static/js/initTheme.js"></script>
     <div id="app">
@@ -82,7 +83,7 @@
                 class="sidebar-item active ">
                 <a href="{% url 'home' %}" class='sidebar-link'>
                     <i class="bi bi-grid-fill"></i>
-                    <span>Home</span>
+                    <span> {% trans 'Home' %}</span>
                 </a>
 
             </li>
@@ -94,21 +95,21 @@
                 class="sidebar-item  has-sub">
                 <a href="#" class='sidebar-link'>
                     <i class="bi bi-people"></i>
-                    <span>Group</span>
+                    <span>  {% trans 'Group' %}</span>
                 </a>
                 
                 <ul class="submenu ">
                     <li class="submenu-item  ">
-                        <a href="{% url 'teacher' %}" class="submenu-link">Tarbiyachi</a>
+                        <a href="{% url 'teacher' %}" class="submenu-link">  {% trans 'Educator' %}</a>
                         
                     </li>
 
                     
                     <li class="submenu-item  ">
-                        <a href="{% url 'group' %}" class="submenu-link">Gruppa</a>
+                        <a href="{% url 'group' %}" class="submenu-link">  {% trans 'Grup' %}</a>
                     </li>
                     <li class="submenu-item  ">
-                        <a href="{% url 'child' %}" class="submenu-link">Bolalar</a>
+                        <a href="{% url 'child' %}" class="submenu-link">  {% trans 'Children' %}</a>
                     </li>
                     
                 </ul>
@@ -119,7 +120,7 @@
             class="sidebar-item  ">
             <a href="{% url 'tarif' %}" class='sidebar-link'>
                <i class="bi bi-sliders"></i>
-                <span>Tarif</span>
+                <span>  {% trans 'Tariffs' %}</span>
             </a>
             
             
@@ -130,7 +131,7 @@
                 class="sidebar-item  ">
                 <a href="{% url 'transfer' %}" class='sidebar-link'>
                    <i class="bi bi-arrow-left-right"></i>
-                    <span>Otkazma</span>
+                    <span>{% trans 'Transfer' %}</span>
                 </a>
                 
 
@@ -141,16 +142,16 @@
                 <a href="#" class='sidebar-link'>
                    <i class="bi bi-wallet2"></i>
                   
-                    <span>Tolovlar</span>
+                    <span>{% trans 'Payments' %}</span>
                 </a>
                 <ul class="submenu">
                     <li class="submenu-item  ">
-                        <a href="{% url 'payment' %}" class="submenu-link">  Kirimlar  </a>
+                        <a href="{% url 'payment' %}" class="submenu-link">  {% trans 'Income' %} </a>
                         
                     </li>
                     
                     <li class="submenu-item  ">
-                        <a href="{% url 'payment_cost' %}" class="submenu-link">  Chqimlar </a>
+                        <a href="{% url 'payment_cost' %}" class="submenu-link">   {% trans 'Expenses' %} </a>
                         
                     </li>
                 </ul>
@@ -159,7 +160,7 @@
                 class="sidebar-item  ">
                 <a href="{% url 'cash' %}" class='sidebar-link'>
                    <i class="bi bi-currency-dollar"></i>
-                    <span>Kassa</span>
+                    <span>  {% trans 'Cash' %}</span>
                 </a>
             </li>
             {% endif %}
@@ -168,7 +169,7 @@
             class="sidebar-item  ">
             <a href="{% url 'settings' %}" class='sidebar-link'>
                <i class="bi bi-gear"></i>
-                <span>Settings</span>
+                <span> {% trans 'Settings' %}</span>
             </a>
             
 
@@ -178,7 +179,7 @@
             class="sidebar-item  ">
             <a href="{% url 'logout' %}" class='sidebar-link'>
                 <i class="bi bi-box-arrow-left"></i>
-                <span>Logout</span>
+                <span> {% trans 'Logout' %}</span>
             </a>
             
 
@@ -217,6 +218,7 @@
 
 {% block content %}
 
+
 {% endblock content %}
 
   <footer>
@@ -229,25 +231,10 @@
     
     
     <script src="/static/assets/compiled/js/app.js"></script>
-    
 
-    
-<!-- Need: Apexcharts -->
 <script src="/static/assets/extensions/apexcharts/apexcharts.min.js"></script>
-<!-- <script src="/static/assets/static/js/pages/dashboard.js"></script> -->
 
 <script src="/static/assets/extensions/sweetalert2/sweetalert2.min.js"></script>>
-<!-- <script src="/static/assets/static/js/pages/sweetalert2.js"></script>> -->
-
-
-
-
-
-
-
-
-
-
 
 </body>
 

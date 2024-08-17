@@ -16,6 +16,7 @@
 </head>
 
 <body>
+    {% load i18n %}
     <script src="/static/assets/static/js/initTheme.js"></script>
     <div id="auth">
         
@@ -23,8 +24,9 @@
     <div class="col-lg-5 col-12">
         <div id="auth-left">
             </div>
-            <h1 class="auth-title">Ro‘yxatdan o‘tish</h1>
-            <p class="auth-subtitle mb-5">Bizning ilovamizdan  ro'yxatdan o'tish uchun ma'lumotlaringizni kiriting.</p>
+            <h1 class="auth-title">{% trans 'Register' %}</h1>
+            <p class="auth-subtitle mb-5">{% trans 'Enter your details to register from our app.
+                ' %}</p>
 
             <form method="post" action="{% url 'register' %}">
                 {% csrf_token %}
@@ -58,10 +60,10 @@
                         <i class="bi bi-shield-lock"></i>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Ro‘yxatdan o‘tish</button>
+                <button type="submit" class="btn btn-primary btn-block btn-lg shadow-lg mt-5">{% trans 'Register' %}</button>
             </form>
             <div class="text-center mt-5 text-lg fs-4">
-                <p class='text-gray-600'>Hisobingiz bormi?<a href="{% url 'login' %}" class="font-bold">Kirish</a>.</p>
+                <p class='text-gray-600'>Hisobingiz bormi?<a href="{% url 'login' %}" class="font-bold">{% trans 'Login' %}</a>.</p>
             </div>
         </div>
     </div>

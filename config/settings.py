@@ -102,6 +102,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -170,9 +171,19 @@ USE_I18N = True
 
 USE_TZ = True
 
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'uz'
+gettext = lambda s:s
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
+
+LANGUAGES = (
+    ('en',gettext("English")),
+    ('uz',gettext("Uzbek")),
+    ('ru',gettext("Russian")),
+)
+LANGUAGE_CODE = 'ru'
+
+LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
+
 
 
 LOGIN_URL = '/login/'

@@ -5,7 +5,7 @@
         
         <form method="get" action="" class="row g-3">
             <div class="col-1">
-                <label for="month">Oy:</label>
+                <label for="month">{% trans 'Month' %}:</label>
                 <select id="month" name="month" class="form-control">
                     {% for m in  number_list %}
                     <option value="{{ m }}" {% if m == selected_month %}selected{% endif %}>{{ m }}</option>
@@ -13,11 +13,11 @@
                 </select>
             </div>
             <div class="col-auto">
-                <label for="year">Yil:</label>
+                <label for="year">{% trans "Year" %}:</label>
                 <input type="number" id="year" name="year" class="form-control" value="{{ selected_year }}">
             </div>
             <div class="">
-                <button type="submit" class="btn btn-primary">Filtrlash</button>
+                <button type="submit" class="btn btn-primary">{% trans 'Filtering' %}</button>
             </div>
         </form>
     </div>
@@ -27,7 +27,7 @@
         <div class="col-6 col-md-4">
             <div class="card">
                 <div class="card-header">
-                    <h4><a href="#">{{ i.teacher.username }} </a>  \   {{i.amount}} so'm</h4>
+                    <h4><a href="#">{{ i.teacher.username }} </a>  \   {{i.amount}} {% trans 'Som' %} </h4>
                     
                 </div>
                 <div class="card-body">
@@ -47,7 +47,7 @@
        ` {% for i in cash %}`
         let optionsVisitorsProfile{{ i.id }} = {
             series: [{{ i.total_kirim }},{{i.amount}}, {{i.total_chiqim}} ], // bu yerda haqiqiy qiymatlarni o'zgartirishingiz mumkin
-            labels: ["Kirim", "Summa", "Chiqim"],
+            labels: ["{% trans 'Income' % }", "{% trans 'residual' %}", "{% trans 'Expense' %}"],
             colors: ["#435ebe", "#55c6e8", "#010101"],
             chart: {
                 type: "donut",

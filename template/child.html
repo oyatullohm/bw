@@ -1,21 +1,19 @@
 {% extends 'wrapper.html' %}
 {% block content %}
+{% load i18n %}
 <div class="form-group">
     <div class="row">
         <div class="col-2">
             {% if request.user.is_child %}
             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
             data-bs-target="#inlineForm">
-            Qo'shish
+            {% trans 'Add' %}
         </button>
         {% endif %}
     </div>
     
     <div class="col-5">
-        <!-- <div class="input-group">
-            
-            <input type="search" id="form1" class="form-control" placeholder="Search">
-        </div> -->
+
     </div>
 </div>
 
@@ -25,7 +23,7 @@
             <div class="modal-content">
                
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel33">Bola Qo'shish</h4>
+                    <h4 class="modal-title" id="myModalLabel33">{% trans 'Add a child' %}</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                
@@ -33,21 +31,21 @@
                     <form action="" method="post">
                         {% csrf_token %}
                         <div class="form-group mb-1">
-                            <label for="name" class="form-label">Ism Familys</label>
+                            <label for="name" class="form-label">{% trans 'Name ' %}</label>
                             <input type="text" name="name" required id="name" class="form-control" placeholder="Ism Familys">
                         </div>
                         <div class="form-group mb-1">
-                            <label for="phone" class="form-label">Phone</label>
+                            <label for="phone" class="form-label">{% trans 'Phone' %}</label>
                             <input type="text" name="phone"  required id="phone" class="form-control" placeholder="Phone">
                         </div>
                         <div class="form-group mb-1">
-                            <label for="date" class="form-label">Tug'ilgan Sana</label>
-                            <input type="date" name="date" required id="date" class="form-control">
+                            <label for="date" class="form-label">{% trans 'Date of birth' %}</label>
+                            <input type="text" name="date" required id="date" class="form-control">
                             
                         </div> 
 
                         <div class="form-group mb-1">
-                            <label for="group" class="form-label">Group</label>
+                            <label for="group" class="form-label">{% trans 'Group' %}</label>
                             <select name="group" id="group" class="form-control">
                                 {% for i in group %}
                                 <option value="{{ i.id }}">{{ i.name }}</option>
@@ -58,11 +56,11 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                                 <i class="bx bx-x d-block d-sm-none"></i>
-                                <span class="d-none d-sm-block">Close</span>
+                                <span class="d-none d-sm-block">{% trans "Close"% }</span>
                             </button>
                             <button type="submit" class="btn btn-primary ms-1">
                                 <i class="bx bx-check d-block d-sm-none"></i>
-                                <span class="d-none d-sm-block">Save</span>
+                                <span class="d-none d-sm-block">{% trans "Save" %}</span>
                             </button>
                         </div>
                     </form>
@@ -77,7 +75,7 @@
     <section class="section">
         <div class="card">
             <div class="card-header">
-                <h4 class="card-title">Bolalar</h4>
+                <h4 class="card-title">{% trans 'Children' %}</h4>
             </div>
             <div class="card-body">
                 {% for i in child %}
@@ -88,7 +86,7 @@
                             role="document">
                             <div class="modal-content">
                                 <div class="modal-header bg-danger">
-                                    <h5 class="modal-title white" id="myModalLabel120">Delete
+                                    <h5 class="modal-title white" id="myModalLabel120">{% trans "Delete" %}
                                     </h5>
                                     <button type="button" class="close" data-bs-dismiss="modal"
                                         aria-label="Close">
@@ -102,14 +100,14 @@
                                     <button type="button" class="btn btn-light-secondary"
                                         data-bs-dismiss="modal">
                                         <i class="bx bx-x d-block d-sm-none"></i>
-                                        <span class="d-none d-sm-block">Close</span>
+                                        <span class="d-none d-sm-block">{% trans "Close" %}</span>
                                     </button>
                                     <form action="{% url 'delete_chaild' i.id %}" method="post">
                                         {% csrf_token %}
                                     <button type="submit" class="btn btn-danger ms-1"
                                         data-bs-dismiss="modal">
                                         <i class="bx bx-check d-block d-sm-none"></i>
-                                        <span class="d-none d-sm-block">Delete</span>
+                                        <span class="d-none d-sm-block">{% trans "Delete" }</span>
                                     </button>
                                 </form>
                                 </div>
@@ -124,28 +122,28 @@
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h4 class="modal-title" id="myModalLabel33">Tahtirlash</h4>
+                                    <h4 class="modal-title" id="myModalLabel33">{% trans 'Update' %}</h4>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <form action="{% url 'chaild_edit' i.id %}" method="post">
                                         {% csrf_token %}
                                         <div class="form-group mb-1">
-                                            <label for="name" class="form-label">Ism Familys</label>
+                                            <label for="name" class="form-label">{% trans 'Name' %}</label>
                                             <input type="text" name="name" required id="name" class="form-control"  value="{{i.name}}" placeholder="Ism Familys">
                                         </div>
                                         <div class="form-group mb-1">
-                                            <label for="phone" class="form-label">Phone</label>
+                                            <label for="phone" class="form-label">{% tarns "Phone" %}</label>
                                             <input type="text" name="phone"  required id="phone" class="form-control" value="{{i.phone}}" placeholder="Phone">
                                         </div>
                                         <div class="form-group mb-1">
-                                            <label for="date" class="form-label">Tug'ilgan Sana {{ i.birth_date}}</label>
-                                            <input   name="date" required id="date" value="{{ i.birth_date}}"class="form-control">
+                                            <label for="date" class="form-label"> {% trans 'Date of birth' %} {{ i.birth_date}}</label>
+                                            <input   name="text" required id="date" value="{{ i.birth_date}}"class="form-control">
                                             
                                         </div> 
                 
                                         <div class="form-group mb-1">
-                                            <label for="group" class="form-label">Group</label>
+                                            <label for="group" class="form-label">{% trans "Group" %}</label>
                                             <select name="group" id="group" class="form-control">
                                                 <option value="{{ i.group.id }}">{{ i.group.name }}</option>
                                                 {% for f in group %}
@@ -160,11 +158,11 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                                                 <i class="bx bx-x d-block d-sm-none"></i>
-                                                <span class="d-none d-sm-block">Close</span>
+                                                <span class="d-none d-sm-block">{% trans "Close" %}</span>
                                             </button>
                                             <button type="submit" class="btn btn-primary ms-1">
                                                 <i class="bx bx-check d-block d-sm-none"></i>
-                                                <span class="d-none d-sm-block">Save</span>
+                                                <span class="d-none d-sm-block"> {% trans "Save" %}</span>
                                             </button>
                                         </div>
                                     </form>
@@ -191,9 +189,9 @@
                                 {% if request.user.is_child %}
                                 <!-- <button class="btn icon icon-left btn-primary me-2 text-nowrap"><i class="bi bi-eye-fill"></i> Show</button> -->
                                 <button class="btn icon icon-left btn-warning me-2 text-nowrap" data-bs-toggle="modal"
-                                data-bs-target="#inlineForm{{i.id}}"  ><i class="bi bi-pencil-square"></i> Edit</button>
+                                data-bs-target="#inlineForm{{i.id}}"  ><i class="bi bi-pencil-square"></i> {% trans 'Update' %}</button>
                                 <button class="btn icon icon-left btn-danger me-2 text-nowrap" data-bs-toggle="modal"
-                                data-bs-target="#danger{{i.id}}"><i class="bi bi-x-circle"></i> Remove</button>
+                                data-bs-target="#danger{{i.id}}"><i class="bi bi-x-circle"></i> {% trans "Delete" %} </button>
                                 {% endif %}
                             </div>
 
@@ -243,11 +241,11 @@
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                                                                 <i class="bx bx-x d-block d-sm-none"></i>
-                                                                <span class="d-none d-sm-block">Close</span>
+                                                                <span class="d-none d-sm-block">{% trans "Close" %}</span>
                                                             </button>
                                                             <button type="submit" class="btn btn-primary ms-1">
                                                                 <i class="bx bx-check d-block d-sm-none"></i>
-                                                                <span class="d-none d-sm-block">Save</span>
+                                                                <span class="d-none d-sm-block">{% trans "Close" %}</span>
                                                             </button>
                                                         </div>
                                                     </form>
@@ -340,62 +338,6 @@
         </div>
     </section>
 </div>
-
-
-<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
-<!-- <script>
-    $(document).ready(function() {
-    // search inputiga event listener qo'shish
-    $('#form1').on('keyup', function() {
-
-        let query = $(this).val();
-        if (query.length > 2) {
-            $.ajax({
-                url: '/search-child/',  // O'z URL manzilingizni kiriting
-                data: {
-                    'query': query
-                },
-                dataType: 'json',
-                success: function(data) {
-                    let tbody = $('#search-results');
-                    tbody.empty();  // Jadvalning tanlangan qismidagi eski natijalarni tozalash
-                    
-                    $.each(data, function(index, item) {
-                        let row = `
-                            <tr>
-                                <td class="text-bold-500" data-bs-toggle="modal" data-bs-target="#inlineForm${index}">
-                                    <a style="color: blue;">${item.date}</a>
-                                </td>
-                             
-                                <td class="text-bold-500">${item.user__username} </td>
-                                <td class="text-bold-500">${item.teacher_1__username}  </td>
-                                <td class="text-bold-500">${item.teacher_2__username}  </td>
-                                <td class="text-bold-500">${item.summa}</td>
-                                <td class="text-bold-500">
-                                    <a href="#" id="info-${index}" 
-                                        data-izoh="${item.description}"
-                                        
-                                        data-name_1="${item.teacher_1__username}"
-                                        data-name_2="${item.teacher_2__username}"
-                                        data-1_before_cash="${item.teacher_1_before_cash || ''}"
-                                        data-1_after_cash="${item.teacher_1_after_cash || ''}" 
-
-                                        data-2_before_cash="${item.teacher_2_before_cash || ''}"
-                                        data-2_after_cash="${item.teacher_2_after_cash || ''}"
-                                        >Info</a>
-                                </td>
-                            </tr>`;
-                        tbody.append(row);  // Jadval qismiga yangi qator qo'shish
-                    });
-
-                    
-                   
-                }
-            });
-        }
-    });
-}); -->
-
 </script>
 
 {% endblock content %}

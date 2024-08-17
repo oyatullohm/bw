@@ -1,12 +1,12 @@
 {% extends 'wrapper.html' %}
 {% block content %}
-
+{% load i18n %}
 <div class="form-group">
     <div class="row">
         <div class="col-2">
 
             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#inlineForm">
-                Otkazma
+                {% trans 'Transfer' %}
             </button>
         </div>
             <div class="col-5">
@@ -21,7 +21,7 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel33">Otkazma Qoshish</h4>
+                    <h4 class="modal-title" id="myModalLabel33"> {% trans 'Add transfer' %}</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -29,7 +29,7 @@
                         {% csrf_token %}
                    
                     <div class="form-group mb-1">
-                        <label for="description" class="form-label">Kimdan</label>
+                        <label for="description" class="form-label"> {% trans 'From whom' %}</label>
                         <select name="teacher_1" required  id="teacher_1" class="form-control">
 
                             {% for i in teachar %}
@@ -39,7 +39,7 @@
                         </select>
                     </div> 
                     <div class="form-group mb-1">
-                        <label for="description" class="form-label">Kimga</label>
+                        <label for="description" class="form-label"> {% trans 'To whom' %}</label>
                         <select name="teacher_2"  id="teacher_2" class="form-control">
                             {% for i in teachar %}
                             <option value="{{ i.id }}">{{ i }}</option>
@@ -47,22 +47,22 @@
                         </select>
                     </div>
                     <div class="form-group mb-1">
-                        <label for="amount" class="form-label">Summa</label>
+                        <label for="amount" class="form-label">{% trans 'Som' %}</label>
                         <input type="number" name="amount" required id="amount" class="form-control"  placeholder="Summa">
                     </div>
                     <div class="form-group mb-1">
-                        <label for="description" class="form-label">Izoh</label>
+                        <label for="description" class="form-label">{% trans 'Comment' %}</label>
                         <input type="text" name="payment_description" required id="transfer_description" class="form-control" placeholder="Izoh">
                     </div>
                  </form>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
                             <i class="bx bx-x d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Close</span>
+                            <span class="d-none d-sm-block">{% trans 'Close' %}</span>
                         </button>
                         <button type="button" class="btn btn-primary ms-1" id="transfer_create">
                             <i class="bx bx-check d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">Save</span>
+                            <span class="d-none d-sm-block">{% trans 'Save' %}</span>
                         </button>
                     
                     </div>
@@ -82,16 +82,16 @@
                 <div class="card-content">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <h4> Chiqimlar</h4>
+                            <h4> {% trans 'Transfer' %}</h4>
                             <table class="table table-lg">
                                 <thead>
                                     <tr>
-                                        <th>Sana</th>
-                                        <th>Hodim</th>
-                                        <th>Kimdan</th>
-                                        <th>Kimga</th>
-                                        <th>Summa</th>
-                                        <th>Info</th>
+                                        <th> {% trans 'Date' %}</th>
+                                        <th>{% trans 'Employee' %}</th>
+                                        <th>{% trans 'From whom' %}</th>
+                                        <th>{% trans 'To whom'' %}</th>
+                                        <th>{% trans 'Som' %}</th>
+                                        <th>{% trans 'Info' %}</th>
                                     </tr>
                                 </thead>
                                 <tbody id="search-results">
@@ -113,7 +113,7 @@
                                             data-name_2="{{t.teacher_2}}"
                                             data-2_after_cash="{{t.teacher_2_after_cash}}"
                                             data-2_before_cash="{{t.teacher_2_before_cash}}"
-                                            >Info</a>
+                                            >  {% trans 'Info' %}</a>
                                             
                                         </td>
                                     </tr>
@@ -132,10 +132,6 @@
 </section>
 
 
-
-
-
-<!-- Button to open the modal -->
 
 
 {% if transfer.paginator.num_pages > 1 %}
@@ -396,11 +392,6 @@ $(document).ready(function() {
     });
 });
 
-
-
 </script>
-
-
-
 
 {% endblock content %}

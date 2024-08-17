@@ -83,7 +83,7 @@ class Child(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='children')
     name = models.CharField(max_length=100)
     tarif = models.ForeignKey(TarifCompany, on_delete=models.SET_NULL, null=True, blank=True,)
-    birth_date = models.DateField()
+    birth_date = models.CharField(max_length=25)
     phone = models.CharField(max_length=15)
     status = models.PositiveIntegerField(default=1)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='child', null=True, blank=True)
