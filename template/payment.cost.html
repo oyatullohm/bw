@@ -45,7 +45,7 @@
                             <i class="bx bx-x d-block d-sm-none"></i>
                             <span class="d-none d-sm-block">Close</span>
                         </button>
-                        <button type="button" class="btn btn-primary ms-1" id="payment_create">
+                        <button type="submit" class="btn btn-primary ms-1" id="payment_create">
                             <i class="bx bx-check d-block d-sm-none"></i>
                             <span class="d-none d-sm-block">Save</span>
                         </button>
@@ -246,6 +246,7 @@
 
 
     document.getElementById('payment_create').addEventListener('click', function() {
+    console.log(111)
     const amount = document.getElementById('payment_amount').value;
     const description = document.getElementById('payment_description').value;
     const paymentType = document.getElementById('payment_payment_type').value;
@@ -447,8 +448,5 @@ $(document).ready(function() {
     });
 });
 </script>
-
-
-
 
 {% endblock content %}
