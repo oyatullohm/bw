@@ -68,7 +68,7 @@ class RegisterView(View):
                         company=company,
                         username=username,
                         phone=phone,
-                        hired_date = timezone.now(),
+                        # hired_date = timezone.now(),
                         type = 1,
                         is_payment = True,
                         is_salary = True,
