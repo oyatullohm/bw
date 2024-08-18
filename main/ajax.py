@@ -130,14 +130,6 @@ class PaymentCreateView(View):
             return JsonResponse({'status': 'fail', 'message': str(e)}, status=400)
 
 
-@login_required    
-def get_teacher_cash(request):
-    teacher_id = request.GET.get('teacher_id')
-    teacher = get_object_or_404(Teacher, id=teacher_id)
-    cash = teacher.cash.amount  # teacherning cash summa qiymatini olamiz
-    return JsonResponse({'cash': cash})
-
-
 class TransferCreateView(View):
     @method_decorator(require_POST)
     def post(self, request, *args, **kwargs):
@@ -252,3 +244,12 @@ def search_child(request):
         results = list(results.values('id', 'name',  'tarif__name','birth_date','phone','group__name')) 
         return JsonResponse(results, safe=False)
     return JsonResponse({'status':'success'})
+
+
+@login_required    
+def get_teacher_cash(request):
+    teacher_id = request.GET.get('teacher_id')
+    teacher = get_object_or_404(Teacher, id=teacher_id)
+    cash = teacher.cash.amount  # teacherning cash summa qiymatini olamiz
+    return JsonResponse({'cash': cash})
+

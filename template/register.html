@@ -25,8 +25,7 @@
         <div id="auth-left">
             </div>
             <h1 class="auth-title">{% trans 'Register' %}</h1>
-            <p class="auth-subtitle mb-5">{% trans 'Enter your details to register from our app.
-                ' %}</p>
+            <p class="auth-subtitle mb-5">{% trans 'Enter your details to register from our app.' %}</p>
 
             <form method="post" action="{% url 'register' %}">
                 {% csrf_token %}

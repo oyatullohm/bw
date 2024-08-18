@@ -180,7 +180,7 @@ LANGUAGES = (
     ('uz',gettext("Uzbek")),
     ('ru',gettext("Russian")),
 )
-LANGUAGE_CODE = 'ru'
+LANGUAGE_CODE = 'uz'
 
 LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 

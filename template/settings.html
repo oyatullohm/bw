@@ -71,6 +71,29 @@
             
               <div class="col-xl-6  col-md-6 col-sm-12">
                 <div class="card">
+                    <br>
+                    <div class="dropdown"  style="margin-left: 22px;">
+                        <button href="#" class="btn bg-gradient-dark btn-sm   dropdown-toggle mb-0 me-2 mt-2 mt-md-0 " data-bs-toggle="dropdown" id="navbarDropdownMenuLink2">
+                          {{ request.LANGUAGE_CODE|upper }}
+              
+                       </button>
+                       <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                         <li>
+                               <a class="dropdown-item" href="/uz/" type="button">Uzbek</a>
+                         </li>
+                         <li>
+                               <a class="dropdown-item" href="/en/" type="button">English </a>
+                         </li>
+                      <li>
+                               <a class="dropdown-item" href="/ru/" type="button">Russian</a>
+                      </li>
+              
+              
+                       </ul>
+                      </div>
+                      <br>
+                </div>
+                <div class="card">
                     <div class="card-body">
                         <div class="row">
 
@@ -143,6 +166,7 @@
                     </div>
 
                     </div>  
+                    
 
                 </div>  
               

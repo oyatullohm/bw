@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-17 22:10+0500\n"
+"POT-Creation-Date: 2024-08-18 18:29+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,181 +20,236 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: config/settings.py:179
+#: config/settings.py:186
 msgid "English"
 msgstr "English"
 
-#: config/settings.py:180
+#: config/settings.py:187
 msgid "Uzbek"
 msgstr "Uzbek"
 
-#: config/settings.py:181
+#: config/settings.py:188
 msgid "Russian"
 msgstr "Russian"
 
-#: template/cash.html:8 template/payment.cost.html:113
+#: main/views.py:175
+msgid "tarif almashdi "
+msgstr ""
+
+#: main/views.py:197
+#, python-brace-format
+msgid "{teacher.username} Qoshildi "
+msgstr ""
+
+#: main/views.py:199
+msgid "usename  band  yoki parollar birhil emass "
+msgstr ""
+
+#: main/views.py:346
+#, python-brace-format
+msgid "{child.name} Qoshildi {group.name} ga"
+msgstr ""
+
+#: main/views.py:361
+msgid "ozgarishlar amalga oshdi "
+msgstr ""
+
+#: main/views.py:371
+#, python-brace-format
+msgid "{child.name} Ochirildi "
+msgstr ""
+
+#: main/views.py:398
+msgid "Tarif Qoshildi"
+msgstr ""
+
+#: main/views.py:414 main/views.py:426
+msgid "Tarif Ozgardi "
+msgstr ""
+
+#: main/views.py:509
+#, python-brace-format
+msgid "{child.name} Tplov Qildi "
+msgstr ""
+
+#: main/views.py:511
+msgid "sizda shahsi kassa yoqilmagan"
+msgstr ""
+
+#: main/views.py:643
+msgid "tarif almashdi"
+msgstr ""
+
+#: main/views.py:654
+msgid "ish kuni almashdi"
+msgstr ""
+
+#: template/cash.html:9 template/payment.cost.html:113
 #: template/payment.html:109
 msgid "Month"
-msgstr ""
+msgstr "Месяц"
 
-#: template/cash.html:16
+#: template/cash.html:17
 msgid "Year"
-msgstr ""
+msgstr "Год"
 
-#: template/cash.html:20
+#: template/cash.html:21
 msgid "Filtering"
-msgstr ""
+msgstr "Фильтрация"
 
-#: template/cash.html:30 template/group-detail.html:86
-#: template/payment.cost.html:76 template/payment.cost.html:109
-#: template/payment.html:31 template/payment.html:70 template/payment.html:105
-#: template/settings.html:19 template/tarif.html:45 template/tarif.html:94
-#: template/tarif.html:132 template/transfer.html:50 template/transfer.html:93
+#: template/cash.html:31 template/group-detail.html:86
+#: template/payment.cost.html:34 template/payment.cost.html:76
+#: template/payment.cost.html:109 template/payment.html:31
+#: template/payment.html:70 template/payment.html:105 template/settings.html:19
+#: template/tarif.html:45 template/tarif.html:94 template/tarif.html:132
+#: template/transfer.html:50 template/transfer.html:93
 msgid "Som"
-msgstr ""
+msgstr "Сом"
 
-#: template/cash.html:50 template/wrapper.html:149
+#: template/cash.html:51 template/wrapper.html:149
 msgid "Income"
+msgstr "Доход"
+
+#: template/cash.html:51
+msgid "residual"
 msgstr ""
 
-#: template/cash.html:50
+#: template/cash.html:51
 msgid "Expense"
-msgstr ""
+msgstr "Расходы"
 
-#: template/child.html:10 template/group.html:23 template/payment.cost.html:10
+#: template/child.html:11 template/group.html:23 template/payment.cost.html:10
 #: template/payment.html:10 template/tarif.html:18 template/teacher-all.html:18
 msgid "Add"
-msgstr ""
+msgstr "Добавлять"
 
-#: template/child.html:26
+#: template/child.html:27
 msgid "Add a child"
-msgstr ""
+msgstr "Добавить ребенок"
 
-#: template/child.html:34
+#: template/child.html:35
 msgid "Name "
-msgstr ""
+msgstr "Имя"
 
-#: template/child.html:38 template/settings.html:108
+#: template/child.html:39 template/child.html:137 template/settings.html:131
 #: template/teacher-all.html:36 template/teacher.html:20
 msgid "Phone"
-msgstr ""
+msgstr "Телефон"
 
-#: template/child.html:42 template/child.html:140
+#: template/child.html:43 template/child.html:141
 msgid "Date of birth"
-msgstr ""
+msgstr "Дата рождения"
 
-#: template/child.html:48 template/child.html:146 template/group.html:11
+#: template/child.html:49 template/child.html:147 template/group.html:11
 #: template/teacher-all.html:102 template/teacher.html:36
 #: template/wrapper.html:98
 msgid "Group"
-msgstr ""
+msgstr "Группа"
 
-#: template/child.html:63 template/child.html:165
+#: template/child.html:64 template/child.html:166
 #: template/group-detail.html:102 template/group.html:49
 #: template/payment.cost.html:56 template/payment.cost.html:125
 #: template/payment.html:48 template/payment.html:121 template/settings.html:64
-#: template/settings.html:140 template/tarif.html:56 template/tarif.html:143
+#: template/settings.html:163 template/tarif.html:56 template/tarif.html:143
 #: template/teacher-all.html:63 template/teacher.html:84
 #: template/teacher.html:105 template/teacher.html:131
 #: template/transfer.html:65
 msgid "Save"
-msgstr ""
+msgstr "Сохранять"
 
-#: template/child.html:78 template/index.html:58 template/wrapper.html:112
+#: template/child.html:79 template/group.html:72 template/index.html:58
+#: template/teacher.html:64 template/wrapper.html:112
 msgid "Children"
-msgstr ""
+msgstr "Дети"
 
-#: template/child.html:89 template/child.html:194
+#: template/child.html:90 template/child.html:195
 msgid "Delete"
-msgstr ""
+msgstr "Удалить"
 
-#: template/child.html:103 template/child.html:161 template/child.html:244
-#: template/child.html:248 template/group-detail.html:99 template/group.html:45
+#: template/child.html:104 template/child.html:162 template/child.html:245
+#: template/child.html:249 template/group-detail.html:99 template/group.html:45
 #: template/payment.cost.html:52 template/payment.cost.html:122
 #: template/payment.html:44 template/payment.html:118 template/tarif.html:52
 #: template/tarif.html:139 template/teacher-all.html:59
 #: template/transfer.html:61
 msgid "Close"
-msgstr ""
+msgstr "Закрывать"
 
-#: template/child.html:125 template/child.html:192
+#: template/child.html:126 template/child.html:193
 #: template/payment.cost.html:102 template/payment.html:98
 msgid "Update"
-msgstr ""
+msgstr "Обновлять"
 
-#: template/child.html:132 template/group-detail.html:16 template/group.html:37
-#: template/group.html:69 template/settings.html:17 template/settings.html:88
+#: template/child.html:133 template/group-detail.html:16 template/group.html:37
+#: template/group.html:69 template/settings.html:17 template/settings.html:111
 #: template/tarif.html:32 template/tarif.html:92 template/teacher-all.html:99
 #: template/teacher.html:16
 msgid "Name"
-msgstr ""
+msgstr "Имя"
 
 #: template/group-detail.html:17 template/group.html:70
 #: template/teacher-all.html:10
 msgid "Teacher"
-msgstr ""
+msgstr "Учитель"
 
 #: template/group-detail.html:18 template/group.html:71
 msgid "Helper"
-msgstr ""
+msgstr "Помощник"
 
 #: template/group-detail.html:19
 msgid "Number of children"
-msgstr ""
+msgstr "Количество детей"
 
 #: template/group-detail.html:79
 msgid "Payment"
-msgstr ""
+msgstr "Оплата"
 
 #: template/group-detail.html:90
 msgid "Selected month"
-msgstr ""
+msgstr "Выбранный месяц"
 
 #: template/group-detail.html:94 template/payment.cost.html:38
-#: template/payment.html:113
-msgid "Explanation"
-msgstr ""
+#: template/payment.cost.html:117 template/payment.html:35
+#: template/payment.html:113 template/transfer.html:54
+msgid "Comment"
+msgstr "Комментарий"
 
 #: template/group.html:15
 msgid "Teachers"
-msgstr ""
+msgstr "Учителя"
 
 #: template/group.html:30
 msgid "Add group"
-msgstr ""
-
-#: template/group.html:72
-msgid "Chald"
-msgstr ""
+msgstr "Добавить группу"
 
 #: template/group.html:73 template/payment.cost.html:78
 #: template/payment.cost.html:94 template/payment.html:72
 #: template/payment.html:91 template/transfer.html:94
 #: template/transfer.html:116
 msgid "Info"
-msgstr ""
+msgstr "Информация"
 
 #: template/index.html:5 template/teacher.html:75
 msgid "Statistics"
-msgstr ""
+msgstr "Статистика"
 
-#: template/index.html:22 template/settings.html:124
+#: template/index.html:22 template/settings.html:147
 msgid "Working day"
-msgstr ""
+msgstr "Рабочий день"
 
 #: template/index.html:41
 msgid "Employees"
-msgstr ""
+msgstr "Сотрудники"
 
 #: template/index.html:75 template/settings.html:22
 msgid "Groups"
-msgstr ""
+msgstr "Группы"
 
 #: template/index.html:88
 msgid "Annual report"
-msgstr ""
+msgstr "Годовой отчет"
 
-#: template/login.html:24 template/login.html:43 template/register.html:66
+#: template/login.html:24 template/login.html:43 template/register.html:65
 msgid "Login"
 msgstr "Aвторизоваться"
 
@@ -203,149 +258,140 @@ msgid "Keep me logged in"
 msgstr "Не выходить из системы"
 
 #: template/login.html:49
-msgid "Don"
-msgstr ""
+msgid "Don't have an account"
+msgstr "Нет учетной записи"
 
 #: template/login.html:49
 msgid "Sign up"
-msgstr ""
+msgstr "Зарегистрироваться"
 
 #: template/payment.cost.html:28
 msgid "Add cost"
-msgstr ""
-
-#: template/payment.cost.html:34
-msgid "som"
-msgstr ""
+msgstr "Добавить стоимость"
 
 #: template/payment.cost.html:75 template/payment.html:67
 #: template/tarif.html:95 template/transfer.html:89
 msgid "Date"
-msgstr ""
+msgstr "Дата"
 
 #: template/payment.cost.html:77 template/settings.html:21
 #: template/transfer.html:90
 msgid "Employee"
-msgstr ""
-
-#: template/payment.cost.html:117 template/payment.html:35
-#: template/transfer.html:54
-msgid "Comment"
-msgstr ""
+msgstr "Сотрудник"
 
 #: template/payment.html:26
 msgid "Add Payment"
-msgstr ""
+msgstr "Добавить платеж"
 
 #: template/payment.html:69 template/settings.html:20
 msgid "Child"
-msgstr ""
+msgstr "Ребенок"
 
 #: template/payment.html:71
 msgid "Who is"
-msgstr ""
+msgstr "Кто такой"
 
-#: template/register.html:27 template/register.html:63
+#: template/register.html:27 template/register.html:62
 msgid "Register"
-msgstr ""
+msgstr "Зарегистрироваться"
+
+#: template/register.html:28
+msgid "Enter your details to register from our app."
+msgstr "Введите свои данные для регистрации в нашем приложении."
 
 #: template/settings.html:13 template/tarif.html:10 template/wrapper.html:123
 msgid "Tariffs"
-msgstr ""
+msgstr "Тарифы"
 
 #: template/settings.html:53 template/teacher-all.html:103
 msgid "Tariff"
-msgstr ""
+msgstr "Тариф"
 
-#: template/settings.html:98
+#: template/settings.html:121
 msgid "Work has begun"
-msgstr ""
+msgstr "Работа началась"
 
 #: template/tarif.html:25
 msgid "Add tariff"
-msgstr ""
+msgstr "Добавить тариф"
 
 #: template/tarif.html:37 template/tarif.html:93
 msgid "Status"
-msgstr ""
+msgstr "Статус"
 
 #: template/teacher-all.html:25
-msgid "Add tariffs"
-msgstr ""
+msgid " Tariffs"
+msgstr "Тарифы"
 
 #: template/teacher-all.html:40 template/teacher-all.html:101
 #: template/teacher.html:25
 msgid "Position"
-msgstr ""
+msgstr "Позиция"
 
 #: template/teacher-all.html:100
 msgid " Phone"
-msgstr ""
+msgstr "Телефон"
 
 #: template/teacher-all.html:105 template/teacher.html:139
 msgid "Attendance"
-msgstr ""
+msgstr "Посещаемость"
 
 #: template/teacher.html:56 template/wrapper.html:145
 msgid "Payments"
-msgstr ""
+msgstr "Платежи"
 
 #: template/teacher.html:60
 msgid "Main"
-msgstr ""
-
-#: template/teacher.html:64
-msgid "Bolalar"
-msgstr ""
+msgstr "Основной"
 
 #: template/teacher.html:71
 msgid "Active"
-msgstr ""
+msgstr "Активный"
 
 #: template/teacher.html:79
 msgid "Personal cash"
-msgstr ""
+msgstr "Личный кошелек"
 
 #: template/transfer.html:9 template/transfer.html:85 template/wrapper.html:134
 msgid "Transfer"
-msgstr ""
+msgstr "Передача"
 
 #: template/transfer.html:24
 msgid "Add transfer"
-msgstr ""
+msgstr "Добавить перевод"
 
 #: template/transfer.html:32 template/transfer.html:91
 msgid "From whom"
-msgstr ""
+msgstr "От кого"
 
 #: template/transfer.html:42 template/transfer.html:92
 msgid "To whom"
-msgstr ""
+msgstr "Кому"
 
 #: template/wrapper.html:86
 msgid "Home"
-msgstr ""
+msgstr "Дом"
 
 #: template/wrapper.html:103
 msgid "Educator"
-msgstr ""
+msgstr "Педагог"
 
 #: template/wrapper.html:109
 msgid "Grup"
-msgstr ""
+msgstr "Группа"
 
 #: template/wrapper.html:154
 msgid "Expenses"
-msgstr ""
+msgstr "Затраты"
 
 #: template/wrapper.html:163
 msgid "Cash"
-msgstr ""
+msgstr "Наличные"
 
 #: template/wrapper.html:172
 msgid "Settings"
-msgstr ""
+msgstr "Настройки"
 
 #: template/wrapper.html:182
 msgid "Logout"
-msgstr ""
+msgstr "Выйти"

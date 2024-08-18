@@ -1,6 +1,7 @@
 {% extends 'wrapper.html' %}
 {% block content %}
 {% load i18n %}
+
 <div class="form-group">
     <div class="row">
         <div class="col-2">
@@ -133,7 +134,7 @@
                                             <input type="text" name="name" required id="name" class="form-control"  value="{{i.name}}" placeholder="Ism Familys">
                                         </div>
                                         <div class="form-group mb-1">
-                                            <label for="phone" class="form-label">{% tarns "Phone" %}</label>
+                                            <label for="phone" class="form-label">{% trans 'Phone' %}</label>
                                             <input type="text" name="phone"  required id="phone" class="form-control" value="{{i.phone}}" placeholder="Phone">
                                         </div>
                                         <div class="form-group mb-1">

@@ -15,16 +15,13 @@ urlpatterns = [
 urlpatterns += i18n_patterns (
     path('',include('main.urls')),
     path('login/',LoginView.as_view(),name='login'),
-    path('api/login/', login, name='login_api'),
-    
-    path('register/',RegisterView.as_view(),name='register'),
-    path('register/',RegisterView.as_view(),name='reset_password'),
-    path('logout/', logout_, name='logout'),
     path('admin/', admin.site.urls),
+    path('register/',RegisterView.as_view(),name='register'),
+    path('logout/', logout_, name='logout'),
+    path('api/login/',login, name='login_api'),
+    
 )
 urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT )
-
-
 # urlpatterns += [
 #         re_path(f'^{settings.STATIC_URL.lstrip("/")}(?P<path>.*)$', mediaserve, {'document_root': settings.STATIC_ROOT}),
 #     ]

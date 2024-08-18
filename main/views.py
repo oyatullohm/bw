@@ -16,7 +16,7 @@ from django.db.models.functions import Coalesce
 from django.conf import settings
 from django.db.models.functions import TruncMonth
 from dateutil.relativedelta import relativedelta
-
+from django.utils import translation
 
 class HomeView(LoginRequiredMixin, View):
     login_url = settings.LOGIN_URL
@@ -25,11 +25,12 @@ class HomeView(LoginRequiredMixin, View):
         today = timezone.now()
         last_12_months = [(today - relativedelta(months=i)).strftime("%Y-%m") for i in range(11, -1, -1)]
 
-    # Kirim va chiqim uchun to'liq so'rovlar
+        # Kirim va chiqim uchun to'liq so'rovlar
         payments = Payment.objects.filter(
             company=request.user.company,
             date__gte=today - relativedelta(years=1)
-        ).annotate(month=TruncMonth('date')).values('month', 'payment_type').annotate(total_amount=Sum('amount')).order_by('month')
+        ).annotate(month=TruncMonth('date')).values('month', 'payment_type')\
+            .annotate(total_amount=Sum('amount')).order_by('month')
 
         # Kirim va chiqimni to'plab olish
         revenue_dict = {item['month'].strftime("%Y-%m"): item['total_amount'] for item in payments if item['payment_type'] == 1}
@@ -38,7 +39,7 @@ class HomeView(LoginRequiredMixin, View):
         revenue_data = [float(revenue_dict.get(month, 0)) for month in last_12_months]
         cost_data = [float(cost_dict.get(month, 0)) for month in last_12_months]
         profit_data = [revenue - cost for revenue, cost in zip(revenue_data, cost_data)]
-
+        
         context = {
             'apex_series': [
                 {
@@ -59,8 +60,6 @@ class HomeView(LoginRequiredMixin, View):
             ],
             'last_12_months': last_12_months
         }
-
-
         return render(request, 'index.html', context)
 
 
@@ -151,49 +150,8 @@ class TeacherDetailView(LoginRequiredMixin,View):
                 group_helpers.save()
             group.helper = user
             group.save()
-        return redirect (f'/teacher/{pk}/')
-
-
-@login_required
-def password(request,pk):
-        password = request.POST.get('password')
-        user = get_object_or_404(Teacher, id=pk)
-        user.set_password(password)
-        user.save()
-        return redirect (f'/teacher/{pk}/')
-
-@login_required
-def salary(request, pk):
-    user = get_object_or_404(Teacher, id=pk)
-    tarif =request.POST.get('tarif')
-    tarif = get_object_or_404(TarifCompany, id=tarif)
-    user.tarif = tarif
-    user.save()
-    messages.error(request, 'tarif almashdi ')
-    return redirect(f'/teacher/{pk}/')
-        
-
-@login_required
-def add_teacher(request):
-    company = request.user.company
-    if not Teacher.objects.filter(username=request.POST.get('username')).exists() \
-        and  request.POST.get('password') == request.POST.get('password_2') :
-        teacher = Teacher.objects.create_user(
-        company = company,
-        username=request.POST.get('username'),
-        phone=request.POST.get('phone'),
-        password=request.POST.get('password'),
-        type = request.POST.get('type')
-        )
-        Cash.objects.get_or_create(
-                company=company,
-                teacher=teacher,
-                is_active = False
-            )
-        messages.error(request, f"{teacher.username} Qoshildi ")
-        return redirect ('/teacher')
-    messages.error(request, 'usename  band  yoki parollar birhil emass ')
-    return redirect ('/teacher')
+        language = translation.get_language()
+        return redirect (f'/{language}/teacher/{pk}/')
 
 
 class GroupView(LoginRequiredMixin,View):
@@ -210,17 +168,15 @@ class GroupView(LoginRequiredMixin,View):
             name=name,
             company=request.user.company,
         )
-        return redirect('/group')
+        language = translation.get_language()
+        return redirect(f'/{language}/group')
     
 
 class GroupDetailView(LoginRequiredMixin, View):
     login_url = settings.LOGIN_URL
     
     def get(self, request, pk, *args, **kwargs):
-
-   
         # start_time = time.time() 
-
         company = request.user.company
         page = request.GET.get('page')
         group = Group.objects.get(id=pk)
@@ -289,9 +245,6 @@ class GroupDetailView(LoginRequiredMixin, View):
 
         # end_time = time.time() 
         # duration = end_time - start_time  # So'rovning bajarilish vaqti
-
-
-
         return render(request, 'group-detail.html', context)
 
 
@@ -344,30 +297,8 @@ class ChildView(LoginRequiredMixin,View):
             group = group
         )
         messages.error(request, f"{child.name} Qoshildi {group.name} ga")
-        return redirect('/child')
-
-
-@login_required
-def chaild_edit(request,pk):
-    child = Child.objects.get(id=pk)
-    name = request.POST.get('name')
-    phone = request.POST.get('phone')
-    group = request.POST.get('group')
-    child.name  = name
-    child.phone  = phone
-    child.group_id  = group
-    child.save()
-    messages.error(request, f"ozgarishlar amalga oshdi ")
-    return redirect('child')
-
-
-@login_required
-def delete_chaild(request,pk):
-    child = Child.objects.get(id=pk)
-    child.is_active = False
-    child.save()
-    messages.error(request, f"{child.name} Ochirildi ")
-    return redirect('child')
+        language = translation.get_language()
+        return redirect(f'/{language}/child')
 
 
 class TarifCompanyView(LoginRequiredMixin,View):
@@ -393,116 +324,8 @@ class TarifCompanyView(LoginRequiredMixin,View):
             created = timezone.now()
         )
         messages.error(request, f"Tarif Qoshildi ")
-        return redirect('tarif')
-
-
-@login_required
-def edit_tarif(request,pk):
-    tarif = TarifCompany.objects.get(id=pk)
-    name = request.POST.get('name')
-    status = request.POST.get('status')
-    amount = request.POST.get('amount')
-    tarif.name = name
-    tarif.status = int(status)
-    tarif.amount = amount
-    tarif.created = timezone.now()
-    tarif.save()
-    messages.error(request, f"Tarif Ozgardi ")
-    return redirect('tarif')
-
-
-@login_required
-def chaild_edit_tarif(request,pk):
-    child = get_object_or_404(Child , id=pk)
-    tarif = request.POST.get('tarif')
-    tarif = get_object_or_404( TarifCompany , id=tarif)
-    child.tarif = tarif
-    child.save()
-    messages.error(request,"Tarif Ozgardi ")
-    return redirect('child')
-
-
-@login_required
-def calendar_child(request,pk):
-    child = Child.objects.get(id=pk)
-    today = datetime.today()
-    first_day_of_current_month = today.replace(day=1)
-    first_day_of_previous_month = (first_day_of_current_month - timedelta(days=1)).replace(day=1)
-    attendance = Attendance.objects.filter(
-        child=child,
-        is_active=True,
-        date__range=[first_day_of_previous_month, today]
-    )
-    
-    events = []
-    for record in attendance:
-        events.append({
-            'id': record.id,
-            'title': f'Keldi  {record.child.name}',  
-            'start': record.date.strftime('%Y-%m-%dT%H:%M:%S'), 
-            'allDay': True,
-            'className': 'info',
-            })
-    events_json = json.dumps(events)
-    
-    return render(request, 'fullcalendar.html', {'events_json': events_json})
-
-
-@login_required
-def calendar_teacher(request,pk):
-    teacher = Teacher.objects.get(id=pk)
-    
-    today = datetime.today()
-    first_day_of_current_month = today.replace(day=1)
-  
-    first_day_of_previous_month = (first_day_of_current_month - timedelta(days=1)).replace(day=1)
-
-    attendance = Attendance.objects.filter(
-        teacher=teacher,
-        is_active=True,
-        date__range=[first_day_of_previous_month, today]
-    )
-    
-    events = []
-    for record in attendance:
-        events.append({
-            'id': record.id,
-            'title': f'Keldi  {record.teacher}',  
-            'start': record.date.strftime('%Y-%m-%dT%H:%M:%S'), 
-            'allDay': True,
-            'className': 'info',
-            })
-    events_json = json.dumps(events)
-    
-    return render(request, 'fullcalendar.html', {'events_json': events_json})
-
-
-@login_required
-def payment_child(request, pk):
-    child =  get_object_or_404( Child , id=pk)
-    summa = request.POST.get('summa') 
-    date_month= request.POST.get('date_month')  
-    description = request.POST.get('description', None)
-    cash = request.user.cash
-    if cash.is_active :
-        payment = Payment.objects.create(
-            company = request.user.company,  
-            user=request.user,
-            child = child,
-            amount = summa,
-            payment_type = 1,
-            date_month = date_month,
-            description = description ,
-            
-        )
-        cash = Cash.objects.get(teacher=request.user)
-        cash.amount += Decimal(payment.amount)
-        cash.save()
-        payment.save()
-        messages.error(request, f"{child.name} Tplov Qildi ")
-        return redirect(f'/group-detail/{child.group.id}/')
-    messages.error(request, ' sizda shahsi kassa yoqilmagan  ')
-    return redirect(f'/group-detail/{child.group.id}/')
+        language = translation.get_language()
+        return redirect(f'/{language}/tarif')
 
 
 class PaymentView(LoginRequiredMixin,View):
@@ -634,7 +457,8 @@ class SettingsView(LoginRequiredMixin,View):
         company.tarif = tarif
         company.save()
         messages.error(request,'tarif almashdi ')
-        return redirect('/settings')
+        language = translation.get_language()
+        return redirect(f'/{language}/settings')
 
 
 @login_required
@@ -644,4 +468,189 @@ def working_day(request):
     company.working_day = int(working_day)
     company.save()
     messages.error(request,' ish kuni almashdi  ')
-    return redirect('/settings')
+    language = translation.get_language()
+    return redirect(f'/{language}/settings')
+
+
+
+@login_required
+def edit_tarif(request,pk):
+    tarif = TarifCompany.objects.get(id=pk)
+    name = request.POST.get('name')
+    status = request.POST.get('status')
+    amount = request.POST.get('amount')
+    tarif.name = name
+    tarif.status = int(status)
+    tarif.amount = amount
+    tarif.created = timezone.now()
+    tarif.save()
+    messages.error(request, f"Tarif Ozgardi ")
+    language = translation.get_language()
+    return redirect(f'/{language}/tarif')
+
+
+@login_required
+def chaild_edit_tarif(request,pk):
+    child = get_object_or_404(Child , id=pk)
+    tarif = request.POST.get('tarif')
+    tarif = get_object_or_404( TarifCompany , id=tarif)
+    child.tarif = tarif
+    child.save()
+    messages.error(request,"Tarif Ozgardi ")
+    language = translation.get_language()
+    return redirect(f'/{language}/child')
+
+
+@login_required
+def calendar_child(request,pk):
+    child = Child.objects.get(id=pk)
+    today = datetime.today()
+    first_day_of_current_month = today.replace(day=1)
+    first_day_of_previous_month = (first_day_of_current_month - timedelta(days=1)).replace(day=1)
+    attendance = Attendance.objects.filter(
+        child=child,
+        is_active=True,
+        date__range=[first_day_of_previous_month, today]
+    )
+    
+    events = []
+    for record in attendance:
+        events.append({
+            'id': record.id,
+            'title': f'Keldi  {record.child.name}',  
+            'start': record.date.strftime('%Y-%m-%dT%H:%M:%S'), 
+            'allDay': True,
+            'className': 'info',
+            })
+    events_json = json.dumps(events)
+    
+    return render(request, 'fullcalendar.html', {'events_json': events_json})
+
+
+@login_required
+def calendar_teacher(request,pk):
+    teacher = Teacher.objects.get(id=pk)
+    
+    today = datetime.today()
+    first_day_of_current_month = today.replace(day=1)
+  
+    first_day_of_previous_month = (first_day_of_current_month - timedelta(days=1)).replace(day=1)
+
+    attendance = Attendance.objects.filter(
+        teacher=teacher,
+        is_active=True,
+        date__range=[first_day_of_previous_month, today]
+    )
+    
+    events = []
+    for record in attendance:
+        events.append({
+            'id': record.id,
+            'title': f'Keldi  {record.teacher}',  
+            'start': record.date.strftime('%Y-%m-%dT%H:%M:%S'), 
+            'allDay': True,
+            'className': 'info',
+            })
+    events_json = json.dumps(events)
+    
+    return render(request, 'fullcalendar.html', {'events_json': events_json})
+
+
+@login_required
+def payment_child(request, pk):
+    child =  get_object_or_404( Child , id=pk)
+    summa = request.POST.get('summa') 
+    date_month= request.POST.get('date_month')  
+    description = request.POST.get('description', None)
+    cash = request.user.cash
+    language = translation.get_language()
+    if cash.is_active :
+        payment = Payment.objects.create(
+            company = request.user.company,  
+            user=request.user,
+            child = child,
+            amount = summa,
+            payment_type = 1,
+            date_month = date_month,
+            description = description ,
+            
+        )
+        cash = Cash.objects.get(teacher=request.user)
+        cash.amount += Decimal(payment.amount)
+        cash.save()
+        payment.save()
+        messages.error(request, f"{child.name} Tplov Qildi ")
+        return redirect(f'/{language}/group-detail/{child.group.id}/')
+    messages.error(request, ' sizda shahsi kassa yoqilmagan  ')
+    return redirect(f'/{language}/group-detail/{child.group.id}/')
+
+@login_required
+def chaild_edit(request,pk):
+    child = Child.objects.get(id=pk)
+    name = request.POST.get('name')
+    phone = request.POST.get('phone')
+    group = request.POST.get('group')
+    child.name  = name
+    child.phone  = phone
+    child.group_id  = group
+    child.save()
+    messages.error(request, f"ozgarishlar amalga oshdi ")
+    language = translation.get_language()
+    return redirect(f'/{language}/child')
+
+
+@login_required
+def delete_chaild(request,pk):
+    child = Child.objects.get(id=pk)
+    child.is_active = False
+    child.save()
+    messages.error(request, f"{child.name} Ochirildi ")
+    language = translation.get_language()
+    return redirect(f'/{language}/child')
+
+
+@login_required
+def password(request,pk):
+        password = request.POST.get('password')
+        user = get_object_or_404(Teacher, id=pk)
+        user.set_password(password)
+        user.save()
+        language = translation.get_language()
+
+        return redirect (f'/{language}/teacher/{pk}/')
+
+@login_required
+def salary(request, pk):
+    user = get_object_or_404(Teacher, id=pk)
+    tarif =request.POST.get('tarif')
+    tarif = get_object_or_404(TarifCompany, id=tarif)
+    user.tarif = tarif
+    user.save()
+    messages.error(request, 'tarif almashdi ')
+    language = translation.get_language()
+    return redirect(f'/{language}/teacher/{pk}/')
+        
+
+@login_required
+def add_teacher(request):
+    company = request.user.company
+    if not Teacher.objects.filter(username=request.POST.get('username')).exists() \
+        and  request.POST.get('password') == request.POST.get('password_2') :
+        teacher = Teacher.objects.create_user(
+        company = company,
+        username=request.POST.get('username'),
+        phone=request.POST.get('phone'),
+        password=request.POST.get('password'),
+        type = request.POST.get('type')
+        )
+        Cash.objects.get_or_create(
+                company=company,
+                teacher=teacher,
+                is_active = False
+            )
+        messages.error(request, f"{teacher.username} Qoshildi ")
+        return redirect ('/teacher')
+    messages.error(request, 'usename  band  yoki parollar birhil emass ')
+    language = translation.get_language()
+    return redirect (f'/{language}/teacher')
+
