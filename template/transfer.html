@@ -62,7 +62,7 @@
                         </button>
                         <button type="button" class="btn btn-primary ms-1" id="transfer_create">
                             <i class="bx bx-check d-block d-sm-none"></i>
-                            <span class="d-none d-sm-block">{% trans 'Save' %}</span>
+                            <span class="d-none d-sm-block">{% trans 'Save' %} {{request.LANGUAGE}}</span>
                         </button>
                     
                     </div>
@@ -227,7 +227,7 @@
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
         console.log(csrfToken)
         console.log(22222)
-        fetch('/transfer-create/', {
+        fetch('/{{ request.LANGUAGE_CODE }}/transfer-create/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
