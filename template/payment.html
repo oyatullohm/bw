@@ -36,6 +36,10 @@
                         <input type="text" name="payment_description" required id="payment_description" class="form-control" placeholder="Izoh">
                     </div>
                     <div style="display: none !important;">
+                      
+                        <input type="text" name="csrfmiddlewaretoken" value="{{csrf_token}}" >
+                    </div>
+                    <div style="display: none !important;">
                         <input type="number" name="payment_payment_type" value="1" id="payment_payment_type">
                     </div>
                     <div class="modal-footer">
@@ -108,6 +112,10 @@
                                                                 <div class="form-group mb-1">
                                                                     <label for="date_month{{ p.id }}" class="form-label">{% trans "Month" %} {{ p.date_month | date:"M" }}</label>
                                                                     <input type="date" id="date_month{{ p.id }}" name="date_month" required class="form-control" value="{{ p.date_month|date:'Y-m-d' }}">
+                                                                </div>
+                                                                <div style="display: none !important;">
+                      
+                                                                    <input type="text" name="csrfmiddlewaretoken" value="{{csrf_token}}" >
                                                                 </div>
                                                                 <div class="form-group mb-1">
                                                                     <label for="description{{ p.id }}" class="form-label">{% trans "Comment" %}</label>
