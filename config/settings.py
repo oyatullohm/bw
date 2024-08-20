@@ -11,10 +11,18 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
-from datetime import timedelta
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+from .local_bd import LOCAL_DATABASE
+
+import environ
+env = environ.Env()
+env.read_env()
+DEBUG = env.bool('DEBUG')
+DEBUG = True
+SECRET_KEY = env.str('SECRET_KEY')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -25,7 +33,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SESSION_COOKIE_SECURE = True
 
 # Maxfiy kalitlarni ishlatish
-SECRET_KEY = 'django-insecure-zlfkgg-b@5!b^x$@&mi@x5%p+2jc5%h#9rp2u5#n%17gwb+#$r'
+
 SECURE_SSL_REDIRECT = False
 
 
@@ -34,7 +42,6 @@ SECURE_SSL_REDIRECT = False
 # X_FRAME_OPTIONS = 'DENY'
 # SECURE_CONTENT_TYPE_NOSNIFF = True
 
-DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -132,13 +139,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASES = LOCAL_DATABASE
 
 
 # Password validation

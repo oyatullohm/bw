@@ -142,7 +142,7 @@ msgstr "Sana"
 #: template/teacher-all.html:102 template/teacher.html:36
 #: template/wrapper.html:98
 msgid "Group"
-msgstr "Druppa"
+msgstr "Gruppa"
 
 #: template/child.html:64 template/child.html:166
 #: template/group-detail.html:102 template/group.html:49

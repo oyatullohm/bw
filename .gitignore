@@ -16,5 +16,6 @@ f.py
 .gpj
 jpg/
 .DS_store
+.env
 set_database.py
 server.txt
