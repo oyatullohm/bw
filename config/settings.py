@@ -23,6 +23,7 @@ env.read_env()
 DEBUG = env.bool('DEBUG')
 DEBUG = True
 SECRET_KEY = env.str('SECRET_KEY')
+SECRET_KEY = 'django-insecure-zlfkgg-b@5!b^x$@&mi@x5%p+2jc5%h#9rp2u5#n%17gwb+#$r'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
