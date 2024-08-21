@@ -1,55 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<style>
-    .logo img {
-        height: 50px !important;
-        border-radius:  50% !important;
-    }
-/* Mobil qurilmalar uchun media query */
-@media (max-width: 768px) {
-    .sidebar-item {
-        padding: 16px 20px; /* Elementlar orasidagi bo'shliqni oshirish */
-    }
 
-    .sidebar-item .sidebar-link {
-        font-size: 32px; /* Matnning o'lchamini kattalashtirish */
-    }
-
-    .sidebar-item .bi {
-        font-size: 32px; /* Piktogramma o'lchamini kattalashtirish */
-    }
-
-    .sidebar-item .sidebar-link span {
-        font-size: 32px; /* Matnning o'lchamini kattalashtirish */
-    }
-}
-
-/* Katta ekranlar uchun standart stil */
-.sidebar-item {
-    padding: 12px 15px; /* Standart bo'shliq */
-}
-
-.sidebar-item .sidebar-link {
-    font-size: 16px; /* Standart matn o'lchami */
-}
-
-.sidebar-item .bi {
-    font-size: 16px; /* Standart piktogramma o'lchami */
-}
-
-.sidebar-item .sidebar-link span {
-    font-size: 16px; /* Standart matn o'lchami */
-}
-
-@media only screen and (max-width: 768px) {
-    body {
-        zoom: 1.4; /* 1.2 marta kattalashtiradi */
-    }
-}
-</style>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
     <title>Baby World</title>
@@ -63,14 +18,25 @@
   <link rel="stylesheet" href="/static/assets/compiled/css/app-dark.css">
   <link rel="stylesheet" href="/static/assets/compiled/css/iconly.css">
   <link rel="stylesheet" href="/static/assets/extensions/sweetalert2/sweetalert2.min.css">
-
-
-
   <link rel="shortcut icon" href="/static/assets/compiled/svg/favicon.svg" type="image/x-icon">
+  <style>
+    .logo img {
+        height: 50px !important;
+        border-radius:  50% !important;
+    }
 
+
+@media only screen and (max-width: 768px) {
+    .sidebar-item {
+        zoom: 1.2 !important; 
+    }   
+}
+
+</style>
 </head>
 
 <body>
+    
 {% load i18n %}
 
     <script src="/static/assets/static/js/initTheme.js"></script>
@@ -120,7 +86,7 @@
             <li class="sidebar-title">Menu</li>
             
             <li
-                class="sidebar-item active ">
+                class="sidebar-item ">
                 <a href="{% url 'home' %}" class='sidebar-link'>
                     <i class="bi bi-grid-fill"></i>
                     <span> {% trans 'Home' %}</span>
