@@ -9,29 +9,29 @@
 /* Mobil qurilmalar uchun media query */
 @media (max-width: 768px) {
     .sidebar-item {
-        padding: 10px 20px; /* Elementlar orasidagi bo'shliqni oshirish */
+        padding: 16px 20px; /* Elementlar orasidagi bo'shliqni oshirish */
     }
 
     .sidebar-item .sidebar-link {
-        font-size: 22px; /* Matnning o'lchamini kattalashtirish */
+        font-size: 32px; /* Matnning o'lchamini kattalashtirish */
     }
 
     .sidebar-item .bi {
-        font-size: 24px; /* Piktogramma o'lchamini kattalashtirish */
+        font-size: 32px; /* Piktogramma o'lchamini kattalashtirish */
     }
 
     .sidebar-item .sidebar-link span {
-        font-size: 18px; /* Matnning o'lchamini kattalashtirish */
+        font-size: 32px; /* Matnning o'lchamini kattalashtirish */
     }
 }
 
 /* Katta ekranlar uchun standart stil */
 .sidebar-item {
-    padding: 10px 15px; /* Standart bo'shliq */
+    padding: 12px 15px; /* Standart bo'shliq */
 }
 
 .sidebar-item .sidebar-link {
-    font-size: 14px; /* Standart matn o'lchami */
+    font-size: 16px; /* Standart matn o'lchami */
 }
 
 .sidebar-item .bi {
@@ -39,10 +39,14 @@
 }
 
 .sidebar-item .sidebar-link span {
-    font-size: 14px; /* Standart matn o'lchami */
+    font-size: 16px; /* Standart matn o'lchami */
 }
 
-
+@media only screen and (max-width: 768px) {
+    body {
+        zoom: 1.4; /* 1.2 marta kattalashtiradi */
+    }
+}
 </style>
 <head>
     <meta charset="UTF-8">

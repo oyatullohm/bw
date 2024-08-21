@@ -173,6 +173,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+LANGUAGE_CODE = 'uz'
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'uz'
 gettext = lambda s:s
 
@@ -182,7 +183,6 @@ LANGUAGES = (
     ('uz',gettext("Uzbek")),
     ('ru',gettext("Russian")),
 )
-LANGUAGE_CODE = 'uz'
 
 LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 

@@ -274,7 +274,7 @@ class ChildView(LoginRequiredMixin,View):
             .select_related('company')
         )
         
-        paginator = Paginator(child,10)  
+        paginator = Paginator(child,20)  
         try:
             children = paginator.page(page)
         except PageNotAnInteger:
@@ -336,7 +336,7 @@ class PaymentView(LoginRequiredMixin,View):
 
         payments = Payment.objects.filter(company=request.user.company, payment_type=1)\
             .select_related('child','teacher','user').order_by('-id')
-        paginator = Paginator(payments, 10)  # Sahifalarni 25 tadan ko'rsatish
+        paginator = Paginator(payments, 25)  # Sahifalarni 25 tadan ko'rsatish
         try:
             payment_page = paginator.page(page)
         except PageNotAnInteger:
@@ -358,7 +358,7 @@ class PaymentCostView(LoginRequiredMixin,View):
         
         payments = Payment.objects.filter(company=request.user.company, payment_type=2)\
             .select_related('child','teacher','user').order_by('-id')
-        paginator = Paginator(payments, 2)  # Sahifalarni 25 tadan ko'rsatish
+        paginator = Paginator(payments, 25)  # Sahifalarni 25 tadan ko'rsatish
         try:
             payment_page = paginator.page(page)
         except PageNotAnInteger:
@@ -426,7 +426,7 @@ class TransferView(LoginRequiredMixin,View):
             .select_related('user','teacher_1', 'teacher_2')
         teachar = Teacher.objects.filter(company=request.user.company, cash__is_active = True)\
             .select_related('tarif','company')
-        paginator = Paginator(transfer, 10)  # Sahifalarni 25 tadan ko'rsatish
+        paginator = Paginator(transfer, 25)  # Sahifalarni 25 tadan ko'rsatish
         try:
             transfer = paginator.page(page)
         except PageNotAnInteger:
@@ -470,7 +470,6 @@ def working_day(request):
     messages.error(request,' ish kuni almashdi  ')
     language = translation.get_language()
     return redirect(f'/{language}/settings')
-
 
 
 @login_required
@@ -584,6 +583,7 @@ def payment_child(request, pk):
     messages.error(request, ' sizda shahsi kassa yoqilmagan  ')
     return redirect(f'/{language}/group-detail/{child.group.id}/')
 
+
 @login_required
 def chaild_edit(request,pk):
     child = Child.objects.get(id=pk)
@@ -618,6 +618,7 @@ def password(request,pk):
         language = translation.get_language()
 
         return redirect (f'/{language}/teacher/{pk}/')
+
 
 @login_required
 def salary(request, pk):

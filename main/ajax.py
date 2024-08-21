@@ -152,11 +152,12 @@ class TransferCreateView(View):
             transfer.teacher_1_before_cash = teacher_1.cash.amount
             transfer.teacher_2_before_cash = teacher_2.cash.amount
             
+
             teacher_1.cash.amount -= transfer.summa 
-            teacher_2.cash.amount += transfer.summa 
             teacher_1.cash.save()
+            teacher_2.cash.amount += transfer.summa 
             teacher_2.cash.save()
-            
+
             transfer.teacher_1_after_cash = teacher_1.cash.amount
             transfer.teacher_2_after_cash = teacher_2.cash.amount
             transfer.save()

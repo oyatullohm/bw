@@ -299,7 +299,7 @@ msgstr "Ilovamizdan ro'yxatdan o'tish uchun ma'lumotlarni kiriting."
 
 #: template/settings.html:13 template/tarif.html:10 template/wrapper.html:123
 msgid "Tariffs"
-msgstr "O'tkazma"
+msgstr "Tariflar"
 
 #: template/settings.html:53 template/teacher-all.html:103
 msgid "Tariff"

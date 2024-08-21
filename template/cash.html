@@ -49,7 +49,7 @@
         let optionsVisitorsProfile{{ i.id }} = {
             series: [{{ i.total_kirim }},{{i.amount}}, {{i.total_chiqim}} ], // bu yerda haqiqiy qiymatlarni o'zgartirishingiz mumkin
             labels: ["{% trans 'Income' %}", "{% trans 'residual' %}", "{% trans 'Expense' %}"],
-            colors: ["#435ebe", "#55c6e8", "#010101"],
+            // colors: ["#435ebe", "#55c6e8", "#010101"],
             chart: {
                 type: "donut",
                 width: "100%",
