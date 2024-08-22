@@ -175,6 +175,11 @@ USE_TZ = True
 
 LANGUAGE_CODE = 'uz'
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'uz'
+MODELTRANSLATION_FALLBACK_LANGUAGES = ('uz', 'ru')
+LANGUAGE_COOKIE_NAME = 'django_language'  
+SESSION_COOKIE_AGE = 1209600  # Sessiya muddati (bu yerda 2 hafta)
+LANGUAGE_COOKIE_AGE = 1209600  # Til cookie muddati (bu yerda 2 hafta)
+
 gettext = lambda s:s
 
 
