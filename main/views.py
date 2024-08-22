@@ -416,7 +416,16 @@ class CashView(LoginRequiredMixin,View):
             'number_list':number_list
         } 
         return render (request, 'cash.html', context)
-
+    def post(self,request):
+        id = request.POST.get('id')
+        amount = Decimal(request.POST.get('amount'))
+        cahs = get_object_or_404(Cash,id=id)
+        cahs.amount = amount
+        cahs.save()
+        messages.error(request, f"Kassa yangilandi")
+        language = translation.get_language()
+        return  redirect(f'/{language}/cash/')
+        
 
 class TransferView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL

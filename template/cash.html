@@ -1,11 +1,12 @@
 {% extends 'wrapper.html' %}
 {% block content %}
 {% load i18n %}
+
 <div class="container">
     <div class="container mt-4">
         
         <form method="get" action="" class="row g-3">
-            <div class="col-1">
+            <div class="col-2">
                 <label for="month">{% trans 'Month' %}:</label>
                 <select id="month" name="month" class="form-control">
                     {% for m in  number_list %}
@@ -24,9 +25,48 @@
     </div>
 
     <div class="row mt-4">
+        {{cash.amount}}  
         {% for i in cash %}
+
+        <div class="modal fade text-left" id="inlineForm{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel33"> {% trans "Cash Management" %}</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post">
+                        {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group mb-1">
+                            <label for="amount" class="form-label"> {% trans "Som" %}</label>
+                            <input type="number" name="amount" required  class="form-control" >
+                        </div>
+
+                        <div style="display: none !important;">
+                            <input type="number" name="id" value="{{i.id}}" >
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                <span> {% trans "Close" %}</span>
+                            </button>
+                            <button type="submit" class="btn btn-primary ms-1" id="payment_create">
+                                
+                                <span>  {% trans "Save" %}</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+
         <div class="col-6 col-md-4">
             <div class="card">
+               
+                {% if request.user.is_main %}
+                <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#inlineForm{{i.id}}"   >{% trans 'Management' %}</button>
+               {% endif %}
                 <div class="card-header">
                     <h4><a href="#">{{ i.teacher.username }} </a>  \   {{i.amount}} {% trans 'Som' %} </h4>
                     
@@ -46,9 +86,12 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
        ` {% for i in cash %}`
+       console.log({{i.amount}})
+       console.log({{i.total_kirim}})
+       console.log({{i.total_chiqim}})
         let optionsVisitorsProfile{{ i.id }} = {
-            series: [{{ i.total_kirim }},{{i.amount}}, {{i.total_chiqim}} ], // bu yerda haqiqiy qiymatlarni o'zgartirishingiz mumkin
-            labels: ["{% trans 'Income' %}", "{% trans 'residual' %}", "{% trans 'Expense' %}"],
+            series: [{{ i.total_kirim }} , {{i.total_chiqim}}  , {{i.amount}} ], 
+            labels: ["{% trans 'Income' %}", "{% trans 'Expense' %}", "{% trans 'residual' %}"],
             // colors: ["#435ebe", "#55c6e8", "#010101"],
             chart: {
                 type: "donut",
