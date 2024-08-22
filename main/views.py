@@ -18,10 +18,15 @@ from django.db.models.functions import TruncMonth
 from dateutil.relativedelta import relativedelta
 from django.utils import translation
 
+
 class HomeView(LoginRequiredMixin, View):
     login_url = settings.LOGIN_URL
 
     def get(self, request):
+        language =  translation.get_language()
+        if request.session.get('language','uz') != language :
+            language = request.session.get('language','uz') 
+            return redirect(f'/{language}/')
         today = timezone.now()
         last_12_months = [(today - relativedelta(months=i)).strftime("%Y-%m") for i in range(11, -1, -1)]
 
@@ -60,6 +65,9 @@ class HomeView(LoginRequiredMixin, View):
             ],
             'last_12_months': last_12_months
         }
+        
+
+      
         return render(request, 'index.html', context)
 
 

@@ -19,6 +19,7 @@ urlpatterns += i18n_patterns (
     path('register/',RegisterView.as_view(),name='register'),
     path('logout/', logout_, name='logout'),
     path('api/login/',login, name='login_api'),
+    path('change-language/<str:lang_code>/', change_language, name='change_language'),
     
 )
 # urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT )

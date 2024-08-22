@@ -91,15 +91,15 @@
               
                        </button>
                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
-                         <li>
-                               <a class="dropdown-item" href="/uz/" type="button">Uzbek</a>
-                         </li>
-                         <li>
-                               <a class="dropdown-item" href="/en/" type="button">English </a>
-                         </li>
-                      <li>
-                               <a class="dropdown-item" href="/ru/" type="button">Russian</a>
-                      </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'change_language' 'uz' %}" type="button">Uzbek</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'change_language' 'en' %}" type="button">English</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'change_language' 'ru' %}" type="button">Russian</a>
+                        </li>
               
               
                        </ul>

@@ -10,12 +10,8 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
-def logout_(request):
-    logout(request)
-    return redirect('login')
-
-
 from django.contrib.auth import authenticate, login  , logout
+from django.utils import translation
 
 class LoginView(View):
     def get(self,request):
@@ -84,3 +80,14 @@ class RegisterView(View):
         return redirect('/register')
 
 
+def logout_(request):
+    logout(request)
+    return redirect('login')
+
+
+def change_language(request, lang_code):
+    translation.activate(lang_code)
+    request.session['language'] = translation.get_language()
+    print(lang_code)
+    print(request.session['language'])
+    return redirect('/')
