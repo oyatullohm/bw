@@ -100,15 +100,15 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-light-secondary"
                                         data-bs-dismiss="modal">
-                                        <i class="bx bx-x d-block d-sm-none"></i>
-                                        <span class="d-none d-sm-block">{% trans "Close" %}</span>
+                                       
+                                        <span class="">{% trans "Close" %}</span>
                                     </button>
                                     <form action="{% url 'delete_chaild' i.id %}" method="post">
                                         {% csrf_token %}
                                     <button type="submit" class="btn btn-danger ms-1"
                                         data-bs-dismiss="modal">
-                                        <i class="bx bx-check d-block d-sm-none"></i>
-                                        <span class="d-none d-sm-block">{% trans "Delete" }</span>
+                                     
+                                        <span>{% trans "Delete" }</span>
                                     </button>
                                 </form>
                                 </div>
