@@ -37,8 +37,7 @@
                                 <select name="group"  id="gender" class="form-control">
                                 {% if  group %}
                                     {% for i in group %}
-
-                                    <option value="{{ i.id }}">{{ i.name }}</option>
+                                        <option value="{{ i.id }}">{{ i.name }}</option>
                                     {% endfor %}
                                 {% else %}
                                     

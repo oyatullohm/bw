@@ -105,7 +105,7 @@ class TeacherDetailView(LoginRequiredMixin,View):
         group = Group.objects.filter(company_id=company_id, teacher=teacher) | Group.objects\
             .filter(company_id=company_id,helper=teacher)\
             .select_related('teacher','helper','children')
-        other_groups = Group.objects.exclude(pk__in=group).select_related('teacher','helper')
+        other_groups = Group.objects.filter(company_id=company_id).exclude(pk__in=group).select_related('teacher','helper')
         type = Teacher.TYPE
         tarif = TarifCompany.objects.filter(company_id=company_id,status =1)
 
