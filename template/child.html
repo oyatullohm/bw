@@ -178,7 +178,7 @@
                     <div class="comment-header">
                         <div class="pr-50">
                             <div class="avatar avatar-2xl">
-                                <img src="/static/assets/compiled/jpg/qwa.jpg" alt="Avatar">    
+                                <img src="static/assets/compiled/jpg/qwa.jpg" alt="Avatar">    
                             </div>
                         </div>
                         <div class="comment-body">
@@ -208,7 +208,7 @@
                             <div class="comment-profileName"> <h4>{{ i.group.name }}</h4>  </div>
                             <div class="comment-actions">
                                 {% if request.user.is_child %}
-                                <!-- <button class="btn icon icon-left btn-primary me-2 text-nowrap"><i class="bi bi-eye-fill"></i> Show</button> -->
+                              
                                 <button class="btn icon icon-left  btn-primary me-2 text-nowrap"  data-bs-toggle="modal"
                                 data-bs-target="#inlineForm_tarif{{i.id}}" ><i class="bi bi-pencil-square"></i> Edit</button>
                                 {% endif %}
