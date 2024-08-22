@@ -1,7 +1,18 @@
 {% extends 'wrapper.html' %}
 {% block content %}
 {% load i18n %}
-         
+        
+<style>
+    @media (max-width: 767.98px) {
+    #card {
+        overflow-x: auto;
+    }
+    .table {
+        width: 100%;
+        min-width: 700px; /* Jadvalning minimal kengligini o'rnating */
+    }
+}
+</style>
 <div class="page-heading">
 
     <section class="section">
@@ -9,8 +20,9 @@
            
             <div class="col-xl-6 col-sm-12 col-12">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body" id="card">
                         <h4>{% trans 'Tariffs' %}</h4>
+                        <div class="table-responsive">
                         <table class="table table-lg">
                             <thead>
                                 <tr>
@@ -42,6 +54,7 @@
                             {% endfor %}
                             </tbody>
                         </table>
+                    </div>
                     </div>
                 </div>
                 {% if request.user.is_main %}
