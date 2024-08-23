@@ -1,0 +1,49 @@
+{% extends 'wrapper.html' %}
+{% block content %}
+
+
+<div class="page-heading">
+    <section class="section">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">{% trans 'Children' %}</h4>
+            </div>
+            <div class="card-body">
+                {% for i in child %}
+
+                
+                
+
+                <div class="col-12">
+                <div class="comment col-12">
+                    <div class="comment-header">
+
+                        <div class="comment-body">
+                            <div class="comment-profileName">  <h4> </h4> </div>
+                            <div class="comment-time"></div>
+                            <div class="comment-profileName"><h4> </h4> </div>
+                            <div class="comment-profileName"> <h4></h4>  </div>
+                            <div class="comment-actions">
+                              
+
+                                
+                            </div>
+                        </div>
+
+                	</div>
+            	</div>
+            </div>
+                {% endfor %}
+
+                
+               
+                
+                
+
+            </div>
+        </div>
+    </section>
+</div>
+
+
+{% endblock content %}
