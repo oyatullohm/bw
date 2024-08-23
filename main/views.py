@@ -192,7 +192,7 @@ class GroupDetailView(LoginRequiredMixin, View):
         start_of_month = today.replace(day=1)
 
         children = Child.objects.filter(company=company, group=group,is_active = True).select_related('tarif').prefetch_related('payments')
-
+        children_cout = children.count()
         # Attendance counts for today and this month
         attendance_counts = Attendance.objects.filter(
             company=company, 
@@ -246,8 +246,9 @@ class GroupDetailView(LoginRequiredMixin, View):
 
         context = {
             'group': group,
-            'page_obj': paginated_children,
             'paginator': paginator,
+            'children_cout':children_cout,
+            'page_obj': paginated_children,
             'children_attendance': children_attendance,
         }
 
