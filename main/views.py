@@ -191,7 +191,7 @@ class GroupDetailView(LoginRequiredMixin, View):
         today = timezone.now().date()
         start_of_month = today.replace(day=1)
 
-        children = Child.objects.filter(company=company, group=group).select_related('tarif').prefetch_related('payments')
+        children = Child.objects.filter(company=company, group=group,is_active = True).select_related('tarif').prefetch_related('payments')
 
         # Attendance counts for today and this month
         attendance_counts = Attendance.objects.filter(
