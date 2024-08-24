@@ -18,5 +18,6 @@ f.py
 jpg/
 .DS_store
 .env
+local_db_.py
 set_database.py
 server.txt

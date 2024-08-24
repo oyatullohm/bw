@@ -14,7 +14,7 @@ from pathlib import Path
 import environ
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-from .local_db import LOCAL_DATABASE
+from .local_db_ import LOCAL_DATABASE
 env = environ.Env()
 env.read_env()
 DEBUG = env.bool('DEBUG')
