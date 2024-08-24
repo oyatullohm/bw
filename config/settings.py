@@ -19,7 +19,7 @@ env = environ.Env()
 env.read_env()
 DEBUG = env.bool('DEBUG')
 SECRET_KEY = env.str('SECRET_KEY')
-SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT')
+SECURE_SSL_REDIRECT =  False
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
