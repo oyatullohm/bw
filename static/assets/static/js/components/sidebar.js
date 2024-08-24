@@ -100,10 +100,7 @@ class Sidebar {
     }
 
     // Scroll into active sidebar
-    setTimeout(() => {
-      this.forceElementVisibility(document.querySelector(".sidebar-item.active"))
-    }, 300)
-
+  
 
     if (this.options.recalculateHeight) {
       reInit_SubMenuHeight(sidebarEl)

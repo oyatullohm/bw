@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-22 18:00+0500\n"
+"POT-Creation-Date: 2024-08-24 08:28+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,7 +47,8 @@ msgstr "Filter"
 msgid "Cash Management"
 msgstr "Kassa boshqaru"
 
-#: template/cash.html:42 template/cash.html:71 template/group-detail.html:86
+#: template/cash.html:42 template/cash.html:71 template/child.html:85
+#: template/group-detail.html:74 template/group-detail.html:106
 #: template/payment.cost.html:34 template/payment.cost.html:76
 #: template/payment.cost.html:109 template/payment.html:31
 #: template/payment.html:74 template/payment.html:109 template/settings.html:31
@@ -56,9 +57,9 @@ msgstr "Kassa boshqaru"
 msgid "Som"
 msgstr "So'm"
 
-#: template/cash.html:51 template/child.html:104 template/child.html:162
-#: template/child.html:245 template/child.html:249
-#: template/group-detail.html:99 template/group.html:45
+#: template/cash.html:51 template/child.html:48 template/child.html:125
+#: template/child.html:181 template/child.html:223 template/child.html:227
+#: template/group-detail.html:87 template/group.html:45
 #: template/payment.cost.html:52 template/payment.cost.html:122
 #: template/payment.html:48 template/payment.html:126 template/tarif.html:52
 #: template/tarif.html:139 template/teacher-all.html:59
@@ -66,13 +67,13 @@ msgstr "So'm"
 msgid "Close"
 msgstr "Yopish"
 
-#: template/cash.html:55 template/child.html:64 template/child.html:166
-#: template/group-detail.html:102 template/group.html:49
+#: template/cash.html:55 template/child.html:52 template/child.html:185
+#: template/group-detail.html:90 template/group.html:49
 #: template/payment.cost.html:56 template/payment.cost.html:125
 #: template/payment.html:52 template/payment.html:129 template/settings.html:77
 #: template/settings.html:176 template/tarif.html:56 template/tarif.html:143
-#: template/teacher-all.html:63 template/teacher.html:84
-#: template/teacher.html:105 template/teacher.html:131
+#: template/teacher-all.html:63 template/teacher.html:83
+#: template/teacher.html:104 template/teacher.html:130
 #: template/transfer.html:65
 msgid "Save"
 msgstr "Saqlash"
@@ -93,81 +94,91 @@ msgstr "Xarajat"
 msgid "residual"
 msgstr "Qoldiq"
 
-#: template/child.html:11 template/group.html:23 template/payment.cost.html:10
-#: template/payment.html:10 template/tarif.html:18 template/teacher-all.html:18
-msgid "Add"
-msgstr "Q'shish"
-
-#: template/child.html:27
+#: template/child.html:15
 msgid "Add a child"
 msgstr "Bola qo;shish"
 
-#: template/child.html:35
+#: template/child.html:23
 msgid "Name "
 msgstr "Isim"
 
-#: template/child.html:39 template/child.html:137 template/settings.html:144
+#: template/child.html:27 template/child.html:81 template/child.html:156
+#: template/group-detail.html:105 template/settings.html:144
 #: template/teacher-all.html:36 template/teacher.html:20
 msgid "Phone"
 msgstr "Telefon"
 
-#: template/child.html:43 template/child.html:141
+#: template/child.html:31 template/child.html:160
 msgid "Date of birth"
 msgstr "Sana"
 
-#: template/child.html:49 template/child.html:147 template/group.html:11
-#: template/teacher-all.html:102 template/teacher.html:36
-#: template/wrapper.html:104
+#: template/child.html:37 template/child.html:83 template/child.html:166
+#: template/group.html:11 template/teacher-all.html:102
+#: template/teacher.html:36 template/wrapper.html:104
 msgid "Group"
 msgstr "Gruppa"
 
-#: template/child.html:79 template/group.html:72 template/index.html:59
-#: template/teacher.html:64 template/wrapper.html:118
-msgid "Children"
-msgstr "Bolalar"
+#: template/child.html:69 template/group.html:23 template/payment.cost.html:10
+#: template/payment.html:10 template/tarif.html:18 template/teacher-all.html:18
+msgid "Add"
+msgstr "Q'shish"
 
-#: template/child.html:90 template/child.html:195
-msgid "Delete"
-msgstr "O'chirish"
+#: template/child.html:80 template/child.html:152 template/group-detail.html:12
+#: template/group-detail.html:104 template/group.html:37 template/group.html:69
+#: template/settings.html:29 template/settings.html:124 template/tarif.html:32
+#: template/tarif.html:92 template/teacher-all.html:99 template/teacher.html:16
+msgid "Name"
+msgstr "Isim"
 
-#: template/child.html:126 template/child.html:193
+#: template/child.html:82
+msgid "Birthday"
+msgstr ""
+
+#: template/child.html:84 template/group-detail.html:107
+#: template/settings.html:66 template/teacher-all.html:103
+msgid "Tariff"
+msgstr "Tariffs"
+
+#: template/child.html:92 template/child.html:145
 #: template/payment.cost.html:102 template/payment.html:102
 msgid "Update"
 msgstr "Yangilash"
 
-#: template/child.html:133 template/group-detail.html:16 template/group.html:37
-#: template/group.html:69 template/settings.html:29 template/settings.html:124
-#: template/tarif.html:32 template/tarif.html:92 template/teacher-all.html:99
-#: template/teacher.html:16
-msgid "Name"
-msgstr "Isim"
+#: template/child.html:94 template/child.html:111 template/child.html:132
+msgid "Delete"
+msgstr "O'chirish"
 
-#: template/group-detail.html:17 template/group.html:70
+#: template/group-detail.html:13 template/group.html:70
 #: template/teacher-all.html:10
 msgid "Teacher"
 msgstr "Ustoz"
 
-#: template/group-detail.html:18 template/group.html:71
+#: template/group-detail.html:14 template/group.html:71
 msgid "Helper"
 msgstr "Yordamchi"
 
-#: template/group-detail.html:19
+#: template/group-detail.html:15
 msgid "Number of children"
 msgstr "Bolalar soni"
 
-#: template/group-detail.html:79
+#: template/group-detail.html:67 template/group-detail.html:117
 msgid "Payment"
 msgstr "To'lov"
 
-#: template/group-detail.html:90
+#: template/group-detail.html:78
 msgid "Selected month"
 msgstr "Oyni tallang"
 
-#: template/group-detail.html:94 template/payment.cost.html:38
+#: template/group-detail.html:82 template/payment.cost.html:38
 #: template/payment.cost.html:117 template/payment.html:35
 #: template/payment.html:121 template/transfer.html:54
 msgid "Comment"
 msgstr "Izoh"
+
+#: template/group-detail.html:111 template/teacher-all.html:105
+#: template/teacher.html:138
+msgid "Attendance"
+msgstr "Davomat"
 
 #: template/group.html:15
 msgid "Teachers"
@@ -177,6 +188,11 @@ msgstr "Ustozlar"
 msgid "Add group"
 msgstr "Gruppa q'shish"
 
+#: template/group.html:72 template/index.html:59 template/teacher.html:63
+#: template/wrapper.html:118
+msgid "Children"
+msgstr "Bolalar"
+
 #: template/group.html:73 template/payment.cost.html:78
 #: template/payment.cost.html:94 template/payment.html:76
 #: template/payment.html:95 template/transfer.html:94
@@ -184,7 +200,7 @@ msgstr "Gruppa q'shish"
 msgid "Info"
 msgstr "Malumot"
 
-#: template/index.html:5 template/teacher.html:75
+#: template/index.html:5 template/teacher.html:74
 msgid "Statistics"
 msgstr "Statistika"
 
@@ -258,10 +274,6 @@ msgstr "Ilovamizdan ro'yxatdan o'tish uchun ma'lumotlarni kiriting."
 msgid "Tariffs"
 msgstr "Tariflar"
 
-#: template/settings.html:66 template/teacher-all.html:103
-msgid "Tariff"
-msgstr "Tariffs"
-
 #: template/settings.html:134
 msgid "Work has begun"
 msgstr "Ish boshlandi"
@@ -291,23 +303,19 @@ msgstr "Lavozimi"
 msgid " Phone"
 msgstr "Telefon"
 
-#: template/teacher-all.html:105 template/teacher.html:139
-msgid "Attendance"
-msgstr "Davomat"
-
-#: template/teacher.html:56 template/wrapper.html:151
+#: template/teacher.html:55 template/wrapper.html:151
 msgid "Payments"
 msgstr "Tolovlar"
 
-#: template/teacher.html:60
+#: template/teacher.html:59
 msgid "Main"
 msgstr "Asosy"
 
-#: template/teacher.html:71
+#: template/teacher.html:70
 msgid "Active"
 msgstr "Active"
 
-#: template/teacher.html:79
+#: template/teacher.html:78
 msgid "Personal cash"
 msgstr "Shahsiy kassa"
 

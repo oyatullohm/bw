@@ -5,116 +5,130 @@
  <section class="section">
     <div class="row" id="basic-table">
         <div class="col-12 col-md-12">
-            <div class="card">
+            <div class="table-responsive">
+                <table class="table table-lg">
+                    <thead>
+                        <tr>
+                            <th>{% trans 'Name' %}</th>
+                            <th>{% trans 'Teacher' %}</th>
+                            <th>{% trans 'Helper' %}</th>
+                            <th>{% trans 'Number of children' %}</th>
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                <div class="card-content">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-lg">
-                                <thead>
-                                    <tr>
-                                        <th>{% trans 'Name' %}</th>
-                                        <th>{% trans 'Teacher' %}</th>
-                                        <th>{% trans 'Helper' %}</th>
-                                        <th>{% trans 'Number of children' %}</th>
-                                    
-                                    </tr>
-                                </thead>
-                                <tbody>
+                        <tr>
+                            <td class="text-bold-500">{{group.name}}</td>
+                            <td class="text-bold-500">{{group.teacher}}</td>
+                            <td class="text-bold-500">{{group.helper}}</td>
+                            <td class="text-bold-500">{{children_cout}}</td>
 
-                                    <tr>
-                                        <td class="text-bold-500">{{group.name}}</td>
-                                        <td class="text-bold-500">{{group.teacher}}</td>
-                                        <td class="text-bold-500">{{group.helper}}</td>
-                                        <td class="text-bold-500">{{children_cout}}</td>
+                        </tr>
 
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                           
-                        </div>
-                    </div>
-                </div>
+                    </tbody>
+                </table> 
             </div>
         </div>
     </div>
 </section> <section class="section">
     <div class="row" id="basic-table">
         <div class="col-12 col-md-12">
-            <div class="card">
+            <div class="table-responsive">
+                <table class="table d-none d-md-table">
 
-                <div class="card-content">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-lg">
-
-                                <tbody>
-                                    {% for item in children_attendance %}
-                                    <tr>
-                                        <td class="text-bold-500">
-                                            <a href="{% url 'calendar_child' item.child.id %}">{{ item.child.name }}</a>
-                                        </td>
-                                        <td class="text-bold-500">{{ item.child.phone }}</td>
-                                        <td class="text-bold-500"> <span style="color: brown;">{{item.child.tarif.amount}}  </span> // <span style="color: blue;">{{item.payment_summa}} </span>    </td>
-                                        <td class="text-bold-500">  {{item.child.tarif.name}} // {{ item.attendance_monthly }}</td>
-                                        <td class="text-bold-500">
-                                            <div class="form-check form-switch col-3">
-                                                <input class="form-check-input" name="attendance_{{ item.child.id }}" type="checkbox" id="flexSwitchCheckDefault_{{ item.child.id }}" {% if  item.attendance_today == True %}checked{% endif %} onchange="updateAttendance(`{{ item.child.id }}`, this.checked)">
-                                                <label class="form-check-label" for="flexSwitchCheckDefault_{{ item.child.id }}">Davomat</label>
-                                            </div>
-                                        </td>
-                                        {% if request.user.is_payment %}
-                                        <td class="text-bold-500">
-                                            <button class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#inlineForm{{item.child.id}}">Tolov</button>
-                                        </td>
-                                        {% endif %}
-                                    </tr>
-                                    
-                                    <div class="form-group">
-                                        <div class="modal fade text-left" id="inlineForm{{item.child.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title" id="myModalLabel33">{% trans 'Payment' %} {{ item.child.name }}</h4>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form method="post" action="{% url 'payment_child' item.child.id %}">
-                                                            {% csrf_token %}
-                                                            <div class="form-group mb-1">
-                                                                <label for="summa" class="form-label"> {% trans 'Som' %} </label>
-                                                                <input type="number" name="summa" required id="summa"  value="{{item.remaining_amount}}"  class="form-control" placeholder="summa">
-                                                            </div>
-                                                            <div class="form-group mb-1">
-                                                                <label for="date_month" class="form-label">{% trans 'Selected month' %}</label>
-                                                                <input type="date" name="date_month" required id="date_month" class="form-control">
-                                                            </div>
-                                                            <div class="form-group mb-1">
-                                                                <label for="description" class="form-label">{% trans 'Comment' %}</label>
-                                                                <input type="text" name="description" id="description" class="form-control" placeholder="Izoh">
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                                                    <span>{% trans "Close" %}</span>
-                                                                </button>
-                                                                <button type="submit" class="btn btn-primary ms-1">
-                                                                    <span> {% trans "Save" %}</span>
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
+                    <tbody>
+                        {% for item in children_attendance %}
+                        <tr>
+                            <td class="text-bold-500">
+                                <a href="{% url 'calendar_child' item.child.id %}">{{ item.child.name }}</a>
+                            </td>
+                            <td class="text-bold-500">{{ item.child.phone }}</td>
+                            <td class="text-bold-500"> <span style="color: brown;">{{item.child.tarif.amount}}  </span> / <span style="color: blue;">{{item.payment_summa}} </span>    </td>
+                            <td class="text-bold-500">  {{item.child.tarif.name}} / {{ item.attendance_monthly }}</td>
+                            <td class="text-bold-500">
+                                <div class="form-check form-switch col-3">
+                                    <input class="form-check-input" name="attendance_{{ item.child.id }}" type="checkbox" id="flexSwitchCheckDefault_{{ item.child.id }}" {% if  item.attendance_today == True %}checked{% endif %} onchange="updateAttendance(`{{ item.child.id }}`, this.checked)">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault_{{ item.child.id }}">Davomat</label>
+                                </div>
+                            </td>
+                            {% if request.user.is_payment %}
+                            <td class="text-bold-500">
+                                <button class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#inlineForm{{item.child.id}}">Tolov</button>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        
+                        <div class="form-group">
+                            <div class="modal fade text-left" id="inlineForm{{item.child.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="myModalLabel33">{% trans 'Payment' %} {{ item.child.name }}</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" action="{% url 'payment_child' item.child.id %}">
+                                                {% csrf_token %}
+                                                <div class="form-group mb-1">
+                                                    <label for="summa" class="form-label"> {% trans 'Som' %} </label>
+                                                    <input type="number" name="summa" required id="summa"  value="{{item.remaining_amount}}"  class="form-control" placeholder="summa">
                                                 </div>
-                                            </div>
+                                                <div class="form-group mb-1">
+                                                    <label for="date_month" class="form-label">{% trans 'Selected month' %}</label>
+                                                    <input type="date" name="date_month" required id="date_month" class="form-control">
+                                                </div>
+                                                <div class="form-group mb-1">
+                                                    <label for="description" class="form-label">{% trans 'Comment' %}</label>
+                                                    <input type="text" name="description" id="description" class="form-control" placeholder="Izoh">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                                        <span>{% trans "Close" %}</span>
+                                                    </button>
+                                                    <button type="submit" class="btn btn-primary ms-1">
+                                                        <span> {% trans "Save" %}</span>
+                                                    </button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                           
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+
+                        <div class="d-md-none ">
+                            <div class="card ">
+                                <div class="card-body">
+                                    
+                                    <p class="card-text"><span class="fw-bold">{% trans "Name" %}: </span><a href="{% url 'calendar_child' item.child.id %}">{{ item.child.name }}</a></p>
+                                    <p class="card-text"><span class="fw-bold">{% trans "Phone" %}: </span>{{ item.child.phone }}</p>
+                                    <p class="card-text"><span class="fw-bold">{% trans 'Som' %}: </span>{{item.child.tarif.amount}} </p>
+                                    <p class="card-text"><span class="fw-bold">{% trans 'Tariff' %}: </span>{{item.child.tarif.name}} / {{ item.attendance_monthly }}</p>
+                                    <p class="card-text">
+                                        <div class="form-check form-switch col-3">
+                                            <input class="form-check-input" name="attendance_{{ item.child.id }}" type="checkbox" id="flexSwitchCheckDefault_{{ item.child.id }}" {% if  item.attendance_today == True %}checked{% endif %} onchange="updateAttendance(`{{ item.child.id }}`, this.checked)">
+                                            <label class="form-check-label" for="flexSwitchCheckDefault_{{ item.child.id }}">{% trans "Attendance" %}</label>
+                                        </div>
+                                    </p>
+                                    {% if request.user.is_payment %}
+                                    <div class="col-5">
+                                    <p class="card-text">
+                                            <button class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#inlineForm{{item.child.id}}">{% trans 'Payment' %}</button>
+                                        </p>
+                                        
+                                    </div>
+                                    {% endif %}
+                                
+                                </div>
+                            </div>
+                            <!-- Qo'shimcha kartalar -->
+                        </div>
+                        
+
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -185,8 +199,6 @@
         </ul>
     </nav>
 {% endif %}
-
-
 
 <script>
     function updateAttendance(childId, is_active) {
