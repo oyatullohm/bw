@@ -85,10 +85,8 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-       ` {% for i in cash %}`
-       console.log({{i.amount}})
-       console.log({{i.total_kirim}})
-       console.log({{i.total_chiqim}})
+       `{% for i in cash %}`
+
         let optionsVisitorsProfile{{ i.id }} = {
             series: [{{ i.total_kirim }} , {{i.total_chiqim}}  , {{i.amount}} ], 
             labels: ["{% trans 'Income' %}", "{% trans 'Expense' %}", "{% trans 'residual' %}"],

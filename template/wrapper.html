@@ -211,6 +211,7 @@
                 <a class="d-md-none" onclick="location.reload(); ">
                     <i class="bi bi-arrow-clockwise"></i>
                 </a>
+                <button onclick="openAndCloseWindow()">Sahifani yopish</button>
             </header>
 {% if messages %}
             <ul class="messages">
@@ -260,6 +261,12 @@
             }, 6000);
         }
 </script> -->
+<script>
+         function openAndCloseWindow() {
+
+            myWindow.close();
+        }
+</script>
 </body>
 
 </html>
