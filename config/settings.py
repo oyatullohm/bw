@@ -186,4 +186,4 @@ AUTH_USER_MODEL = 'main.Teacher'
 # }  
 
 
-LOGGING = LOGGING
+# LOGGING = LOGGING

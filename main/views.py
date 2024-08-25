@@ -675,8 +675,5 @@ def add_teacher(request):
         return redirect ('/teacher')
     messages.error(request, 'usename  band  yoki parollar birhil emass ')
     language = translation.get_language()
-    if request.session.get('language','uz') != language :
-        language = request.session.get('language','uz')    
-        return redirect (f'/{language}/teacher')
     return redirect (f'/{language}/teacher')
 
