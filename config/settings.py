@@ -4,7 +4,7 @@ from pathlib import Path
 import environ
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-from .local_db_ import LOCAL_DATABASE
+from .local_db_ import LOCAL_DATABASE , LOGGING
 env = environ.Env()
 env.read_env()
 DEBUG = env.bool('DEBUG')
@@ -184,3 +184,6 @@ AUTH_USER_MODEL = 'main.Teacher'
 #                     }
 #                }
 # }  
+
+
+LOGGING = LOGGING

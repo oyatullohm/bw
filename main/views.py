@@ -65,9 +65,6 @@ class HomeView(LoginRequiredMixin, View):
             ],
             'last_12_months': last_12_months
         }
-        
-
-      
         return render(request, 'index.html', context)
 
 
@@ -517,30 +514,35 @@ def chaild_edit_tarif(request,pk):
     language = translation.get_language()
     return redirect(f'/{language}/child')
 
-
+from django.core.cache import cache
 @login_required
 def calendar_child(request,pk):
     child = Child.objects.get(id=pk)
     today = datetime.today()
-    first_day_of_current_month = today.replace(day=1)
-    first_day_of_previous_month = (first_day_of_current_month - timedelta(days=1)).replace(day=1)
+    six_months_ago = today - relativedelta(months=6)
+    first_day_of_six_months_ago = six_months_ago.replace(day=1)
     attendance = Attendance.objects.filter(
         child=child,
         is_active=True,
-        date__range=[first_day_of_previous_month, today]
-    )
-    
-    events = []
-    for record in attendance:
-        events.append({
-            'id': record.id,
-            'title': f'Keldi  {record.child.name}',  
-            'start': record.date.strftime('%Y-%m-%dT%H:%M:%S'), 
+        date__range=[first_day_of_six_months_ago, today]
+    ).values('id', 'child__name', 'date')
+
+ 
+    events = [
+        {
+            'id': record['id'],
+            'title': f'Keldi {record["child__name"]}',  
+            'start': record['date'].strftime('%Y-%m-%dT%H:%M:%S'), 
             'allDay': True,
             'className': 'info',
-            })
-    events_json = json.dumps(events)
+            
+        }
+        for record in attendance
+    ]
     
+
+    events_json = json.dumps(events)
+
     return render(request, 'fullcalendar.html', {'events_json': events_json})
 
 
@@ -557,17 +559,19 @@ def calendar_teacher(request,pk):
         teacher=teacher,
         is_active=True,
         date__range=[first_day_of_previous_month, today]
-    )
-    
-    events = []
-    for record in attendance:
-        events.append({
-            'id': record.id,
-            'title': f'Keldi  {record.teacher}',  
-            'start': record.date.strftime('%Y-%m-%dT%H:%M:%S'), 
+    ).values('id', 'teacher__username', 'date')
+
+
+    events = [
+            {
+            'id': record['id'],
+            'title': f"Keldi {record['teacher__username']}",  
+            'start': record['date'].strftime('%Y-%m-%dT%H:%M:%S'), 
             'allDay': True,
             'className': 'info',
-            })
+            }
+            for record in attendance
+        ]
     events_json = json.dumps(events)
     
     return render(request, 'fullcalendar.html', {'events_json': events_json})
@@ -671,5 +675,8 @@ def add_teacher(request):
         return redirect ('/teacher')
     messages.error(request, 'usename  band  yoki parollar birhil emass ')
     language = translation.get_language()
+    if request.session.get('language','uz') != language :
+        language = request.session.get('language','uz')    
+        return redirect (f'/{language}/teacher')
     return redirect (f'/{language}/teacher')
 

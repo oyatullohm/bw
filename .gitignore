@@ -6,6 +6,7 @@ migrations/
 media/
 *.pyc
 debug.log
+django_errors.log
 f.py
 # If you are using PyCharm
 .idea/**/workspace.xml
