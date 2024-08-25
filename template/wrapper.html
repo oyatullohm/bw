@@ -211,7 +211,7 @@
                 <a class="d-md-none" onclick="location.reload(); ">
                     <i class="bi bi-arrow-clockwise"></i>
                 </a>
-                <button onclick="openAndCloseWindow()">Sahifani yopish</button>
+                <button onclick="closePage()">X</button>
             </header>
 {% if messages %}
             <ul class="messages">
@@ -262,9 +262,9 @@
         }
 </script> -->
 <script>
-         function openAndCloseWindow() {
-
-            myWindow.close();
+           function closePage() {
+            // Sahifani yopish
+            window.location.href = 'about:blank';
         }
 </script>
 </body>
