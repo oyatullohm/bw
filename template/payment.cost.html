@@ -81,7 +81,7 @@
                                 <tbody id="search-results">
                                     {% for p in payment %}
                                     <tr>
-                                        <td class="text-bold-500" data-bs-toggle="modal" data-bs-target="#inlineForm{{ p.id }}">
+                                        <td class="text-bold-500" data-bs-toggle="modal" {% if request.user.is_main %}  data-bs-target="#inlineForm{{ p.id }}" {% endif %}>
                                             <a style="color: blue;">{{ p.date }}</a>
                                         </td>
                                         <td class="text-bold-500">{{ p.amount }}</td>
@@ -107,7 +107,7 @@
                                                                 {% csrf_token %}
                                                                 <div class="form-group mb-1">
                                                                     <label for="summa{{ p.id }}" class="form-label">{% trans 'Som' %}</label>
-                                                                    <input type="number" required id="summa{{ p.id }}" name="amount" value="{{ p.amount }}" class="form-control" placeholder="Summa">
+                                                                    <input type="number" required step="any" id="summa{{ p.id }}" name="amount" value="{{ p.amount }}" class="form-control" placeholder="Summa">
                                                                 </div>
                                                                 <div class="form-group mb-1">
                                                                     <label for="date_month{{ p.id }}" class="form-label">{% trans 'Month' %} {{ p.date_month | date:"M" }}</label>
