@@ -514,7 +514,7 @@ def chaild_edit_tarif(request,pk):
     language = translation.get_language()
     return redirect(f'/{language}/child')
 
-from django.core.cache import cache
+
 @login_required
 def calendar_child(request,pk):
     child = Child.objects.get(id=pk)
@@ -594,15 +594,17 @@ def payment_child(request, pk):
             payment_type = 1,
             date_month = date_month,
             description = description ,
+            user_before_cash = cash.amount,
             
         )
         cash = Cash.objects.get(teacher=request.user)
         cash.amount += Decimal(payment.amount)
         cash.save()
+        payment.user_after_cash = cash.amount
         payment.save()
         messages.error(request, f"{child.name} Tplov Qildi ")
         return redirect(f'/{language}/group-detail/{child.group.id}/')
-    messages.error(request, ' sizda shahsi kassa yoqilmagan  ')
+    messages.error(request, 'sizda shahsi kassa yoqilmagan  ')
     return redirect(f'/{language}/group-detail/{child.group.id}/')
 
 

@@ -34,7 +34,6 @@ class UpdateAttendanceTeacherView(View):
     def post(self, request, *args, **kwargs):
         company = request.user.company
         teacer_id = request.POST.get('teacer_id')
-        print(teacer_id)
         is_active = request.POST.get('is_active') == 'true'
         date = timezone.now().date()
         attendance, created = Attendance.objects.update_or_create(
@@ -106,13 +105,15 @@ class PaymentCreateView(View):
                     user_before_cash = cash.amount,
                     
                 )
+               
                 if payment.payment_type == 1:
                     cash.amount += payment.amount
                 elif payment.payment_type == 2:
                     cash.amount -= payment.amount
+                payment.user_after_cash = cash.amount
                 cash.save()
-                payment.user_after_cash  = cash.amount
                 payment.save()
+
                     
                 return JsonResponse({
                     'status': 'success',

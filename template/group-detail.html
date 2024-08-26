@@ -56,7 +56,7 @@
                                     <label class="form-check-label" for="flexSwitchCheckDefault_{{ item.child.id }}">Davomat</label>
                                 </div>
                             </td>
-                            {% if request.user.is_payment %}
+                            {% if request.user.is_payment and request.user.cash.is_active == True %}
                             <td class="text-bold-500">
                                 <button class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#inlineForm{{item.child.id}}">Tolov</button>
                             </td>
@@ -76,7 +76,7 @@
                                                 {% csrf_token %}
                                                 <div class="form-group mb-1">
                                                     <label for="summa" class="form-label"> {% trans 'Som' %} </label>
-                                                    <input type="number" name="summa" required id="summa"  value="{{item.remaining_amount}}"  class="form-control" placeholder="summa">
+                                                    <input type="number" name="summa" required id="summa"  value="{{item.remaining_amount}}"  class="form-control" >
                                                 </div>
                                                 <div class="form-group mb-1">
                                                     <label for="date_month" class="form-label">{% trans 'Selected month' %}</label>
@@ -108,7 +108,7 @@
                                     <p class="card-text"><span class="fw-bold">{% trans "Name" %}: </span><a href="{% url 'calendar_child' item.child.id %}">{{ item.child.name }}</a></p>
                                     <p class="card-text"><span class="fw-bold">{% trans "Phone" %}: </span>{{ item.child.phone }}</p>
                                     <p class="card-text"><span class="fw-bold">{% trans 'Som' %}: </span>{{item.child.tarif.amount}} </p>
-                                    <p class="card-text"><span class="fw-bold">{% trans 'Tariff' %}: </span>{{item.child.tarif.name}} / {{ item.attendance_monthly }}</p>
+                                    <p class="card-text"><span class="fw-bold">{% trans 'Tariff' %}: </span>{{item.child.tarif.name}}  <span style="color: brown;">{{item.child.tarif.amount}}  </span> / <span style="color: blue;">{{item.payment_summa}} </span>   </p>
                                     <p class="card-text">
                                         <div class="form-check form-switch col-3">
                                             <input class="form-check-input" name="attendance_{{ item.child.id }}" type="checkbox" id="flexSwitchCheckDefault_{{ item.child.id }}" {% if  item.attendance_today == True %}checked{% endif %} onchange="updateAttendance(`{{ item.child.id }}`, this.checked)">

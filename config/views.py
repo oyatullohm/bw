@@ -88,6 +88,4 @@ def logout_(request):
 def change_language(request, lang_code):
     translation.activate(lang_code)
     request.session['language'] = translation.get_language()
-    print(lang_code)
-    print(request.session['language'])
     return redirect('/')

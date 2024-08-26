@@ -343,7 +343,7 @@ document.querySelectorAll('[id^="info-"]').forEach(button => {
     const user = e.target.getAttribute('data-user');
     const user_before = e.target.getAttribute('data-user_before_cash');
     const user_after = e.target.getAttribute('data-user_after_cash');
-    
+    console.log(user_after)
     Swal2.fire({
       icon: "info",
       title: ` ${user} oldin ${user_before} Sum \n

@@ -15,7 +15,7 @@ urlpatterns = [
 urlpatterns += i18n_patterns (
     path('',include('main.urls')),
     path('login/',LoginView.as_view(),name='login'),
-    path('admin/', admin.site.urls),
+    path('kattaadmin/', admin.site.urls),
     path('register/',RegisterView.as_view(),name='register'),
     path('logout/', logout_, name='logout'),
     path('api/login/',login, name='login_api'),
