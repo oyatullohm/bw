@@ -107,7 +107,7 @@
                                                                 {% csrf_token %}
                                                                 <div class="form-group mb-1">
                                                                     <label for="summa{{ p.id }}" class="form-label">{% trans 'Som' %}</label>
-                                                                    <input type="number" step="any"  required id="summa{{ p.id }}" name="amount" value="{{ p.amount }}" class="form-control" placeholder="Summa">
+                                                                    <input type="number" step="any"  required id="summa{{ p.id }}" name="amount" value="{{ p.amount }}" class="form-control">
                                                                 </div>
                                                                 <div class="form-group mb-1">
                                                                     <label for="date_month{{ p.id }}" class="form-label">{% trans "Month" %} {{ p.date_month | date:"M" }}</label>
