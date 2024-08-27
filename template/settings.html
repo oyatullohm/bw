@@ -57,55 +57,6 @@
                     </div>
                     </div>
                 </div>
-                {% if request.user.is_main %}
-                <div class="card">
-                    <div class="card-body">
-                        <form action="" method="post">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="amount" class="form-label">{% trans 'Tariff' %} </label>
-                                <select name="tarif" id="tarif" class="form-control">
-                                <option value="{{request.user.company.tarif.id}}">{{request.user.company.tarif}}</option>
-                                    {% for i in tarif %}
-                                    {% if i.id != request.user.company.tarif.id %}
-                                    <option value="{{ i.id }}"> {{ i.name }} </option>   
-                                    {% endif %}
-                                    {% endfor %}
-                                </select>
-                            </div> 
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary"> {% trans 'Save' %}</button>
-                            </div>  
-                        </form>
-                    </div>
-                </div>  
-              {% endif %}
-            </div>    
-            
-              <div class="col-xl-6 col-sm-12  col-12">
-                <div class="card">
-                    <br>
-                    <div class="dropdown"  style="margin-left: 22px;">
-                        <button href="#" class="btn bg-gradient-dark btn-sm   dropdown-toggle mb-0 me-2 mt-2 mt-md-0 " data-bs-toggle="dropdown" id="navbarDropdownMenuLink2">
-                          {{ request.LANGUAGE_CODE|upper }}
-              
-                       </button>
-                       <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
-                        <li>
-                            <a class="dropdown-item" href="{% url 'change_language' 'uz' %}" type="button">Uzbek</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{% url 'change_language' 'en' %}" type="button">English</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{% url 'change_language' 'ru' %}" type="button">Russian</a>
-                        </li>
-              
-              
-                       </ul>
-                      </div>
-                      <br>
-                </div>
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -150,6 +101,35 @@
                         </div>
                     </div> 
                 </div>
+
+            </div>    
+            
+              <div class="col-xl-6 col-sm-12  col-12">
+                {% if request.user.is_main %}
+                <div class="card">
+                    <div class="card-body">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="amount" class="form-label">{% trans 'Tariff' %} </label>
+                                <select name="tarif" id="tarif" class="form-control">
+                                <option value="{{request.user.company.tarif.id}}">{{request.user.company.tarif}}</option>
+                                    {% for i in tarif %}
+                                    {% if i.id != request.user.company.tarif.id %}
+                                    <option value="{{ i.id }}"> {{ i.name }} </option>   
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div> 
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary"> {% trans 'Save' %}</button>
+                            </div>  
+                        </form>
+                    </div>
+                </div>  
+              {% endif %}   
+
+
              
                 {% if request.user.is_main %}
                 <div class="card">
@@ -180,6 +160,29 @@
 
                     </div>  
                     {% endif %}
+                    <div class="card">
+                        <br>
+                        <div class="dropdown"  style="margin-left: 22px;">
+                            <button href="#" class="btn bg-gradient-dark btn-sm   dropdown-toggle mb-0 me-2 mt-2 mt-md-0 " data-bs-toggle="dropdown" id="navbarDropdownMenuLink2">
+                              {{ request.LANGUAGE_CODE|upper }}
+                  
+                           </button>
+                           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'change_language' 'uz' %}" type="button">Uzbek</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'change_language' 'en' %}" type="button">English</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'change_language' 'ru' %}" type="button">Russian</a>
+                            </li>
+                  
+                  
+                           </ul>
+                          </div>
+                          <br>
+                    </div>
 
                 </div>  
               
