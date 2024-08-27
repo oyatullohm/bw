@@ -120,7 +120,7 @@ class Payment(models.Model):
     user_after_cash = models.DecimalField(max_digits=15, decimal_places=2, default=0)
     
     date_month = models.DateField(null=True ,blank=True)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.DecimalField(max_digits=10, decimal_places=0)
     payment_type = models.PositiveIntegerField(default=1,choices=TYPE_CHOICES)
     description = models.TextField(blank=True, null=True)
     is_edit = models.BooleanField(default=True)
@@ -152,7 +152,7 @@ class Transfer(models.Model):
     teacher_2_after_cash = models.DecimalField(max_digits=15, decimal_places=2, default=0)
 
     date = models.DateField(auto_now_add=True)
-    summa = models.DecimalField(default=0,max_digits=10, decimal_places=2)
+    summa = models.DecimalField(default=0,max_digits=10, decimal_places=0)
     description = models.TextField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
 
@@ -162,7 +162,7 @@ class Transfer(models.Model):
 
 class Cash(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='cashs')
-    amount = models.DecimalField(max_digits=15, decimal_places=2, default=0)
+    amount = models.DecimalField(max_digits=15, decimal_places=0, default=0)
     teacher = models.OneToOneField(Teacher, on_delete=models.CASCADE, related_name='cash')
     is_active = models.BooleanField(default=True)
 
