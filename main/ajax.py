@@ -57,9 +57,6 @@ class UpdatePaymenntView(View):
             amount = Decimal(amount)
             payment = Payment.objects.get(id=payment_id, company=request.user.company)
             cash = payment.user.cash
-            print(payment.date  )
-            print(payment.date )
-            print()
             if  payment.is_edit and timezone.now().date()-timedelta(days=3) < payment.date:
                 if payment.payment_type == 1  :
                     payment.user_before_cash = cash.amount
@@ -82,8 +79,8 @@ class UpdatePaymenntView(View):
                     cash.save()
                     payment.user_after_cash = cash.amount 
                     payment.save()
-
-            messages.success(request, f"Tahrirlash muddati otgan")
+            else:
+                messages.success(request, f"Tahrirlash muddati otgan")
             return JsonResponse({
                     'status': 'success',
                     'payment_id': payment.id,
