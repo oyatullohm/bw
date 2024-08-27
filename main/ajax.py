@@ -58,17 +58,28 @@ class UpdatePaymenntView(View):
             payment = Payment.objects.get(id=payment_id, company=request.user.company)
             cash = payment.user.cash
 
-            if  payment.is_edit : 
-                payment.user_before_cash = cash.amount
-                cash.amount -= payment.amount
-                cash.amount += amount
-                payment.amount = amount
-                payment.date_month = date_month
-                payment.description = description
-                cash.save()
-                payment.user_after_cash = cash.amount 
-                payment.save()
-                
+            if  payment.is_edit :
+                if payment.payment_type == 1:
+                    payment.user_before_cash = cash.amount
+                    cash.amount -= payment.amount
+                    cash.amount += amount
+                    payment.amount = amount
+                    payment.date_month = date_month
+                    payment.description = description
+                    cash.save()
+                    payment.user_after_cash = cash.amount 
+                    payment.save()
+                elif payment.payment_type == 2:
+
+                    payment.user_before_cash = cash.amount
+                    cash.amount += payment.amount
+                    cash.amount -= amount
+                    payment.amount = amount
+                    payment.date_month = date_month
+                    payment.description = description
+                    cash.save()
+                    payment.user_after_cash = cash.amount 
+                    payment.save()
 
             return JsonResponse({
                     'status': 'success',
