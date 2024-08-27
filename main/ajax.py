@@ -45,6 +45,7 @@ class UpdateAttendanceTeacherView(View):
         return JsonResponse({'status': 'success', 'attendance_id': attendance.id})
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class UpdatePaymenntView(View):
     @method_decorator(require_POST)
     def post(self, request, *args, **kwargs):
@@ -96,6 +97,7 @@ class UpdatePaymenntView(View):
             return JsonResponse({'status': 'fail', 'message': str(e)}, status=400)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class PaymentCreateView(View):
     @method_decorator(require_POST)
     def post(self, request, *args, **kwargs):
@@ -142,6 +144,7 @@ class PaymentCreateView(View):
             return JsonResponse({'status': 'fail', 'message': str(e)}, status=400)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class TransferCreateView(View):
     @method_decorator(require_POST)
     def post(self, request, *args, **kwargs):
@@ -151,6 +154,9 @@ class TransferCreateView(View):
         description = request.POST.get('description')
         teacher_1 = get_object_or_404(Teacher, id = teacher_1)
         teacher_2 = get_object_or_404(Teacher, id = teacher_2)
+        if teacher_1 == teacher_2:
+            return JsonResponse({'status': False})
+            
         if teacher_1.cash.amount >= Decimal(amount):
             transfer = Transfer.objects.create(
                 company = request.user.company,
