@@ -580,7 +580,7 @@ def calendar_teacher(request,pk):
 @login_required
 def payment_child(request, pk):
     child =  get_object_or_404( Child , id=pk)
-    summa = request.POST.get('summa') 
+    summa = Decimal(request.POST.get('summa') )
     date_month= request.POST.get('date_month')  
     description = request.POST.get('description', None)
     cash = request.user.cash
