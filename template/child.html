@@ -88,14 +88,14 @@
                         <br>
                         {% if request.user.is_child %}
                         <!-- <button class="btn icon icon-left btn-primary me-2 text-nowrap"><i class="bi bi-eye-fill"></i> Show</button> -->
-                        <button class="btn icon icon-left btn-warning me-2 text-nowrap" data-bs-toggle="modal"
+                        <button class="btn icon icon-left btn-warning me-4 mb-2 text-nowrap" data-bs-toggle="modal"
                         data-bs-target="#inlineForm{{i.id}}"  ><i class="bi bi-pencil-square"></i> {% trans 'Update' %}</button>
-                        <button class="btn icon icon-left btn-danger me-2 text-nowrap" data-bs-toggle="modal"
+                        <button class="btn icon icon-left btn-danger me-4 mb-2  text-nowrap" data-bs-toggle="modal"
                         data-bs-target="#danger{{i.id}}"><i class="bi bi-x-circle"></i> {% trans "Delete" %} </button>
 
                       
-                        <button class="btn icon icon-left  btn-primary me-2 text-nowrap"  data-bs-toggle="modal"
-                        data-bs-target="#inlineForm_tarif{{i.id}}" ><i class="bi bi-pencil-square"></i> Edit</button>
+                        <button class="btn icon icon-left  btn-primary me-4 mb-2  text-nowrap"  data-bs-toggle="modal"
+                        data-bs-target="#inlineForm_tarif{{i.id}}" ><i class="bi bi-pencil-square"></i> Tariff</button>
                         {% endif %}
 
                     </div>

@@ -98,7 +98,7 @@
                                     {% for t in transfer %}
                                     <tr>
                                         <td class="text-bold-500" data-bs-toggle="modal" data-bs-target="#inlineForm{{ t.id }}">
-                                            {{ t.date }}
+                                            {{ t.date |date:"d-m-Y"}}
                                         </td>
                                         <td class="text-bold-500">{{ t.user }} </td>
                                         <td class="text-bold-500">{{ t.teacher_1 }} </td>

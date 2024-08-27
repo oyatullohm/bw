@@ -111,7 +111,7 @@
                         <form action="{% url 'edit_amount' teacher.id %}" method="post">
                             {% csrf_token %}
                             <div class="form-group">
-                                <label for="amount" class="form-label">Tarif :  {{teacher.tarif.amount}}    Ohirgi Yangilanish -   {{teacher.tarif.created }} </label>
+                                <label for="amount" class="form-label">Tarif :  {{teacher.tarif.amount}}    Ohirgi Yangilanish -   {{teacher.tarif.created|date:"d-m-Y" }} </label>
                                 <select name="tarif" id="tarif" class="form-control">
                                     <option value="{{ teacher.tarif.id }}">{{ teacher.tarif.name}}</option>
                                     {% for i in tarif %}

@@ -80,7 +80,7 @@
                                     {% for p in payment %}
                                     <tr>
                                         <td class="text-bold-500" data-bs-toggle="modal" {% if request.user.is_main %}  data-bs-target="#inlineForm{{ p.id }}" {% endif %}>
-                                            <a style="color: blue;">{{ p.date }}</a>
+                                            <a style="color: blue;">{{ p.date|date:"d-m-Y" }}</a>
                                         </td>
                                        
                                         <td class="text-bold-500">{{ p.child.name }} </td>

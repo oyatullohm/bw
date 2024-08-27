@@ -212,7 +212,7 @@
                     <i class="bi bi-arrow-clockwise"></i>
                 </a>
             </header>
-{% if messages %}
+            {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
                 <script>
@@ -224,11 +224,10 @@
                     }).showToast();
 
          
-        </script>
                 </script>
                
-                {% endfor %}
             </ul>
+                {% endfor %}
 {% endif %}
 
 {% block content %}
