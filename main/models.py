@@ -104,6 +104,12 @@ class Attendance(models.Model):
     # def __str__(self):
     #     return f"{self.date.strftime('%Y-%m-%d')}"
 
+class PaymentCategory(models.Model):
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='payment_categorys')
+    name = models.CharField(max_length=255)
+    
+    def __str__(self) -> str:
+        return self.name
 
 class Payment(models.Model):
     TYPE_CHOICES = (
@@ -114,6 +120,7 @@ class Payment(models.Model):
     user = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='payments_user')# chiqim qilayotgan user Yoki krim 
     child = models.ForeignKey(Child, on_delete=models.CASCADE, null=True, blank=True, related_name='payments') 
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True, blank=True, related_name='payment_teachers') # oylik ilishi 
+    category = models.ForeignKey(PaymentCategory, on_delete=models.SET_NULL, null=True, blank=True, related_name='category')
     date = models.DateField(default=timezone.now)
     
     user_before_cash = models.DecimalField(max_digits=15, decimal_places=2, default=0)

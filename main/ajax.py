@@ -10,6 +10,8 @@ from decimal import Decimal
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
+import json
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class UpdateAttendanceChildView(View):
@@ -104,12 +106,15 @@ class PaymentCreateView(View):
         amount = request.POST.get('amount')
         payment_type = request.POST.get('paymentType')
         description = request.POST.get('description')
+        category = request.POST.get('category')
+
         try:
             cash = request.user.cash
 
             if cash.is_active :
                 payment =  Payment.objects.create(
                     company=request.user.company,
+                    category_id = category,
                     user = request.user,
                     amount = Decimal(amount),
                     date_month=timezone.now(),
@@ -118,7 +123,7 @@ class PaymentCreateView(View):
                     user_before_cash = cash.amount,
                     
                 )
-               
+
                 if payment.payment_type == 1:
                     cash.amount += payment.amount
                 elif payment.payment_type == 2:
@@ -133,7 +138,9 @@ class PaymentCreateView(View):
                     'date':payment.date,
                     'user':payment.user.username,
                     'amount': payment.amount,
-                    'description': payment.description
+                    'description': payment.description,
+                    'category':payment.category.name
+                    
                     
                 })
             messages.error(request, ' sizda shahsi kassa yoqilmagan  ')
@@ -193,7 +200,7 @@ def search_payment_cost(request):
             conditions,
             company=request.user.company,
             payment_type=2
-        ).select_related('user').order_by('-id')\
+        ).select_related('user', 'category').order_by('-id')\
             .only( 'id','description', 'user__username',
                                       'amount','date','date_month','user_before_cash', 'user_after_cash')
         results = list(results.values('id','description', 'user__username', 
@@ -217,7 +224,7 @@ def search_payment(request):
         .select_related('user').order_by('-id')\
             .only( 'id','child__name','description', 'user__username', 
                                      'amount','date','date_month','user_before_cash', 'user_after_cash')
-        results = list(results.values('id','child__name','description', 'user__username', 
+        results = list(results.values('id','child__name','description', 'user__username', 'category__name',
                                       'amount','date','date_month' ,'user_before_cash', 'user_after_cash'))  
         return JsonResponse(results, safe=False)
     return JsonResponse({'status':'success'})
@@ -273,3 +280,33 @@ def get_teacher_cash(request):
     cash = teacher.cash.amount  # teacherning cash summa qiymatini olamiz
     return JsonResponse({'cash': cash})
 
+@csrf_exempt
+def get_payments(request):
+    if request.method == 'GET':
+        category_id = request.GET.get('category_id')  # GET parametridan category_id ni olish
+        month = request.GET.get('month')  # GET parametridan category_id ni olish
+        year = request.GET.get('year')
+        if not month:
+            month = datetime.today().strftime('%m')  # Hozirgi oy
+        if not year:
+            year = datetime.today().strftime('%Y')  # Hozirgi yil
+        start_date = datetime(year=int(year), month=int(month), day=1).date()
+        end_date = (start_date.replace(day=28) + timedelta(days=4)).replace(day=1) - timedelta(days=1)
+
+            # To'lovlarni filtr qilish
+        payments = Payment.objects.filter(category_id=category_id, date__range=[start_date, end_date])
+            
+        payment_data = [{
+            'id': payment.id,
+            'date': payment.date,
+            'category':payment.category.name,
+            'amount': payment.amount, 
+            'user':payment.user.username,
+            'description':payment.description,
+            'user_before_cash':payment.user_before_cash,
+            'user_after_cash':payment.user_after_cash,
+        } for payment in payments]
+
+        return JsonResponse(payment_data, safe=False)
+    
+    return JsonResponse({'error': 'Invalid request method'}, status=400)

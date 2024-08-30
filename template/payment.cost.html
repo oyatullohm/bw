@@ -4,19 +4,57 @@
 
 <div class="form-group">
     <div class="row">
-        <div class="col-3">
+        <div class="col-6 col-md-3 col-lg-3">
 
             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#inlineForm">
               {% trans 'Add' %}
             </button>
         </div>
-        <div class="col-5">
+    </div>
+    <br>
+    <div class="row">
+        
+        <div class="col-6 col-md-3 col-lg-3">
             <div class="input-group">
 
                 <input type="search" id="form1" class="form-control" placeholder="Search">
             </div>
+        </div> 
+        <div class="col-6 col-md-3 col-lg-3">
+            <div class="input-group mb-3">
+                <select id="payment_month" class="form-control">
+                    <option value=""> Oy TAllang</option>
+                    {% for month in months %}
+                        <option value="{{ month.value }}">{{ month.name }}</option>
+                    {% endfor %}
+    
+                </select>
+            </div>
+        </div>    
+        
+        <div class="col-6 col-md-3 col-lg-3">
+            <div class="input-group mb-3">
+                <select id="payment_year" class="form-control">
+                    <option value=""> Yilni Tallang</option>
+                   
+                        <option value="2023">2023</option>
+                        <option value="2025">2024</option>
+                    
+    
+                </select>
+            </div>
         </div>
  
+        <div class="col-6 col-md-3 col-lg-3">
+            <div class="input-group">
+               <select name="" id="payment_category" class="form-control">
+                {% for c in category %}
+                    <option value="{{c.id}}">{{c}}</option>
+                {% endfor %}
+               </select>
+            </div>
+        </div>
+
 
   
 
@@ -31,6 +69,15 @@
                 
                 <div class="modal-body">
                     <div class="form-group mb-1">
+                        <label for="category" class="form-label">Category</label>
+                        <select name="category" id="category" class="form-control" required >
+                            {% for c in category %}
+                            <option value="{{c.id}}">{{c.name}}</option>
+                            {% endfor %}
+                        </select>
+                       
+                    </div>  
+                     <div class="form-group mb-1">
                         <label for="amount" class="form-label">{% trans 'Som' %}</label>
                         <input type="number" name="amount" required id="payment_amount" class="form-control" placeholder="Summa">
                     </div>
@@ -73,6 +120,7 @@
                                 <thead>
                                     <tr>
                                         <th> {% trans "Date" %}</th>
+                                        <th> {% trans "Category" %}</th>
                                         <th> {% trans "Som" %}</th>
                                         <th> {% trans "Employee" %}</th>
                                         <th> {% trans "Info" %}</th>
@@ -84,6 +132,7 @@
                                         <td class="text-bold-500" data-bs-toggle="modal" {% if request.user.is_main %}  data-bs-target="#inlineForm{{ p.id }}" {% endif %}>
                                             <a style="color: blue;">{{ p.date|date:"d-m-Y" }}</a>
                                         </td>
+                                        <td class="text-bold-500">{{ p.category.name }}</td>
                                         <td class="text-bold-500">{{ p.amount }}</td>
                                         <td class="text-bold-500">{{ p.user }}</td>
                                         <td class="text-bold-500"><a href="#"  id="info-{{p.id}}" 
@@ -253,6 +302,7 @@
 
     document.getElementById('payment_create').addEventListener('click', function() {
 
+    const category = document.getElementById('category').value;
     const amount = document.getElementById('payment_amount').value;
     const description = document.getElementById('payment_description').value;
     const paymentType = document.getElementById('payment_payment_type').value;
@@ -268,7 +318,8 @@
         body: new URLSearchParams({
             'amount': amount,
             'description': description,
-            'paymentType': paymentType
+            'paymentType': paymentType,
+            'category':category,
         })
     })
     .then(response => {
@@ -295,6 +346,7 @@
                     <td class="text-bold-500" data-bs-toggle="modal" data-bs-target="#inlineForm${data.payment_id}">
                         <a style="color: blue;">${formattedDate}</a>
                     </td>
+                    <td class="text-bold-500">${data.category}</td>
                     <td class="text-bold-500">${data.amount}</td>
                     <td class="text-bold-500">${data.user}</td>
                     <td class="text-bold-500"> <a href="#"  
@@ -340,13 +392,13 @@ const Toast = Swal.mixin({
 document.querySelectorAll('[id^="info-"]').forEach(button => {
   button.addEventListener("click", (e) => {
       const izoh = e.target.getAttribute('data-izoh');
-      console.log(izoh)
+
       const user = e.target.getAttribute('data-user');
-      console.log(user)
+    
       const user_before = e.target.getAttribute('data-user_before_cash');
-      console.log(user_before)
+
       const user_after = e.target.getAttribute('data-user_after_cash');
-      console.log(user_after)
+ 
     
     Swal2.fire({
       icon: "info",
@@ -374,7 +426,7 @@ $(document).ready(function() {
                 success: function(data) {
                     let tbody = $('#search-results');
                     tbody.empty();  // Jadvalning tanlangan qismidagi eski natijalarni tozalash
-                    
+                        
                     $.each(data, function(index, item) {
                         let row = `
                             <tr>
@@ -382,6 +434,7 @@ $(document).ready(function() {
                                     <a style="color: blue;" >${item.date}</a>
                                 </td>
                                 <td class="text-bold-500">${item.cild__name}</td>
+                                <td class="text-bold-500">${item.category__name || ''}</td>
                                 <td class="text-bold-500">${item.amount}</td>
                                 <td class="text-bold-500">${item.user__username}</td>
                                 <td class="text-bold-500">
@@ -454,6 +507,83 @@ $(document).ready(function() {
         }
     });
 });
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const categorySelect = document.getElementById('payment_category');
+
+    categorySelect.addEventListener('change', function() {
+        const selectedCategoryId = categorySelect.value;
+        const monthSelect = document.getElementById('payment_month').value;
+        const yearSelect = document.getElementById('payment_year').value;
+
+
+        // GET so'rovini URL parametr bilan yuborish
+        fetch(`/get-payments/?category_id=${selectedCategoryId} &month=${monthSelect}& year=${yearSelect}`, {
+            method: 'GET',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);  // Javobni tekshirish uchun
+            const paymentTableBody = document.getElementById('search-results');  // Bu yerdagi <tbody> id'sini tekshiring
+            paymentTableBody.innerHTML = '';  // Avvalgi ma'lumotlarni tozalash
+
+            data.forEach(payment => {
+                // Har bir payment uchun yangi <tr> element yarating
+                const tr = document.createElement('tr');
+
+                tr.innerHTML = `
+                    <td class="text-bold-500" data-bs-toggle="modal" data-bs-target="#inlineForm${payment.id}">
+                        <a style="color: blue;">${formatDate(payment.date)}</a>
+                    </td>
+                    <td class="text-bold-500">${payment.category}</td>
+                    <td class="text-bold-500">${payment.amount}</td>
+                    <td class="text-bold-500">${payment.user}</td>
+                    <td class="text-bold-500">
+                        <a href="#" id="info-${payment.id}" 
+                            data-izoh="${payment.description}"
+                            data-user="${payment.user}"
+                            data-user_before_cash="${payment.user_before_cash}"
+                            data-user_after_cash="${payment.user_after_cash}">
+                            {% trans 'Info' %}
+                        </a>
+                    </td>
+                `;
+                
+                // Yangi <tr> elementni jadval <tbody> ga qo'shing
+                paymentTableBody.appendChild(tr);
+            });
+            $(document).on('click', '[id^="info-"]', function(e) {
+                        const izoh = $(this).data('izoh');
+                        const user = $(this).data('user');
+                        const user_before = $(this).data('user_before_cash');
+                        const user_after = $(this).data('user_after_cash');
+
+                        Swal.fire({
+                            icon: "info",
+                            title: `${user} oldin ${user_before} Sum\n
+                                    kegin ${user_after} Sum\n 
+                                    ${izoh}`,
+                        });
+                    });
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    // Sana formatlash funksiyasi
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-GB', options).split('/').join('-');
+    }
+});
+
+
+
 </script>
 
 {% endblock content %}

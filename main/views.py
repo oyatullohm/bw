@@ -357,14 +357,39 @@ class PaymentView(LoginRequiredMixin,View):
         return render(request, 'payment.html', context)
 
 
+
+months = [
+        {'value': '01', 'name': 'Yanvar'},
+        {'value': '02', 'name': 'Fevral'},
+        {'value': '03', 'name': 'Mart'},
+        {'value': '04', 'name': 'Aprel'},
+        {'value': '05', 'name': 'May'},
+        {'value': '06', 'name': 'Iyun'},
+        {'value': '07', 'name': 'Iyul'},
+        {'value': '08', 'name': 'Avgust'},
+        {'value': '09', 'name': 'Sentabr'},
+        {'value': '10', 'name': 'Oktabr'},
+        {'value': '11', 'name': 'Noyabr'},
+        {'value': '12', 'name': 'Dekabr'}
+    ]
+
 class PaymentCostView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
+    
     def get(self, request):
         page = request.GET.get('page')
-        
+        category = PaymentCategory.objects.filter(company=request.user.company,)
         payments = Payment.objects.filter(company=request.user.company, payment_type=2)\
             .select_related('child','teacher','user').order_by('-id')
-        paginator = Paginator(payments, 25)  # Sahifalarni 25 tadan ko'rsatish
+            
+        # total_amount = Payment.objects.filter(
+        #         date=date.today().replace(day=1),
+        #         is_active=True
+        #     ).select_related('child','teacher','user')\
+        #     .aggregate(total_amount=Sum('amount'))['total_amount'] or 0
+
+        paginator = Paginator(payments, 25) 
+   
         try:
             payment_page = paginator.page(page)
         except PageNotAnInteger:
@@ -372,8 +397,12 @@ class PaymentCostView(LoginRequiredMixin,View):
         except EmptyPage:
             payment_page = paginator.page(paginator.num_pages)
 
+        
+        
         context = {
             'payment': payment_page,
+            'category':category,
+            'months':months
     
         }
         return render(request, 'payment.cost.html', context)
@@ -458,10 +487,12 @@ class TransferView(LoginRequiredMixin,View):
 class SettingsView(LoginRequiredMixin,View):
     def get(self, request,):
         tarif = Tarif.objects.all()
+        category = PaymentCategory.objects.filter(company=request.user.company)
         working_day = [ i for i in range(1,32) ]
         context = {
             'working_day':working_day,
-            'tarif':tarif
+            'tarif':tarif,
+            'category':category
         }
         return render (request, 'settings.html', context)
     
@@ -679,3 +710,14 @@ def add_teacher(request):
     language = translation.get_language()
     return redirect (f'/{language}/teacher')
 
+
+@login_required
+def create_payment_category(request):
+    name = request.POST.get('category')
+    PaymentCategory.objects.get_or_create(
+        name =name,
+        company = request.user.company
+    )
+    messages.error(request, 'Category qoshildi')
+    language = translation.get_language()
+    return redirect(f'/{language}/settings/')

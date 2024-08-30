@@ -24,6 +24,7 @@ urlpatterns = [
     path('add_teacher/',add_teacher,name='add_teacher'),
     path('working_day/',working_day, name='working_day'),
     path('search-child/',search_child, name='search-child'),
+    path('get-payments/', get_payments, name='get_payments'),
     path('search-payment/',search_payment, name='search_payment'),
     path('search-transfer/',search_transfer, name='search_transfer'),
     path('get-teacher-cash/', get_teacher_cash, name='get_teacher_cash'),
@@ -37,6 +38,7 @@ urlpatterns = [
     path('calendar/teacher/<int:pk>/',calendar_teacher,name='calendar_teacher'),
     path('teacher-password/<int:pk>/',password,name='edit_password'),
     path('chaild-edit-tarif/<int:pk>/',chaild_edit_tarif,name='chaild_edit_tarif'),
+    path('create-payment-category', create_payment_category,name ='create_payment_category')
     
 
 ]
