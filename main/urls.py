@@ -34,11 +34,12 @@ urlpatterns = [
     path('chaild-edit/<int:pk>/',chaild_edit,name='chaild_edit'),
     path('delete-chaild/<int:pk>/',delete_chaild,name='delete_chaild'),
     path('payment/child/<int:pk>/',payment_child,name='payment_child'),
+    path('create-payment-category', create_payment_category,name ='create_payment_category'),
     path('calendar/child/<int:pk>/',calendar_child,name='calendar_child'),
     path('calendar/teacher/<int:pk>/',calendar_teacher,name='calendar_teacher'),
     path('teacher-password/<int:pk>/',password,name='edit_password'),
     path('chaild-edit-tarif/<int:pk>/',chaild_edit_tarif,name='chaild_edit_tarif'),
-    path('create-payment-category', create_payment_category,name ='create_payment_category')
+    path('edit_category/<int:category_id>/', edit_category, name='edit_category'),
+    path('payment_catedory_delete/<int:pk>/', edit_cpayment_catedory_deleteategory, name='payment_catedory_delete'),
     
-
 ]

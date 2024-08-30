@@ -106,7 +106,7 @@ class PaymentCreateView(View):
         amount = request.POST.get('amount')
         payment_type = request.POST.get('paymentType')
         description = request.POST.get('description')
-        category = request.POST.get('category')
+        category = request.POST.get('category' , None)
 
         try:
             cash = request.user.cash
@@ -132,17 +132,17 @@ class PaymentCreateView(View):
                 cash.save()
                 payment.save()
 
-                    
+                category_name = payment.category.name if payment.category else 'Category'
+
                 return JsonResponse({
                     'status': 'success',
                     'date':payment.date,
                     'user':payment.user.username,
                     'amount': payment.amount,
                     'description': payment.description,
-                    'category':payment.category.name
-                    
-                    
+                    'category':category_name
                 })
+                
             messages.error(request, ' sizda shahsi kassa yoqilmagan  ')
             return JsonResponse({'status': 'success',})
         except Payment.DoesNotExist:
@@ -280,22 +280,34 @@ def get_teacher_cash(request):
     cash = teacher.cash.amount  # teacherning cash summa qiymatini olamiz
     return JsonResponse({'cash': cash})
 
+
 @csrf_exempt
 def get_payments(request):
     if request.method == 'GET':
-        category_id = request.GET.get('category_id')  # GET parametridan category_id ni olish
+        category_id = int(request.GET.get('category_id') ) # GET parametridan category_id ni olish
         month = request.GET.get('month')  # GET parametridan category_id ni olish
         year = request.GET.get('year')
+        print(month)
         if not month:
             month = datetime.today().strftime('%m')  # Hozirgi oy
-        if not year:
-            year = datetime.today().strftime('%Y')  # Hozirgi yil
+        print(year)
+        print(year)
+        print(year)
         start_date = datetime(year=int(year), month=int(month), day=1).date()
         end_date = (start_date.replace(day=28) + timedelta(days=4)).replace(day=1) - timedelta(days=1)
 
-            # To'lovlarni filtr qilish
-        payments = Payment.objects.filter(category_id=category_id, date__range=[start_date, end_date])
-            
+        if category_id > 0 :
+            payments = Payment.objects.filter(
+                category_id=category_id,is_active=True,
+                date__range=[start_date, end_date],
+                payment_type = 2)
+        else :
+            payments = Payment.objects.filter(is_active=True ,
+                                              date__range=[start_date, end_date], 
+                                              payment_type=2)
+
+        total_amount =payments.aggregate(total_amount=Sum('amount'))['total_amount'] or 0
+
         payment_data = [{
             'id': payment.id,
             'date': payment.date,
@@ -306,7 +318,22 @@ def get_payments(request):
             'user_before_cash':payment.user_before_cash,
             'user_after_cash':payment.user_after_cash,
         } for payment in payments]
-
-        return JsonResponse(payment_data, safe=False)
+        
+        response_data ={
+                'payment':payment_data,
+                'total_amount':total_amount
+                
+             }
+        return JsonResponse(response_data, safe=False)
     
     return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+
+@login_required
+@csrf_exempt
+def edit_category(request, category_id):
+    category = get_object_or_404(PaymentCategory, id=category_id)
+    print(category)
+    category.name = request.POST.get('name')
+    category.save()
+    return JsonResponse({'success': True, 'new_name': category.name})

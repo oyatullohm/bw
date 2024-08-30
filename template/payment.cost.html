@@ -6,9 +6,17 @@
     <div class="row">
         <div class="col-6 col-md-3 col-lg-3">
 
+          
             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#inlineForm">
-              {% trans 'Add' %}
-            </button>
+                {% trans 'Add' %}  
+              </button>
+         
+            <span class="text-end" id="total_amount"> {{total_amount}} Sum</span>
+           
+        </div>
+         <div class="col-6 col-md-3 col-lg-3">
+
+         
         </div>
     </div>
     <br>
@@ -23,31 +31,35 @@
         <div class="col-6 col-md-3 col-lg-3">
             <div class="input-group mb-3">
                 <select id="payment_month" class="form-control">
-                    <option value=""> Oy TAllang</option>
-                    {% for month in months %}
-                        <option value="{{ month.value }}">{{ month.name }}</option>
-                    {% endfor %}
-    
+                    <option value=""> Oy</option>
+                    <option value="01"> Yanvar </option>
+                    <option value="02"> Fevral </option>
+                    <option value="03"> Mart </option>
+                    <option value="04"> Aprel </option>
+                    <option value="05"> May </option>
+                    <option value="06"> Iyun </option>
+                    <option value="07"> Iyul </option>
+                    <option value="08"> Avgust </option>
+                    <option value="09"> Sentabr </option>
+                    <option value="10"> Oktabr </option>
+                    <option value="11"> Noyabr </option>
+                    <option value="12"> Dekabr </option>
+
                 </select>
             </div>
         </div>    
         
         <div class="col-6 col-md-3 col-lg-3">
             <div class="input-group mb-3">
-                <select id="payment_year" class="form-control">
-                    <option value=""> Yilni Tallang</option>
-                   
-                        <option value="2023">2023</option>
-                        <option value="2025">2024</option>
-                    
-    
-                </select>
+
+                <input type="number" class="form-control" id="payment_year" value="{{year}}">
             </div>
         </div>
  
         <div class="col-6 col-md-3 col-lg-3">
             <div class="input-group">
                <select name="" id="payment_category" class="form-control">
+                   <option value="0"> Categorya</option>
                 {% for c in category %}
                     <option value="{{c.id}}">{{c}}</option>
                 {% endfor %}
@@ -519,8 +531,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const yearSelect = document.getElementById('payment_year').value;
 
 
+
         // GET so'rovini URL parametr bilan yuborish
-        fetch(`/get-payments/?category_id=${selectedCategoryId} &month=${monthSelect}& year=${yearSelect}`, {
+        fetch(`/get-payments/?category_id=${selectedCategoryId} &month=${monthSelect}&year=${yearSelect}`, {
             method: 'GET',
             headers: {
                 'X-CSRFToken': '{{ csrf_token }}'
@@ -528,11 +541,14 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);  // Javobni tekshirish uchun
+              // Javobni tekshirish uchun
             const paymentTableBody = document.getElementById('search-results');  // Bu yerdagi <tbody> id'sini tekshiring
             paymentTableBody.innerHTML = '';  // Avvalgi ma'lumotlarni tozalash
+            
+            const total_amount = document.getElementById('total_amount');  // Bu yerdagi <tbody> id'sini tekshiring
+            total_amount.textContent = data.total_amount  + ' ' + "Som" ;
 
-            data.forEach(payment => {
+            data.payment.forEach(payment => {
                 // Har bir payment uchun yangi <tr> element yarating
                 const tr = document.createElement('tr');
 

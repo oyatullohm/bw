@@ -357,37 +357,23 @@ class PaymentView(LoginRequiredMixin,View):
         return render(request, 'payment.html', context)
 
 
-
-months = [
-        {'value': '01', 'name': 'Yanvar'},
-        {'value': '02', 'name': 'Fevral'},
-        {'value': '03', 'name': 'Mart'},
-        {'value': '04', 'name': 'Aprel'},
-        {'value': '05', 'name': 'May'},
-        {'value': '06', 'name': 'Iyun'},
-        {'value': '07', 'name': 'Iyul'},
-        {'value': '08', 'name': 'Avgust'},
-        {'value': '09', 'name': 'Sentabr'},
-        {'value': '10', 'name': 'Oktabr'},
-        {'value': '11', 'name': 'Noyabr'},
-        {'value': '12', 'name': 'Dekabr'}
-    ]
-
 class PaymentCostView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     
     def get(self, request):
+        year = int(datetime.now().year)
         page = request.GET.get('page')
         category = PaymentCategory.objects.filter(company=request.user.company,)
         payments = Payment.objects.filter(company=request.user.company, payment_type=2)\
             .select_related('child','teacher','user').order_by('-id')
             
-        # total_amount = Payment.objects.filter(
-        #         date=date.today().replace(day=1),
-        #         is_active=True
-        #     ).select_related('child','teacher','user')\
-        #     .aggregate(total_amount=Sum('amount'))['total_amount'] or 0
+        total_amount = Payment.objects.filter(payment_type=2,
+                date__gte=date.today().replace(day=1),
+                is_active=True
+            ).select_related('child','teacher','user')\
+            .aggregate(total_amount=Sum('amount'))['total_amount'] or 0
 
+        print(total_amount)
         paginator = Paginator(payments, 25) 
    
         try:
@@ -402,7 +388,8 @@ class PaymentCostView(LoginRequiredMixin,View):
         context = {
             'payment': payment_page,
             'category':category,
-            'months':months
+            'total_amount' :total_amount,
+            'year':year
     
         }
         return render(request, 'payment.cost.html', context)
@@ -719,5 +706,11 @@ def create_payment_category(request):
         company = request.user.company
     )
     messages.error(request, 'Category qoshildi')
+    language = translation.get_language()
+    return redirect(f'/{language}/settings/')
+
+def edit_cpayment_catedory_deleteategory (request, pk):
+    PaymentCategory.objects.get(id=int(pk)).delete()
+    messages.error(request, 'Category ochrildi')
     language = translation.get_language()
     return redirect(f'/{language}/settings/')
