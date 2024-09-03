@@ -195,7 +195,10 @@ def search_payment_cost(request):
     query = request.GET.get('query', '')
 
     if query:
-        conditions = Q(description__icontains=query) | Q(user__username__icontains=query) | Q(amount=query)
+        conditions = Q(description__icontains=query)\
+                    | Q(user__username__icontains=query)\
+                    | Q(amount__icontains=query)\
+                    | Q(category__name__icontains=query)
         results = Payment.objects.filter(
             conditions,
             company=request.user.company,
@@ -212,7 +215,10 @@ def search_payment(request):
     query = request.GET.get('query', '')
 
     if query:
-        conditions =   Q(child__name__icontains=query) |Q(user__username__icontains=query)  | Q(description__icontains=query)
+        conditions =Q(child__name__icontains=query)\
+                    |Q(user__username__icontains=query)\
+                    |Q(amount__icontains=query)\
+                    |Q(description__icontains=query)
 
         try:
 
@@ -287,12 +293,10 @@ def get_payments(request):
         category_id = int(request.GET.get('category_id') ) # GET parametridan category_id ni olish
         month = request.GET.get('month')  # GET parametridan category_id ni olish
         year = request.GET.get('year')
-        print(month)
+
         if not month:
             month = datetime.today().strftime('%m')  # Hozirgi oy
-        print(year)
-        print(year)
-        print(year)
+
         start_date = datetime(year=int(year), month=int(month), day=1).date()
         end_date = (start_date.replace(day=28) + timedelta(days=4)).replace(day=1) - timedelta(days=1)
 
