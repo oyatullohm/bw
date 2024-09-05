@@ -63,7 +63,7 @@
                 <div class="card-content">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-lg">
+                            <table class="table table-lg   d-none d-md-table">
                                 <thead>
                                     <tr>
                                         <th> {% trans "Name" %}</th>
@@ -85,6 +85,19 @@
                                    {% endfor %}
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="d-md-none">
+
+                            <div class="card">
+                                {% for i in group %}
+                               <p class="card-text"> Name :  {{i.name}}</p>
+                                <p class="card-text">Tarboyachi : {{i.teacher}}</p>
+                                <p class="card-text">Yordamchi : {{i.helper}}</p>
+                                <p class="card-text">Bolalarsoni : {{i.child.all.count}}</p>
+                                <span><a href="{% url 'group_detail' i.id %}">Info</a></span>
+
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>
