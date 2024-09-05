@@ -6,7 +6,7 @@
  <section class="section">
     <div class="row" id="basic-table">
         <div class="col-12 col-md-12">
-            <div class="card">
+            <div class="">
                 <div class="card-header">
                     <h4 class="card-title">{% trans "Group" %}</h4>
                     <div class="container mt-5">
@@ -73,8 +73,8 @@
                                         <th>  {% trans "Info" %}</th>
                                     </tr>
                                 </thead>
+                                {% for i in group %}
                                 <tbody>
-                                    {% for i in group %}
                                     <tr>
                                         <td class="text-bold-500">{{i.name}}</td>
                                         <td class="text-bold-500">{{i.teacher}}</td>
@@ -82,22 +82,25 @@
                                         <td class="text-bold-500">{{i.child.all.count}}</td>
                                         <td class="text-bold-500"><a href="{% url 'group_detail' i.id %}">Info</a></td>
                                     </tr>
-                                   {% endfor %}
                                 </tbody>
+                                <div class="d-md-none">
+
+                                    <div class="card">
+                                      <div class="card-body">
+
+                                       <p class="card-text"><span class="fw-bold"> Name </span>:  {{i.name}}</p>
+                                       <p class="card-text"><span class="fw-bold"> Tarboyachi </span> : {{i.teacher}}</p>
+                                       <p class="card-text"><span class="fw-bold"> Yordamchi </span>: {{i.helper}}</p>
+                                       <p class="card-text"><span class="fw-bold"> Bolalarsoni </span>: {{i.child.all.count}}</p>
+                                       <span><a href="{% url 'group_detail' i.id %}">Info</a></span>
+                                      </div>
+                                   
+                                    </div>
+                                </div>
+                                {% endfor %}
                             </table>
                         </div>
-                        <div class="d-md-none">
-
-                            <div class="card">
-                                {% for i in group %}
-                               <p class="card-text"> Name :  {{i.name}}</p>
-                                <p class="card-text">Tarboyachi : {{i.teacher}}</p>
-                                <p class="card-text">Yordamchi : {{i.helper}}</p>
-                                <p class="card-text">Bolalarsoni : {{i.child.all.count}}</p>
-                                <span><a href="{% url 'group_detail' i.id %}">Info</a></span>
-                                {% endfor %}
-                            </div>
-                        </div>
+ 
                     </div>
                 </div>
             </div>
