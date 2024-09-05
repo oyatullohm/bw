@@ -2,22 +2,47 @@
 {% block content %}
 {% load i18n %}
  <!-- Basic Tables start -->
+ <style>
+
+#recent-dates-container {
+    display: flex;
+    justify-content: start; /* O'ngdan chapga qarab joylashtirish uchun */
+    overflow-x: auto; /* Xo'ja kattalashganida horizontal scroll */
+    white-space: nowrap; /* Sanalarni bir qatorga joylashtirish */
+    /* padding: 10px; Optional, kerakli bo'lsa */
+    /* border: 1px solid #ddd; Optional, kerakli bo'lsa */
+}
+
+#recent-dates-links {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px; /* Elementlar orasidagi bo'shliq */
+}
+
+.date-item {
+    display: inline-block; /* Flexbox xususiyatlarini to'g'ri ishlatish uchun */
+    color: black; /* Standart rang */
+    text-decoration: none; /* Link ostidagi chiziqni olib tashlaydi */
+}
+
+.today-date {
+    color: red; /* Bugungi sana uchun maxsus rang */
+    font-weight: bold; /* Ixtiyoriy, sanani ajratish uchun */
+}
+
+ </style>
+
 
  <section class="section">
     <div class="row" id="basic-table">
         <div class="col-12 col-md-12">
            
+            <div id="recent-dates-container " class=" overflow-auto">
+                <div id="recent-dates-links"></div>
+            </div>
             <div class="table-responsive">
                 <table class="table table-lg">
-                    <thead>
-                        <tr>
-                            <th>{% trans 'Name' %}</th>
-                            <th>{% trans 'Teacher' %}</th>
-                            <th>{% trans 'Helper' %}</th>
-                            <th>{% trans 'Number of children' %}</th>
-                        
-                        </tr>
-                    </thead>
+                  
                     <tbody>
 
                         <tr>
@@ -105,26 +130,19 @@
                             <div class="card ">
                                 <div class="card-body">
                                     
-                                    <p class="card-text"><span class="fw-bold">{% trans "Name" %}: </span><a href="{% url 'calendar_child' item.child.id %}">{{ item.child.name }}</a></p>
-                                    <p class="card-text"><span class="fw-bold">{% trans "Phone" %}: </span>{{ item.child.phone }}</p>
-                                    <p class="card-text"><span class="fw-bold">{% trans 'Som' %}: </span>{{item.child.tarif.amount}} </p>
-                                    <p class="card-text"><span class="fw-bold">{% trans 'Tariff' %}: </span>{{item.child.tarif.name}} / {{ item.attendance_monthly }}  </p>
-                                    <p class="card-text"><span class="fw-bold">{% trans 'Tariff' %}: </span>  <span style="color: brown;">{{item.child.tarif.amount}}  </span> / <span style="color: blue;">{{item.payment_summa}} </span>   </p>
-                                    <p class="card-text">
-                                        <div class="form-check form-switch col-3">
-                                            <input class="form-check-input" name="attendance_{{ item.child.id }}" type="checkbox" id="flexSwitchCheckDefault_{{ item.child.id }}" {% if  item.attendance_today == True %}checked{% endif %} onchange="updateAttendance(`{{ item.child.id }}`, this.checked)">
-                                            <label class="form-check-label" for="flexSwitchCheckDefault_{{ item.child.id }}">{% trans "Attendance" %}</label>
+                                    <p class="card-text"><a href="{% url 'calendar_child' item.child.id %}">{{ item.child.name }}</a><span class="fw-bold"> </span>{{item.child.tarif.amount}}/{{item.payment_summa}}  
+                                        </span>  </p>
+                                   
+                                        <div class="form-check form-switch col-12">
+                                            
+                                            {% if request.user.is_payment %}
+                                            <span style="color: black;"> {{ item.attendance_monthly }}  </span>   <a class="text-end" data-bs-toggle="modal" data-bs-target="#inlineForm{{item.child.id}}">  {% trans 'Payment' %}  </a>  
+                                            {% endif %}
+                                            <input class="form-check-input" name="attendance_{{ item.child.id }}" type="checkbox" id="flexSwitchCheckDefault_{{ item.child.id }}" {% if  item.attendance_today == True %}checked{% endif %} onchange="updateAttendance(`{{ item.child.id }}`, this.checked, '{{date|date:"Y-m-d"}}')">
+
+                                            
                                         </div>
-                                    </p>
-                                    {% if request.user.is_payment %}
-                                    <div class="col-5">
-                                    <p class="card-text">
-                                            <button class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#inlineForm{{item.child.id}}">{% trans 'Payment' %}</button>
-                                        </p>
-                                        
-                                    </div>
-                                    {% endif %}
-                                
+
                                 </div>
                             </div>
                             <!-- Qo'shimcha kartalar -->
@@ -206,29 +224,97 @@
 {% endif %}
 
 <script>
-    function updateAttendance(childId, is_active) {
-        fetch('{% url "update-attendance" %}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': '{{ csrf_token }}'
+    function updateAttendance(childId, is_active, date) {
+    fetch('{% url "update-attendance" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}'
             },
-            body: new URLSearchParams({
-                'child_id': childId,
-                'is_active': is_active
-            })
+        body: new URLSearchParams({
+            'child_id': childId,
+            'is_active': is_active,
+            'date': date  // Send the date parameter
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status !== 'success') {
-                // alert('Davomat yangilanmadi!');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status !== 'success') {
             // alert('Davomat yangilanmadi!');
-        });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // alert('Davomat yangilanmadi!');
+    });
+}
+
+    function getIdFromUrl() {
+    const pathname = window.location.pathname;
+    const parts = pathname.split('/');
+    const id = parts[parts.length - 2];
+    return id;
+}
+
+function createDynamicUrl(id, date) {
+    return `/group-detail/${id}/?date=${encodeURIComponent(date)}`;
+}
+
+function getLastDaysDates(days) {
+    const today = new Date();
+    let dates = [];
+
+    for (let i = 0; i < days; i++) {
+        let date = new Date(today);
+        date.setDate(today.getDate() - i);
+
+        let day = String(date.getDate()).padStart(2, '0');
+        let month = String(date.getMonth() + 1).padStart(2, '0');
+        let year = date.getFullYear();
+
+        let formattedDate = `${day}-${month}-${year}`;
+
+        dates.push(formattedDate);
     }
+
+    return dates;
+}
+
+function displayRecentDaysDates() {
+    const numDays = 90;
+    const dates = getLastDaysDates(numDays);
+    const container = document.getElementById('recent-dates-links');
+    const today = new Date();
+    const todayFormatted = `${String(today.getDate()).padStart(2, '0')}-${String(today.getMonth() + 1).padStart(2, '0')}-${today.getFullYear()}`;
+
+    const id = getIdFromUrl(); // Id'ni olish
+    const targetDate = new URLSearchParams(window.location.search).get('date') || todayFormatted;
+    
+    dates.reverse().forEach(date => {
+        const a = document.createElement('a');
+        a.href = createDynamicUrl(id, date); // Dinamik URL
+        a.textContent = date;
+        a.classList.add("date-item");
+
+        if (date === todayFormatted) {
+            a.classList.add("today-date");
+        }
+
+        container.appendChild(a);
+    });
+
+    // Scroll to the end of the container by default
+    container.scrollLeft = container.scrollWidth;
+
+    // Scroll to the specific target date if it exists
+    const targetElement = Array.from(container.children).find(child => child.textContent === targetDate);
+    if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+    }
+}
+
+displayRecentDaysDates();
+
 </script>
 
 {% endblock content %}

@@ -18,9 +18,11 @@ class UpdateAttendanceChildView(View):
     @method_decorator(require_POST)
     def post(self, request, *args, **kwargs):
         company = request.user.company
+        date = request.POST.get('date')
+
         child_id = request.POST.get('child_id')
         is_active = request.POST.get('is_active') == 'true'
-        date = timezone.now().date()
+
         attendance, created = Attendance.objects.update_or_create(
             company = company,  
             child_id=child_id,

@@ -181,11 +181,18 @@ class GroupDetailView(LoginRequiredMixin, View):
     login_url = settings.LOGIN_URL
     
     def get(self, request, pk, *args, **kwargs):
+        today = request.GET.get('date')
+        if not today:
+            today = timezone.now().date()
+        else:
+           today = datetime.strptime(today,  '%d-%m-%Y').date()
+        
+        
+
         # start_time = time.time() 
-        company = request.user.company
+        company = request.user.company  
         page = request.GET.get('page')
         group = Group.objects.get(id=pk)
-        today = timezone.now().date()
         start_of_month = today.replace(day=1)
 
         children = Child.objects.filter(company=company, group=group,is_active = True).select_related('tarif').prefetch_related('payments')
@@ -247,6 +254,7 @@ class GroupDetailView(LoginRequiredMixin, View):
             'children_cout':children_cout,
             'page_obj': paginated_children,
             'children_attendance': children_attendance,
+            'date':today
         }
 
         # end_time = time.time() 
