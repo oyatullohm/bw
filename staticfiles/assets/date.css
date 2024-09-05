@@ -1,0 +1,25 @@
+#recent-dates-container {
+    display: flex !important;
+    justify-content: start !important; /* O'ngdan chapga qarab joylashtirish uchun */
+    overflow-x: auto !important; /* Xo'ja kattalashganida horizontal scroll */
+    white-space: nowrap !important; /* Sanalarni bir qatorga joylashtirish */
+    /* padding: 10px; Optional, kerakli bo'lsa */
+    /* border: 1px solid #ddd; Optional, kerakli bo'lsa */
+}
+
+#recent-dates-links {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 10px  !important; /* Elementlar orasidagi bo'shliq */
+}
+
+.date-item {
+    display: inline-block !important; /* Flexbox xususiyatlarini to'g'ri ishlatish uchun */
+    color: black !important; /* Standart rang */
+    text-decoration: none !important; /* Link ostidagi chiziqni olib tashlaydi */
+}
+
+.today-date {
+    color: rgb(0, 128, 255) !important; /* Bugungi sana uchun maxsus rang */
+    font-weight: bold !important; /* Ixtiyoriy, sanani ajratish uchun */
+}
