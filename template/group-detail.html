@@ -8,12 +8,14 @@
  <section class="section">
     <div class="row" id="basic-table">
         <div class="col-12 col-md-12">
-           <div class="container"><div class="row">
+         
 
-               <div id="recent-dates-container " class=" overflow-auto">
-                   <div id="recent-dates-links"></div>
-                </div>
-            </div></div>
+            <div id="recent-dates-container" class="overflow-auto">
+                <select class="form-select" id="recent-dates-select" onchange="handleDateChange(this.value)" aria-label="Default select example">
+                    <!-- Options will be dynamically added here -->
+                </select>
+            </div>
+            
             <div class="table-responsive">
                 <table class="table table-lg">
                   
@@ -51,7 +53,7 @@
                             <td class="text-bold-500">  {{item.child.tarif.name}} / {{ item.attendance_monthly }}</td>
                             <td class="text-bold-500">
                                 <div class="form-check form-switch col-3">
-                                    <input class="form-check-input" name="attendance_{{ item.child.id }}" type="checkbox" id="flexSwitchCheckDefault_{{ item.child.id }}" {% if  item.attendance_today == True %}checked{% endif %} onchange="updateAttendance(`{{ item.child.id }}`, this.checked)">
+                                    <input class="form-check-input" name="attendance_{{ item.child.id }}" type="checkbox" id="flexSwitchCheckDefault_{{ item.child.id }}" {% if  item.attendance_today == True %}checked{% endif %} onchange='updateAttendance(`{{ item.child.id }}`, this.checked, `{{date|date:"Y-m-d"}}`)'>
                                     <label class="form-check-label" for="flexSwitchCheckDefault_{{ item.child.id }}">Davomat</label>
                                 </div>
                             </td>
@@ -229,6 +231,12 @@
     const id = parts[parts.length - 2];
     return id;
 }
+function getIdFromUrl() {
+    const pathname = window.location.pathname;
+    const parts = pathname.split('/');
+    const id = parts[parts.length - 2];
+    return id;
+}
 
 function createDynamicUrl(id, date) {
     return `/group-detail/${id}/?date=${encodeURIComponent(date)}`;
@@ -257,37 +265,39 @@ function getLastDaysDates(days) {
 function displayRecentDaysDates() {
     const numDays = 90;
     const dates = getLastDaysDates(numDays);
-    const container = document.getElementById('recent-dates-links');
+    const selectElement = document.getElementById('recent-dates-select');
     const today = new Date();
     const todayFormatted = `${String(today.getDate()).padStart(2, '0')}-${String(today.getMonth() + 1).padStart(2, '0')}-${today.getFullYear()}`;
 
     const id = getIdFromUrl(); // Id'ni olish
     const targetDate = new URLSearchParams(window.location.search).get('date') || todayFormatted;
-    
+
     dates.reverse().forEach(date => {
-        const a = document.createElement('a');
-        a.href = createDynamicUrl(id, date); // Dinamik URL
-        a.textContent = date;
-        a.classList.add("date-item");
+        const option = document.createElement('option');
+        option.value = createDynamicUrl(id, date); // Dinamik URL
+        option.textContent = date;
 
         if (date === todayFormatted) {
-            a.classList.add("today-date");
+            option.classList.add("today-date");
+            option.selected = true;
         }
 
-        container.appendChild(a);
+        selectElement.appendChild(option);
     });
 
-    // Scroll to the end of the container by default
-    container.scrollLeft = container.scrollWidth;
-
     // Scroll to the specific target date if it exists
-    const targetElement = Array.from(container.children).find(child => child.textContent === targetDate);
+    const targetElement = Array.from(selectElement.children).find(child => child.textContent === targetDate);
     if (targetElement) {
-        targetElement.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+        selectElement.value = targetElement.value;
     }
 }
 
+function handleDateChange(url) {
+    window.location.href = url; // Navigate to the selected date's URL
+}
+
 displayRecentDaysDates();
+
 
 </script>
 
