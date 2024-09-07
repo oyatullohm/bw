@@ -15,8 +15,6 @@ SECURE_CONTENT_TYPE_NOSNIFF =env.bool('SECURE_CONTENT_TYPE_NOSNIFF')
 SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT')
 CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE')
 SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE')
-
-
 ALLOWED_HOSTS = env.str('ALLOWED_HOSTS', default='').split(',')
 
 INSTALLED_APPS = [
@@ -28,14 +26,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    # 'rest_framework_simplejwt',
     'corsheaders',
+    # 'rest_framework_simplejwt',
     # 'cachalot',
     'main',
 ]
-
-
-
 
 # CACHES = {
 #     'default': {
@@ -71,6 +66,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ]
 }
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -103,14 +99,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 DATABASES = LOCAL_DATABASE
-
-
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -127,11 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-
-
 TIME_ZONE ='Asia/Tashkent'
-
 LANGUAGE_CODE = 'uz'
 USE_I18N = True
 USE_L10N = True
@@ -144,7 +129,6 @@ USE_TZ = True
 # LANGUAGE_COOKIE_AGE = 1209600  # Til cookie muddati (bu yerda 2 hafta)
 
 gettext = lambda s:s
-
 LANGUAGES = (
     ('uz',gettext("Uzbek")),
     ('en',gettext("English")),
@@ -152,21 +136,15 @@ LANGUAGES = (
 )
 
 LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
-
-
-
 LOGIN_URL = '/login/'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join('static')
 STATICFILES_DIRS = (
      os.path.join(BASE_DIR / "staticfiles"),
 )
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'main.Teacher'
-
+LOGGING = LOGGING
 # LOGGING = {
 #     'version':1,
 #     'handlers':{
@@ -183,7 +161,4 @@ AUTH_USER_MODEL = 'main.Teacher'
 #             'level':'DEBUG'
 #                     }
 #                }
-# }  
-
-
-# LOGGING = LOGGING
+# }
