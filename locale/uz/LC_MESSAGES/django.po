@@ -341,7 +341,7 @@ msgstr "Uy"
 
 #: template/wrapper.html:109
 msgid "Educator"
-msgstr "Tarboyachi"
+msgstr "Ustoz"
 
 #: template/wrapper.html:115
 msgid "Grup"
