@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     # 'rest_framework_simplejwt',
     # 'cachalot',
     'main',
+    'app'
 ]
 
 # CACHES = {
