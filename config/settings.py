@@ -27,12 +27,29 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
-    # 'rest_framework_simplejwt',
-    # 'cachalot',
     'main',
-    'app'
+    'app',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
+
+# SIMPLE_JWT = {
+#     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+#     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+#     'ROTATE_REFRESH_TOKENS': False,
+#     'BLACKLIST_AFTER_ROTATION': True,
+#     'AUTH_HEADER_TYPES': ('Bearer',),  # Token yuborishda 'Bearer' oldindan keladi
+# }
+
+    # 'rest_framework_simplejwt',
+    # 'cachalot',
 # CACHES = {
 #     'default': {
 #         'BACKEND': 'django_redis.cache.RedisCache',
@@ -46,27 +63,14 @@ INSTALLED_APPS = [
 # CACHALOT_TIMEOUT = 60  # 1 soat
 # CACHALOT_ENABLED = True
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#     ),
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ],
-# }
+
+
 # SIMPLE_JWT = {
 #     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
 #     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 # }
 
 CORS_ORIGIN_ALLOW_ALL = True
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
-    ]
-}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

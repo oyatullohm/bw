@@ -13,3 +13,9 @@ class TeacherSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
         extra_kwargs = {'password': {'write_only': True}}
+        
+class UserSerializer(serializers.ModelSerializer):
+    company = serializers.CharField()
+    class Meta:
+        models = Teacher
+        fields = ['company', 'username', 'get_type_dsplay']

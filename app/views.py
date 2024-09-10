@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import  AllowAny , IsAuthenticated
 from rest_framework.response import Response
 from main.models import Teacher , Tarif, Company
-from .serializer import TeacherSerializer
+from .serializer import *
 from django.utils import timezone
 from datetime import timedelta
 
@@ -53,8 +53,9 @@ class  RegisterApiView(APIView):
         except:
             return Response({'success': False,'message': 'username band yoki parollar bir hil emas ',} )
         return Response({'success': False,} )
-    
-class HomeApiView(APIView):
-    permission_classes = [IsAuthenticated]
-    def get(self,request):
-        return Response({'status':"siz login qildingiz"})
+
+class HomeApiView(APIView): 
+
+    permission_classes = [AllowAny]
+    def get(self, request,):
+        return Response({"status":"ok"})
