@@ -19,7 +19,7 @@ class LoginApiView(APIView):
         if user:
             token, created = Token.objects.get_or_create(user=user)
             # if user.master or user.driver or user.agent :
-            return Response({'success': True, 'token': token.key,'staff':TeacherSerializer(user,many=False).data})
+            return Response({'success': True, 'token': token.key,'user':TeacherSerializer(user,many=False).data})
             # return Response({'success': False, 'error': 'telefon raqam yoki parol noto`g`ri !'})
         return Response({'status': False})
 
