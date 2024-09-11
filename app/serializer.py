@@ -16,6 +16,10 @@ class TeacherSerializer(serializers.ModelSerializer):
         
 class UserSerializer(serializers.ModelSerializer):
     company = serializers.CharField()
+    type_display = serializers.SerializerMethodField()
     class Meta:
-        models = Teacher
-        fields = ['company', 'username', 'get_type_dsplay']
+        model = Teacher
+        fields = ['company', 'username', 'type_display']
+        
+    def get_type_display(self, obj):
+        return obj.get_type_display()

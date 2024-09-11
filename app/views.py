@@ -55,7 +55,8 @@ class  RegisterApiView(APIView):
         return Response({'success': False,} )
 
 class HomeApiView(APIView): 
-
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     def get(self, request,):
-        return Response({"status":"ok"})
+        user = request.user
+        info = UserSerializer(user,many = False).data
+        return Response({"info":info})
