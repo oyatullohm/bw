@@ -51,8 +51,8 @@ class TarifCompany(models.Model):
 class Teacher(AbstractUser):
     TYPE = (
         (1, 'direktor'),
-        (2, 'tarbiyachi'),
-        (3, 'yordamchi')
+        (2, 'Ustoz'),
+        (3, 'Yordamchi')
     )
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True , related_name='teachers')
     phone = models.CharField(max_length=15) 
@@ -104,12 +104,14 @@ class Attendance(models.Model):
     # def __str__(self):
     #     return f"{self.date.strftime('%Y-%m-%d')}"
 
+
 class PaymentCategory(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='payment_categorys')
     name = models.CharField(max_length=255)
     
     def __str__(self) -> str:
         return self.name
+
 
 class Payment(models.Model):
     TYPE_CHOICES = (

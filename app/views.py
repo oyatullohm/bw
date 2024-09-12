@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.permissions import  AllowAny , IsAuthenticated
 from rest_framework.response import Response
-from main.models import Teacher , Tarif, Company
+from main.models import *
 from .serializer import *
 from django.utils import timezone
 from datetime import timedelta
