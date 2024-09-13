@@ -1,22 +1,21 @@
-from django.shortcuts import render , redirect ,get_object_or_404
-from django.conf import settings
-from django.views import View
-from .models import *
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from decimal import Decimal
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage 
-from django.db.models import Count
-import json
-from datetime import datetime, timedelta
-import time
+from django.shortcuts import render , redirect ,get_object_or_404
 from django.db.models import Sum, Q, Value , OuterRef, Subquery
-from django.db.models.functions import Coalesce
-from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.functions import TruncMonth
 from dateutil.relativedelta import relativedelta
+from django.db.models.functions import Coalesce
+from datetime import datetime, timedelta
 from django.utils import translation
+from django.contrib import messages
+from django.db.models import Count
+from django.conf import settings
+from django.views import View
+from decimal import Decimal
+from .models import *
+import json
+import time
 
 
 class HomeView(LoginRequiredMixin, View):

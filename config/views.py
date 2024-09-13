@@ -1,17 +1,11 @@
-from django.views import View
-from django.shortcuts import render , redirect
-from main.models import *
-import re
-from django.contrib.auth.hashers import make_password, check_password
-
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
-from django.contrib.auth import authenticate, login  , logout
+from django.contrib.auth import  login, logout
+from django.shortcuts import render, redirect
 from django.utils import translation
+from django.views import View
+from main.models import *
+import re
 
 class LoginView(View):
     def get(self,request):

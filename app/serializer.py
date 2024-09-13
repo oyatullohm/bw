@@ -61,8 +61,8 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class ChildSerializer(serializers.ModelSerializer):
-    tarif = TarifCompanySerializer()
-    group = GroupSerializer()
+    # tarif = TarifCompanySerializer()
+    # group = GroupSerializer()
 
     class Meta:
         model = Child

@@ -1,12 +1,12 @@
 
-from django.contrib import admin
-from django.urls import path ,re_path , include
-from django.conf import settings
-from django.conf.urls.static import static
-from .views import *
-from django.contrib.auth.views import LogoutView
 from django.views.static import serve as mediaserve 
+from django.contrib.auth.views import LogoutView
 from django.conf.urls.i18n import i18n_patterns
+from django.urls import path, re_path, include
+from django.conf.urls.static import static
+from django.contrib import admin
+from django.conf import settings
+from .views import *
 
 urlpatterns = [
     path('app/',include('app.urls')),
@@ -15,9 +15,9 @@ urlpatterns = [
 urlpatterns += i18n_patterns (
     path('',include('main.urls')),
     path('login/',LoginView.as_view(),name='login'),
-    path('kattaadmin/', admin.site.urls),
     path('register/',RegisterView.as_view(),name='register'),
-    path('logout/', logout_, name='logout'),
+    path('kattaadmin/',admin.site.urls),
+    path('logout/',logout_, name='logout'),
     path('api/login/',login, name='login_api'),
     path('change-language/<str:lang_code>/', change_language, name='change_language'),
     
