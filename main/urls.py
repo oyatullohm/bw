@@ -24,6 +24,7 @@ urlpatterns = [
     path('add_teacher/',add_teacher,name='add_teacher'),
     path('working_day/',working_day, name='working_day'),
     path('search-child/',search_child, name='search-child'),
+    path('create_cash/', create_cash, name='create_cash'),
     path('get-payments/', get_payments, name='get_payments'),
     path('search-payment/',search_payment, name='search_payment'),
     path('search-transfer/',search_transfer, name='search_transfer'),

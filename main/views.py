@@ -15,7 +15,7 @@ from django.views import View
 from decimal import Decimal
 from .models import *
 import json
-import time
+
 
 
 class HomeView(LoginRequiredMixin, View):
@@ -163,7 +163,7 @@ class GroupView(LoginRequiredMixin,View):
     def get(self,request,*args, **kwargs):
         company = request.user.company 
         group =  Group.objects.filter(company=company, is_active = True)\
-            .select_related('teacher', 'helper')
+            .select_related('teacher', 'helper').prefetch_related('child')
         return render(request,'group.html',{'group':group}) 
     
     def post(self,request, *args, **kwargs):
@@ -192,6 +192,7 @@ class GroupDetailView(LoginRequiredMixin, View):
         company = request.user.company  
         page = request.GET.get('page')
         group = Group.objects.get(id=pk)
+        cash = Cash.objects.filter(company=company).exclude(name__isnull=True)
         start_of_month = today.replace(day=1)
 
         children = Child.objects.filter(company=company, group=group,is_active = True).select_related('tarif').prefetch_related('payments')
@@ -253,11 +254,11 @@ class GroupDetailView(LoginRequiredMixin, View):
             'children_cout':children_cout,
             'page_obj': paginated_children,
             'children_attendance': children_attendance,
-            'date':today
+            'date':today,
+            'cash':cash
+            
         }
 
-        # end_time = time.time() 
-        # duration = end_time - start_time  # So'rovning bajarilish vaqti
         return render(request, 'group-detail.html', context)
 
 
@@ -344,9 +345,9 @@ class TarifCompanyView(LoginRequiredMixin,View):
 class PaymentView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self, request):
-
+        
         page = request.GET.get('page')
-
+        cash = Cash.objects.filter(company=request.user.company).exclude(name__isnull=True)
         payments = Payment.objects.filter(company=request.user.company, payment_type=1)\
             .select_related('child','teacher','user').order_by('-id')
         paginator = Paginator(payments, 25)  # Sahifalarni 25 tadan ko'rsatish
@@ -359,7 +360,7 @@ class PaymentView(LoginRequiredMixin,View):
 
         context = {
             'payment': payment_page,
-          
+            "cash":cash
         }
         return render(request, 'payment.html', context)
 
@@ -370,6 +371,7 @@ class PaymentCostView(LoginRequiredMixin,View):
     def get(self, request):
         year = int(datetime.now().year)
         page = request.GET.get('page')
+        cash = Cash.objects.filter(company=request.user.company).exclude(name__isnull=True)
         category = PaymentCategory.objects.filter(company=request.user.company,)
         payments = Payment.objects.filter(company=request.user.company, payment_type=2)\
             .select_related('child','teacher','user').order_by('-id')
@@ -396,7 +398,8 @@ class PaymentCostView(LoginRequiredMixin,View):
             'payment': payment_page,
             'category':category,
             'total_amount' :total_amount,
-            'year':year
+            'year':year,
+            'cash':cash
     
         }
         return render(request, 'payment.cost.html', context)
@@ -417,9 +420,10 @@ class CashView(LoginRequiredMixin,View):
         cash = Cash.objects.filter(company=company, is_active=True).annotate(
             total_kirim=Coalesce(
                 Sum(
-                    'teacher__payments_user__amount',
-                    filter=Q(teacher__payments_user__date__range=(start_date, end_date)) &
-                           Q(teacher__payments_user__payment_type=1),
+                    'payments__amount',
+                    filter=Q(payments__date__range=(start_date, end_date)) &
+                           Q(payments__payment_type=1),
+                           
                     output_field=DecimalField()
                 ),
                 Value(1),
@@ -427,15 +431,18 @@ class CashView(LoginRequiredMixin,View):
             ),
             total_chiqim=Coalesce(
                 Sum(
-                    'teacher__payments_user__amount',
-                    filter=Q(teacher__payments_user__date__range=(start_date, end_date)) &
-                           Q(teacher__payments_user__payment_type=2),
+                    'payments__amount',
+                    filter=Q(payments__date__range=(start_date, end_date)) &
+                           Q(payments__payment_type=2),
+                           
                     output_field=DecimalField()
                 ),
                 Value(1),
                 output_field=DecimalField()
             ),
         ).order_by('-total_kirim', '-total_chiqim').select_related('teacher')
+        
+
         
         number_list = [ i for i in range(1,13)] 
         context = {
@@ -604,33 +611,36 @@ def calendar_teacher(request,pk):
 
 @login_required
 def payment_child(request, pk):
-    child =  get_object_or_404( Child , id=pk)
+    child =  get_object_or_404(Child , id=pk)
     summa = request.POST.get('summa')
     date_month= request.POST.get('date_month')  
     description = request.POST.get('description', None)
-    cash = request.user.cash
+    cash = request.POST.get('cash')
+
+    cash = Cash.objects.get(id=int(cash))
     language = translation.get_language()
-    if cash.is_active :
-        payment = Payment.objects.create(
-            company = request.user.company,  
-            user=request.user,
-            child = child,
-            amount = summa,
-            payment_type = 1,
-            date_month = date_month,
-            description = description ,
-            user_before_cash = cash.amount,
-            
-        )
-        cash = Cash.objects.get(teacher=request.user)
-        cash.amount += Decimal(payment.amount)
-        cash.save()
-        payment.user_after_cash = cash.amount
-        payment.save()
-        messages.error(request, f"{child.name} Tplov Qildi ")
-        return redirect(f'/{language}/group-detail/{child.group.id}/')
-    messages.error(request, 'sizda shahsi kassa yoqilmagan  ')
+
+    payment = Payment.objects.create(
+        company = request.user.company,  
+        user=request.user,
+        child = child,
+        amount = summa,
+        payment_type = 1,
+        date_month = date_month,
+        description = description ,
+        user_before_cash = cash.amount,
+        cash = cash,
+        
+    )
+    
+    cash.amount += Decimal(payment.amount)
+    cash.save()
+    payment.user_after_cash = cash.amount
+    payment.save()
+    messages.error(request, f"{child.name} Tplov Qildi ")
     return redirect(f'/{language}/group-detail/{child.group.id}/')
+    # messages.error(request, 'sizda shahsi kassa yoqilmagan  ')
+    # return redirect(f'/{language}/group-detail/{child.group.id}/')
 
 
 @login_required
@@ -716,8 +726,22 @@ def create_payment_category(request):
     language = translation.get_language()
     return redirect(f'/{language}/settings/')
 
+
+@login_required
 def edit_cpayment_catedory_deleteategory (request, pk):
     PaymentCategory.objects.get(id=int(pk)).delete()
     messages.error(request, 'Category ochrildi')
     language = translation.get_language()
     return redirect(f'/{language}/settings/')
+
+
+@login_required
+def  create_cash(request):
+    name = request.POST.get('name')
+    Cash.objects.create(
+         company=request.user.company,
+         name = name 
+     )
+    language = translation.get_language()
+    messages.error(request, 'kassa qoshildi')
+    return redirect(f'/{language}/cash/')

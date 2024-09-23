@@ -123,6 +123,7 @@ class Payment(models.Model):
     child = models.ForeignKey(Child, on_delete=models.CASCADE, null=True, blank=True, related_name='payments') 
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True, blank=True, related_name='payment_teachers') # oylik ilishi 
     category = models.ForeignKey(PaymentCategory, on_delete=models.SET_NULL, null=True, blank=True, related_name='category')
+    cash = models.ForeignKey('Cash',on_delete=models.CASCADE, null=True, blank=True, related_name='payments')
     date = models.DateField(default=timezone.now)
     
     user_before_cash = models.DecimalField(max_digits=15, decimal_places=2, default=0)
@@ -170,9 +171,10 @@ class Transfer(models.Model):
 
 
 class Cash(models.Model):
+    name = models.CharField(max_length=155,null=True, blank=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='cashs')
     amount = models.DecimalField(max_digits=15, decimal_places=0, default=0)
-    teacher = models.OneToOneField(Teacher, on_delete=models.CASCADE, related_name='cash')
+    teacher = models.OneToOneField(Teacher, on_delete=models.CASCADE, related_name='cash',null=True,blank=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):

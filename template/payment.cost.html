@@ -94,6 +94,15 @@
                         <input type="number" name="amount" required id="payment_amount" class="form-control" placeholder="Summa">
                     </div>
                     <div class="form-group mb-1">
+                        <label for="description" class="form-label">{% trans 'Kassa' %}</label>
+                       <select id="cash" class="form-control" >
+                            <option value="{{request.user.cash.id}}">{{request.user}}</option>
+                            {% for c in cash %}
+                            <option value="{{c.id}}">{{c.name}}</option>
+                            {% endfor %}
+                       </select>
+                    </div>
+                    <div class="form-group mb-1">
                         <label for="description" class="form-label">{% trans 'Comment' %}</label>
                         <input type="text" name="payment_description" required id="payment_description" class="form-control" placeholder="Izoh">
                     </div>  
@@ -316,6 +325,7 @@
 
     const category = document.getElementById('category').value;
     const amount = document.getElementById('payment_amount').value;
+    const cash = document.getElementById('cash').value;
     const description = document.getElementById('payment_description').value;
     const paymentType = document.getElementById('payment_payment_type').value;
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
@@ -332,6 +342,7 @@
             'description': description,
             'paymentType': paymentType,
             'category':category,
+            "cash":cash
         })
     })
     .then(response => {

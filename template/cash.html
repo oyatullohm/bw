@@ -2,6 +2,48 @@
 {% block content %}
 {% load i18n %}
 
+<div class="col-avto">
+
+    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+    data-bs-target="#inlineForm">
+    {% trans 'Add' %}
+</button>
+
+</div>
+
+<div class="modal fade text-left" id="inlineForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+           
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel33">{% trans 'Add a child' %}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+           
+            <div class="modal-body">
+                <form action="{% url 'create_cash' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group mb-1">
+                        <label for="name" class="form-label">{% trans 'Name' %}</label>
+                        <input type="text" name="name" required id="name" class="form-control" placeholder="Kassa">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                          
+                            <span >{% trans "Close" %}</span>
+                        </button>
+                        <button type="submit" class="btn btn-primary ms-1">
+                          
+                            <span >{% trans "Save" %}</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="container">
     <div class="container mt-4">
         
@@ -68,7 +110,7 @@
                 <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#inlineForm{{i.id}}"   >{% trans 'Management' %}</button>
                {% endif %}
                 <div class="card-header">
-                    <h4><a href="#">{{ i.teacher.username }} </a>  \   {{i.amount}} {% trans 'Som' %} </h4>
+                    <h4><a href="#">{% if i.teacher.username %} {{i.teacher.username}} {% else %} {{i.name}} {% endif %}</a>  \   {{i.amount}} {% trans 'Som' %} </h4>
                     
                 </div>
                 <div class="card-body">

@@ -8,6 +8,9 @@ media/
 debug.log
 django_errors.log
 f.py
+f.txt
+cv.txt
+cv.py
 # If you are using PyCharm
 .idea/**/workspace.xml
 .idea/**/tasks.xml

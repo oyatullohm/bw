@@ -86,6 +86,15 @@
                                                     <input type="date" name="date_month" required id="date_month" class="form-control">
                                                 </div>
                                                 <div class="form-group mb-1">
+                                                    <label for="description" class="form-label">{% trans 'Kassa' %}</label>
+                                                   <select name="cash" class="form-control" >
+                                                        <option value="{{request.user.cash.id}}">{{request.user}}</option>
+                                                        {% for c in cash %}
+                                                        <option value="{{c.id}}">{{c.name}}</option>
+                                                        {% endfor %}
+                                                   </select>
+                                                </div>
+                                                <div class="form-group mb-1"></div>
                                                     <label for="description" class="form-label">{% trans 'Comment' %}</label>
                                                     <input type="text" name="description" id="description" class="form-control" placeholder="Izoh">
                                                 </div>

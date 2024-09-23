@@ -109,44 +109,41 @@ class PaymentCreateView(View):
         payment_type = request.POST.get('paymentType')
         description = request.POST.get('description')
         category = request.POST.get('category' , None)
+        cash = request.POST.get('cash')
 
         try:
-            cash = request.user.cash
+            cash = Cash.objects.get(id=cash)
+            payment =  Payment.objects.create(
+                company=request.user.company,
+                category_id = category,
+                user = request.user,
+                amount = Decimal(amount),
+                date_month=timezone.now(),
+                payment_type = int(payment_type),
+                description = description,
+                user_before_cash = cash.amount, 
+                cash = cash
+            )
 
-            if cash.is_active :
-                payment =  Payment.objects.create(
-                    company=request.user.company,
-                    category_id = category,
-                    user = request.user,
-                    amount = Decimal(amount),
-                    date_month=timezone.now(),
-                    payment_type = int(payment_type),
-                    description = description,
-                    user_before_cash = cash.amount,
-                    
-                )
+            if payment.payment_type == 1:
+                cash.amount += payment.amount
+            elif payment.payment_type == 2:
+                cash.amount -= payment.amount
+            payment.user_after_cash = cash.amount
+            cash.save()
+            payment.save()
 
-                if payment.payment_type == 1:
-                    cash.amount += payment.amount
-                elif payment.payment_type == 2:
-                    cash.amount -= payment.amount
-                payment.user_after_cash = cash.amount
-                cash.save()
-                payment.save()
+            category_name = payment.category.name if payment.category else 'Category'
 
-                category_name = payment.category.name if payment.category else 'Category'
-
-                return JsonResponse({
-                    'status': 'success',
-                    'date':payment.date,
-                    'user':payment.user.username,
-                    'amount': payment.amount,
-                    'description': payment.description,
-                    'category':category_name
-                })
-                
-            messages.error(request, ' sizda shahsi kassa yoqilmagan  ')
-            return JsonResponse({'status': 'success',})
+            return JsonResponse({
+                'status': 'success',
+                'date':payment.date,
+                'user':payment.user.username,
+                'amount': payment.amount,
+                'description': payment.description,
+                'category':category_name
+            })
+           
         except Payment.DoesNotExist:
             return JsonResponse({'status': 'fail', 'message': 'Payment not found'}, status=404)
         except Exception as e:
