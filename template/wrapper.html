@@ -133,17 +133,17 @@
             </li>
 
 
-          
+            {% if request.user.is_main %}
             <li
             class="sidebar-item  ">
             <a href="{% url 'tarif' %}" class='sidebar-link'>
                <i class="bi bi-sliders"></i>
                 <span>  {% trans 'Tariffs' %}</span>
             </a>
-            
+            </li>
+            {% endif %}
             
 
-        </li>
             {% if request.user.is_payment %}
             <li
                 class="sidebar-item  ">

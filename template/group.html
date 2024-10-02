@@ -74,6 +74,7 @@
                                     </tr>
                                 </thead>
                                 {% for i in group %}
+                                {% if request.user.type == 1 %}
                                 <tbody>
                                     <tr>
                                         <td class="text-bold-500">{{i.name}}</td>
@@ -88,15 +89,39 @@
                                     <div class="card">
                                       <div class="card-body">
 
-                                       <p class="card-text"><span class="fw-bold"> Name </span>:  {{i.name}}</p>
+                                       <p class="card-text"><span class="fw-bold"> Name </span>:  {{i.name}}  </p>
                                        <p class="card-text"><span class="fw-bold"> Tarboyachi </span> : {{i.teacher}}</p>
                                        <p class="card-text"><span class="fw-bold"> Yordamchi </span>: {{i.helper}}</p>
-                                       <p class="card-text"><span class="fw-bold"> Bolalarsoni </span>: {{i.child.all.count}}</p>
+                                       
                                        <span><a href="{% url 'group_detail' i.id %}">Info</a></span>
                                       </div>
                                    
                                     </div>
                                 </div>
+                                {% elif request.user == i.teacher %}
+                                <tbody>
+                                    <tr>
+                                        <td class="text-bold-500">{{request.user.group_teachers.name}}</td>
+                                        <td class="text-bold-500">{{request.user.group_teachers.teacher}}</td>
+                                        <td class="text-bold-500">{{request.user.group_teachers.helper}}</td>
+
+                                        <td class="text-bold-500"><a href="{% url 'group_detail' request.user.group_teachers.id %}">Info</a></td>
+                                    </tr>
+                                </tbody>
+                                <div class="d-md-none">
+
+                                    <div class="card">
+                                      <div class="card-body">
+
+                                       <p class="card-text"><span class="fw-bold"> Name </span>:  {{request.user.group_teachers.name}}</p>
+                                       <p class="card-text"><span class="fw-bold"> Tarboyachi </span> : {{request.user.group_teachers.teacher}}</p>
+                                       <p class="card-text"><span class="fw-bold"> Yordamchi </span>: {{request.user.group_teachers.helper}}</p>
+                                       <span><a href="{% url 'group_detail' request.user.group_teachers.id %}">Info</a></span>
+                                      </div>
+                                   
+                                    </div>
+                                </div>
+                               {% endif%}
                                 {% endfor %}
                             </table>
                         </div>

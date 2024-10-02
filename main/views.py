@@ -582,6 +582,10 @@ def calendar_child(request,pk):
 def calendar_teacher(request,pk):
     teacher = Teacher.objects.get(id=pk)
     
+    
+    today = datetime.today() 
+    payment = Payment.objects.filter(date__gte= today -  timedelta(days=7))
+    
     today = datetime.today()
     first_day_of_current_month = today.replace(day=1)
   

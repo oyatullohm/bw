@@ -102,24 +102,41 @@
                 </div>
             </div>
         </div>
-
-        <div class="col-12 col-md-4">
-            <div class="card">
-               
-                {% if request.user.is_main %}
-                <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#inlineForm{{i.id}}"   >{% trans 'Management' %}</button>
-               {% endif %}
-                <div class="card-header">
-                    <h4><a href="#">{% if i.teacher.username %} {{i.teacher.username}} {% else %} {{i.name}} {% endif %}</a>  \   {{i.amount}} {% trans 'Som' %} </h4>
-                    
+      
+        {% if request.user.type == 1 %}
+            <!-- Hamma kartalar chiqariladi -->
+            <div class="col-12 col-md-4">
+                <div class="card">
+                    {% if request.user.is_main %}
+                    <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#inlineForm{{i.id}}">{% trans 'Management' %}</button>
+                    {% endif %}
+                    <div class="card-header">
+                        <h4><a href="#">{% if i.teacher.username %} {{i.teacher.username}} {% else %} {{i.name}} {% endif %}</a>  \   {{i.amount}} {% trans 'Som' %}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="chart-visitors-profile-{{ i.id }}"></div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div id="chart-visitors-profile-{{ i.id }}"></div>
-                </div>
-
             </div>
-        </div>       
-        {% endfor %}
+        {% elif i.teacher == request.user %}
+            <!-- Faqat request.user ga tegishli bo'lgan cash chiqariladi -->
+            <div class="col-12 col-md-4">
+                <div class="card">
+                    {% if request.user.is_main %}
+                    <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#inlineForm{{i.id}}">{% trans 'Management' %} {{request.user}}</button>
+                    {% endif %}
+                    <div class="card-header">
+                        <h4><a href="#">  {{request.user.cash.amount}} </a> {% trans 'Som' %}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="chart-visitors-profile-{{ i.id }}"></div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    
+            
     </div>
 </div>
 
@@ -128,7 +145,6 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
        `{% for i in cash %}`
-
         let optionsVisitorsProfile{{ i.id }} = {
             series: [{{ i.total_kirim }} , {{i.total_chiqim}}  ], 
             labels: ["Income", "Expense"],
@@ -149,13 +165,17 @@
                 },
             },
         };
-
         var chartVisitorsProfile{{ i.id }} = new ApexCharts(
             document.querySelector("#chart-visitors-profile-{{ i.id }}"),
             optionsVisitorsProfile{{ i.id }}
         );
 
         chartVisitorsProfile{{ i.id }}.render();
+     
+
+       
+     
+       
        ` {% endfor %}`
     });
 </script>
