@@ -43,6 +43,7 @@ class HomeView(LoginRequiredMixin, View):
         revenue_data = [float(revenue_dict.get(month, 0)) for month in last_12_months]
         cost_data = [float(cost_dict.get(month, 0)) for month in last_12_months]
         profit_data = [revenue - cost for revenue, cost in zip(revenue_data, cost_data)]
+        cild = Child.objects.filter(company = request.user.company, is_active=True).count()
         
         context = {
             'apex_series': [
@@ -62,7 +63,8 @@ class HomeView(LoginRequiredMixin, View):
                     "color": "#007bff"  # Ko'k rang
                 }
             ],
-            'last_12_months': last_12_months
+            'last_12_months': last_12_months,
+            'cild':cild
         }
         return render(request, 'index.html', context)
 
@@ -665,7 +667,8 @@ def chaild_edit(request,pk):
 @login_required
 def delete_chaild(request,pk):
     child = Child.objects.get(id=pk)
-    child.delete()
+    child.is_active = False
+    child.save()
     messages.error(request, f"{child.name} Ochirildi ")
     language = translation.get_language()
     return redirect(f'/{language}/child')
