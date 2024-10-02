@@ -665,8 +665,7 @@ def chaild_edit(request,pk):
 @login_required
 def delete_chaild(request,pk):
     child = Child.objects.get(id=pk)
-    child.is_active = False
-    child.save()
+    child.delete()
     messages.error(request, f"{child.name} Ochirildi ")
     language = translation.get_language()
     return redirect(f'/{language}/child')
