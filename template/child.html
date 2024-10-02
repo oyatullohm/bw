@@ -74,6 +74,7 @@
 </div>
     <div class="row">
         {% for i in child %}
+        {% if request.user.type == 1 %}
             <div class="col-12 col-md-6">
                 <div class="card">
                     <div class="card-body">
@@ -232,8 +233,166 @@
                                 </div>
                             </div>
                         </div>
+            {% elif request.user.group_teachers == i.group %}
+            <div class="col-12 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <span class="fw-bold">{% trans 'Name' %}: </span>{{i.name}}
+                        <br><span class="fw-bold">{% trans 'Phone' %}: </span>{{i.phone}}
+                        <br><span class="fw-bold">{% trans 'Birthday' %}: </span>{{i.birth_date}}
+                        <br><span class="fw-bold">{% trans 'Group' %}: </span>{{ i.group.name }}
+                        <br> <span class="fw-bold">{% trans 'Tariff' %}: </span>{{ i.tarif.name }}
+                        <br><span class="fw-bold">{% trans 'Som' %}: </span>{{i.tarif.amount}}
+                        <br>
+                        <br>
+                        <br>
+                        {% if request.user.is_child %}
+                        <!-- <button class="btn icon icon-left btn-primary me-2 text-nowrap"><i class="bi bi-eye-fill"></i> Show</button> -->
+                        <button class="btn icon icon-left btn-warning me-4 mb-2 text-nowrap" data-bs-toggle="modal"
+                        data-bs-target="#inlineForm{{i.id}}"  ><i class="bi bi-pencil-square"></i> {% trans 'Update' %}</button>
+                        <button class="btn icon icon-left btn-danger me-4 mb-2  text-nowrap" data-bs-toggle="modal"
+                        data-bs-target="#danger{{i.id}}"><i class="bi bi-x-circle"></i> {% trans "Delete" %} </button>
+
+                      
+                        <button class="btn icon icon-left  btn-primary me-4 mb-2  text-nowrap"  data-bs-toggle="modal"
+                        data-bs-target="#inlineForm_tarif{{i.id}}" ><i class="bi bi-pencil-square"></i> Tariff</button>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+
+                <div class="modal fade text-left" id="danger{{i.id}}" tabindex="-1" role="dialog"
+                    aria-labelledby="myModalLabel120" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+                        role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-danger">
+                                <h5 class="modal-title white" id="myModalLabel120">{% trans "Delete" %}
+                                </h5>
+                                <button type="button" class="close" data-bs-dismiss="modal"
+                                    aria-label="Close">
+                                    <i data-feather="x"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                               {{i}}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light-secondary"
+                                    data-bs-dismiss="modal">
+                                   
+                                    <span class="">{% trans "Close" %}</span>
+                                </button>
+                                <form action="{% url 'delete_chaild' i.id %}" method="post">
+                                    {% csrf_token %}
+                                <button type="submit" class="btn btn-danger ms-1"
+                                    data-bs-dismiss="modal">
+                                 
+                                    <span>{% trans "Delete" %}</span>
+                                </button>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                    <div class="modal fade text-left" id="inlineForm{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel33">{% trans 'Update' %}</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{% url 'chaild_edit' i.id %}" method="post">
+                                        {% csrf_token %}
+                                        <div class="form-group mb-1">
+                                            <label for="name" class="form-label">{% trans 'Name' %}</label>
+                                            <input type="text" name="name" required id="name" class="form-control"  value="{{i.name}}" placeholder="Ism Familys">
+                                        </div>
+                                        <div class="form-group mb-1">
+                                            <label for="phone" class="form-label">{% trans 'Phone' %}</label>
+                                            <input type="text" name="phone"  required id="phone" class="form-control" value="{{i.phone}}" placeholder="Phone">
+                                        </div>
+                                        <div class="form-group mb-1">
+                                            <label for="date" class="form-label"> {% trans 'Date of birth' %} {{ i.birth_date}}</label>
+                                            <input   name="text" required id="date" value="{{ i.birth_date}}"class="form-control">
+                                            
+                                        </div> 
+                
+                                        <div class="form-group mb-1">
+                                            <label for="group" class="form-label">{% trans "Group" %}</label>
+                                            <select name="group" id="group" class="form-control">
+                                                <option value="{{ i.group.id }}">{{ i.group.name }}</option>
+                                                {% for f in group %}
+                                                {% if i.group == f %}
+                                                {% else %}
+                                                <option value="{{ f.id }}">{{ f.name }}</option>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                           
+                                                <span >{% trans "Close" %}</span>
+                                            </button>
+                                            <button type="submit" class="btn btn-primary ms-1">
+                                             
+                                                <span > {% trans "Save" %}</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                        <div class="modal fade text-left" id="inlineForm_tarif{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="myModalLabel33">Tahtirlash Tarif</h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{% url 'chaild_edit_tarif' i.id %}" method="post">
+                                            {% csrf_token %}
+                
                     
-             
+                                            <div class="form-group mb-1">
+                                                <label for="tarif" class="form-label">Tarif</label>
+                                                <select name="tarif" id="tarif" class="form-control">
+                                                    
+                                                    <option value="{{ i.tarif.id }}">{{ i.tarif.name }}</option>
+                                                    {% for f in tarif %}
+                                                    {% if i.tarif == f %}
+                                                    {% else %}
+                                                    <option value="{{ f.id }}">{{ f.name }}</option>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                                    
+                                                    <span >{% trans "Close" %}</span>
+                                                </button>
+                                                <button type="submit" class="btn btn-primary ms-1">
+                                                   
+                                                    <span >{% trans "Close" %}</span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            {% endif %}
 
         {% endfor %}
     </div>
