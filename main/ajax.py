@@ -124,30 +124,31 @@ class PaymentCreateView(View):
                 cash = cash
             )
 
-            payment.user_before_cash = cash.amount
-            payment.save()
+            if created:
+                payment.user_before_cash = cash.amount
+                payment.save()
 
 
-            if payment.payment_type == 1:
-                cash.amount += payment.amount
-            elif payment.payment_type == 2:
-                cash.amount -= payment.amount
-            payment.user_after_cash = cash.amount
-            cash.save()
-            payment.save()
+                if payment.payment_type == 1:
+                    cash.amount += payment.amount
+                elif payment.payment_type == 2:
+                    cash.amount -= payment.amount
+                payment.user_after_cash = cash.amount
+                cash.save()
+                payment.save()
 
             category_name = payment.category.name if payment.category else 'Category'
 
-          
+            
             return JsonResponse({
-                'status': 'success',
-                'date':payment.date,
-                'user':payment.user.username,
-                'amount': payment.amount,
-                'description': payment.description,
-                'category':category_name
-            })
-           
+                    'status': 'success',
+                    'date':payment.date,
+                    'user':payment.user.username,
+                    'amount': payment.amount,
+                    'description': payment.description,
+                    'category':category_name
+                })
+            
         except Payment.DoesNotExist:
             return JsonResponse({'status': 'fail', 'message': 'Payment not found'}, status=404)
         except Exception as e:
@@ -177,21 +178,21 @@ class TransferCreateView(View):
                 date=timezone.now().date(),
                 description = description
             )
+            if created:
+                transfer.teacher_1_before_cash = teacher_1.cash.amount
+                transfer.teacher_2_before_cash = teacher_2.cash.amount
+                
 
-            transfer.teacher_1_before_cash = teacher_1.cash.amount
-            transfer.teacher_2_before_cash = teacher_2.cash.amount
-            
+                teacher_1.cash.amount -= transfer.summa 
+                teacher_1.cash.save()
+                teacher_2.cash.amount += transfer.summa 
+                teacher_2.cash.save()
 
-            teacher_1.cash.amount -= transfer.summa 
-            teacher_1.cash.save()
-            teacher_2.cash.amount += transfer.summa 
-            teacher_2.cash.save()
-
-            transfer.teacher_1_after_cash = teacher_1.cash.amount
-            transfer.teacher_2_after_cash = teacher_2.cash.amount
-            transfer.save()
-            payment = Payment.objects.filter(company=request.user.company,
-                                             user = teacher_1, is_edit = True).update(is_edit=False)
+                transfer.teacher_1_after_cash = teacher_1.cash.amount
+                transfer.teacher_2_after_cash = teacher_2.cash.amount
+                transfer.save()
+                payment = Payment.objects.filter(company=request.user.company,
+                                                user = teacher_1, is_edit = True).update(is_edit=False)
         return JsonResponse({'status': 'success'})
 
 

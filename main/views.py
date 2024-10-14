@@ -635,13 +635,15 @@ def payment_child(request, pk):
         date_month = date_month,
         description = description
     )
-    payment.user_before_cash = cash.amount
-    payment.cash = cash
-    cash.amount += Decimal(payment.amount)
-    cash.save()
-    payment.user_after_cash = cash.amount
-    payment.save()
-    messages.error(request, f"{child.name} Tplov Qildi ")
+   
+    if created:
+        payment.user_before_cash = cash.amount
+        payment.cash = cash
+        cash.amount += Decimal(payment.amount)
+        cash.save()
+        payment.user_after_cash = cash.amount
+        payment.save()
+        messages.error(request, f"{child.name} Tplov Qildi ")
     return redirect(f'/{language}/group-detail/{child.group.id}/')
     # messages.error(request, 'sizda shahsi kassa yoqilmagan  ')
     # return redirect(f'/{language}/group-detail/{child.group.id}/')
