@@ -123,8 +123,10 @@ class PaymentCreateView(View):
                 description = description,
                 cash = cash
             )
-            payment.user_before_cash = cash.amount, 
+
+            payment.user_before_cash = cash.amount
             payment.save()
+
 
             if payment.payment_type == 1:
                 cash.amount += payment.amount
@@ -136,6 +138,7 @@ class PaymentCreateView(View):
 
             category_name = payment.category.name if payment.category else 'Category'
 
+          
             return JsonResponse({
                 'status': 'success',
                 'date':payment.date,
@@ -338,7 +341,6 @@ def get_payments(request):
 @csrf_exempt
 def edit_category(request, category_id):
     category = get_object_or_404(PaymentCategory, id=category_id)
-    print(category)
     category.name = request.POST.get('name')
     category.save()
     return JsonResponse({'success': True, 'new_name': category.name})

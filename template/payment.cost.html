@@ -352,11 +352,13 @@
         return response.json();
     })
     .then(data => {
+
+        var modal = bootstrap.Modal.getInstance(document.getElementById('inlineForm'));
+        modal.hide();
+        
         if (data.status === 'success') {
+
             // Modal oynani yopish
-            var modal = bootstrap.Modal.getInstance(document.getElementById('inlineForm'));
-            modal.hide();
-            
             // Jadvalga yangi qator qo'shish
             const tableBody = document.querySelector('table tbody');
             const newRow = document.createElement('tr');

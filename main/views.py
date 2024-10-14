@@ -384,7 +384,7 @@ class PaymentCostView(LoginRequiredMixin,View):
             ).select_related('child','teacher','user')\
             .aggregate(total_amount=Sum('amount'))['total_amount'] or 0
 
-        print(total_amount)
+
         paginator = Paginator(payments, 25) 
    
         try:
