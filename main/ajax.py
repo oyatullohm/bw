@@ -113,17 +113,18 @@ class PaymentCreateView(View):
 
         try:
             cash = Cash.objects.get(id=cash)
-            payment =  Payment.objects.create(
+            payment, created =  Payment.objects.get_or_create(
                 company=request.user.company,
                 category_id = category,
                 user = request.user,
                 amount = Decimal(amount),
-                date_month=timezone.now(),
+                date_month=timezone.now().date(),
                 payment_type = int(payment_type),
                 description = description,
-                user_before_cash = cash.amount, 
                 cash = cash
             )
+            payment.user_before_cash = cash.amount, 
+            payment.save()
 
             if payment.payment_type == 1:
                 cash.amount += payment.amount
@@ -164,15 +165,16 @@ class TransferCreateView(View):
             return JsonResponse({'status': False})
             
         if teacher_1.cash.amount >= Decimal(amount):
-            transfer = Transfer.objects.create(
+            transfer, created = Transfer.objects.get_or_create(
                 company = request.user.company,
                 user=request.user,
                 teacher_1 = teacher_1,
                 teacher_2 = teacher_2,
                 summa = Decimal(amount),
+                date=timezone.now().date(),
                 description = description
             )
-            
+
             transfer.teacher_1_before_cash = teacher_1.cash.amount
             transfer.teacher_2_before_cash = teacher_2.cash.amount
             
