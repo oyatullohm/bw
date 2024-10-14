@@ -626,7 +626,7 @@ def payment_child(request, pk):
     cash = Cash.objects.get(id=int(cash))
     language = translation.get_language()
 
-    payment = Payment.objects.create(
+    payment, created = Payment.objects.get_or_create(
         company = request.user.company,  
         user=request.user,
         child = child,
@@ -635,10 +635,8 @@ def payment_child(request, pk):
         date_month = date_month,
         description = description ,
         user_before_cash = cash.amount,
-        cash = cash,
-        
     )
-    
+    payment.cash = cash,
     cash.amount += Decimal(payment.amount)
     cash.save()
     payment.user_after_cash = cash.amount
