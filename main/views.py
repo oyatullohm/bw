@@ -636,7 +636,7 @@ def payment_child(request, pk):
         description = description ,
         user_before_cash = cash.amount,
     )
-    payment.cash = cash,
+    payment.cash = cash
     cash.amount += Decimal(payment.amount)
     cash.save()
     payment.user_after_cash = cash.amount
