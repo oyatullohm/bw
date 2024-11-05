@@ -20,8 +20,8 @@
                                     </div>
                                 </div>
                                 <div class="col-12 ">
-                                    <h6 class="text-muted font-semibold"> {% trans 'Working day' %}</h6>
-                                    <h6 class="font-extrabold mb-0">{{request.user.company.working_day}}</h6>
+                                    <h6 class="text-muted font-semibold"> {% trans 'Came today' %}</h6>
+                                    <h6 class="font-extrabold mb-0">{{attendance}}</h6>
                                 </div>
                             </div>
                         </div>
@@ -38,8 +38,8 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <h6 class="text-muted font-semibold"> {% trans 'Employees' %}</h6>
-                                    <h6 class="font-extrabold mb-0">{{request.user.company.teachers.all.count}}</h6>
+                                    <h6 class="text-muted font-semibold"> {% trans 'The month has arrived' %}</h6>
+                                    <h6 class="font-extrabold mb-0">{{attendance_month}}</h6>
                                 </div>
                             </div>
                         </div>

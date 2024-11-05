@@ -52,7 +52,7 @@ class Teacher(AbstractUser):
     TYPE = (
         (1, 'direktor'),
         (2, 'Ustoz'),
-        (3, 'Yordamchi')
+        # (3, 'Yordamchi')
     )
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True, blank=True , related_name='teachers')
     phone = models.CharField(max_length=15) 

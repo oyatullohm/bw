@@ -68,7 +68,6 @@
                                     <tr>
                                         <th> {% trans "Name" %}</th>
                                         <th> {% trans "Teacher" %}</th>
-                                        <th> {% trans "Helper" %}</th>
                                         <th>   {% trans "Children" %}</th>
                                         <th>  {% trans "Info" %}</th>
                                     </tr>
@@ -79,7 +78,6 @@
                                     <tr>
                                         <td class="text-bold-500">{{i.name}}</td>
                                         <td class="text-bold-500">{{i.teacher}}</td>
-                                        <td class="text-bold-500">{{i.helper}}</td>
                                         <td class="text-bold-500">{{i.child.all.count}}</td>
                                         <td class="text-bold-500"><a href="{% url 'group_detail' i.id %}">Info</a></td>
                                     </tr>
@@ -91,7 +89,7 @@
 
                                        <p class="card-text"><span class="fw-bold"> Name </span>:  {{i.name}}  </p>
                                        <p class="card-text"><span class="fw-bold"> Tarboyachi </span> : {{i.teacher}}</p>
-                                       <p class="card-text"><span class="fw-bold"> Yordamchi </span>: {{i.helper}}</p>
+                    
                                        
                                        <span><a href="{% url 'group_detail' i.id %}">Info</a></span>
                                       </div>

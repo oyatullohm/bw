@@ -45,6 +45,13 @@ class HomeView(LoginRequiredMixin, View):
         profit_data = [revenue - cost for revenue, cost in zip(revenue_data, cost_data)]
         cild = Child.objects.filter(company = request.user.company, is_active=True).count()
         
+        
+        # keldi  bugun 
+
+        
+        attendance =  Attendance.objects.filter(company=request.user.company, child__isnull=False,  is_active= True,date = timezone.now().date() ).count()
+        attendance_month =  Attendance.objects.filter(company=request.user.company,child__isnull=False, is_active= True, date__gte =  today.replace(day=1) ).count()
+
         context = {
             'apex_series': [
                 {
@@ -64,7 +71,9 @@ class HomeView(LoginRequiredMixin, View):
                 }
             ],
             'last_12_months': last_12_months,
-            'cild':cild
+            'cild':cild,
+            'attendance':attendance,
+            'attendance_month':attendance_month
         }
         return render(request, 'index.html', context)
 
