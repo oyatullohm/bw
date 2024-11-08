@@ -17,6 +17,7 @@ import json
 class UpdateAttendanceChildView(View):
     @method_decorator(require_POST)
     def post(self, request, *args, **kwargs):
+        
         company = request.user.company
         date = request.POST.get('date')
 
@@ -29,6 +30,7 @@ class UpdateAttendanceChildView(View):
             date=date,
             defaults={ 'is_active': is_active},
         )
+        
         return JsonResponse({'status': 'success', 'attendance_id': attendance.id})
 
 
@@ -270,18 +272,45 @@ def search_transfer(request):
 def search_child(request):
     query = request.GET.get('query', '')
 
+    current_month = timezone.now().date().replace(day=1)  # faqat oy boshlanish sanasi bilan
+    
     if query:
-        conditions=  Q(name__icontains=query)\
-                    |Q(phone__icontains=query)\
-                    |Q(group__name__icontains=query)
-                            
-                   
-                
-        results = Child.objects.filter(conditions, company=request.user.company,is_active=True)\
-        .select_related('group').only( 'id', 'name',  'tarif__name','birth_date','phone','group__name')
-        results = list(results.values('id', 'name',  'tarif__name','birth_date','phone','group__name')) 
-        return JsonResponse(results, safe=False)
-    return JsonResponse({'status':'success'})
+        conditions = Q(name__icontains=query) | Q(phone__icontains=query) | Q(group__name__icontains=query)
+        
+        # Hozirgi oyga tegishli `payments` ob'ektlarini filtrlaymiz
+        monthly_payments = Payment.objects.filter(company=request.user.company,date_month__gte=current_month, date_month__lt=current_month.replace(month=current_month.month % 12 + 1))
+        
+        results = Child.objects.filter(
+            conditions, 
+            company=request.user.company,
+            is_active=True
+        ).select_related('group')\
+         .prefetch_related(
+            Prefetch('payments', queryset=monthly_payments, to_attr='monthly_payments')
+         )\
+         .only('id', 'name', 'tarif__name', 'tarif__amount', 'birth_date', 'phone', 'group__name')
+        # Natijani `monthly_payments` bilan birgalikda chiqaramiz
+        results_data = []
+        for child in results:
+            attendance =  Attendance.objects.filter(child=child,date = timezone.now().date(), is_active= True).exists()
+
+            payment_amount = sum(payment.amount for payment in child.monthly_payments) if child.monthly_payments else 0
+
+            results_data.append({
+                'id': child.id,
+                'name': child.name,
+                'tarif__name': child.tarif.name,
+                'tarif__amount': child.tarif.amount,
+                'birth_date': child.birth_date,
+                'phone': child.phone,
+                'group__name': child.group.name,
+                'payments': payment_amount,
+                'attendance':attendance
+            })
+        
+        return JsonResponse(results_data, safe=False)
+
+    return JsonResponse({'status': 'success'})
 
 
 @login_required    

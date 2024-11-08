@@ -7,21 +7,27 @@
 
  <section class="section">
     <div class="row" id="basic-table">
-        <div class="col-12 col-md-12">
-         
-            <div class="col-8 col-md-2">
+        <div class="col-12">
+            <div class="row">
 
+                <div class="col-8 col-md-4">
+                
                 <div id="recent-dates-container" class="overflow-auto">
                     <select class="form-select" id="recent-dates-select" onchange="handleDateChange(this.value)" aria-label="Default select example">
                         <!-- Options will be dynamically added here -->
                     </select>
                 </div>
-            </div>
-            
+            </div> <div class="col-8 col-md-4">
+                <input type="search" class="form-control" id="search-child" style="height: 46px !important;">
+            </div>  
+        </div>
+        </div>
+        <div class="col-12 col-md-12">
+
             <div class="table-responsive">
                 <table class="table table-lg">
                   
-                    <tbody>
+                    <tbody id="search-results">
 
                         <tr>
                             <td class="text-bold-500">{{group.name}}</td>
@@ -209,8 +215,110 @@
         </ul>
     </nav>
 {% endif %}
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+   $(document).ready(function() {
+    $('#search-child').on('keyup', function() {
+        let query = $(this).val();
+        if (query.length > 2) {
+            $.ajax({
+                url: '/search-child/',
+                data: {
+                    'query': query
+                },
+                dataType: 'json',
+                success: function(data) {
+                    let tbody = $('#search-results');
+                    tbody.empty();
+                  
+                    data.forEach(item => {
+                        let isChecked = item.attendance ? 'checked' : '';
+                        let currentDate = new Date().toISOString().split('T')[0];
+                        console.log(currentDate)
+                        let row = `
+                       
+                                <tr>
+                                <td class="text-bold-500">
+                                    <a href="/calendar/child/${item.id}/">${item.name}</a>
+                                </td>
+                                <td class="text-bold-500">${item.phone}</td>
+                                <td class="text-bold-500">
+                                    <span style="color: brown;">${item.tarif__amount || ''}</span> / <span style="color: blue;">${item.payments|| ''}</span>
+                                </td>
+                                <td class="text-bold-500">${item.tarif__name || ''}</td>
+                                <td class="text-bold-500">
+                                    <div class="form-check form-switch col-3">
+                                        <input class="form-check-input" name="attendance_${item.id}" 
+                                            type="checkbox" id="flexSwitchCheckDefault_${item.id}"
+                                             onchange='updateAttendance(${item.id},this.checked,"${currentDate}")' ${isChecked}>
+                                        <label class="form-check-label" for="flexSwitchCheckDefault_${item.id}">Davomat</label>
+                                    </div>
+                                </td>
+                                {% if request.user.is_payment and request.user.cash.is_active == True %}
+                                <td class="text-bold-500">
+                                    <button class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#inlineForm${item.id}">Tolov</button>
+                                    </td>
+                                    {% endif %}
+                                </tr>
+                                      
+   
+                                  <div class="form-group">
+                            <div class="modal fade text-left" id="inlineForm${item.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="myModalLabel33">{% trans 'Payment' %} {{ item.child.name }}</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="post" action="/payment/child${item.id}">
+                                                {% csrf_token %}
+                                                <div class="form-group mb-1">
+                                                    <label for="summa" class="form-label"> {% trans 'Som' %}</label>
+                                                    <input  name="summa" required id="summa"  value="{{item.remaining_amount}}"  class="form-control" >
+                                                </div>
+                                                <div class="form-group mb-1">
+                                                    <label for="date_month" class="form-label">{% trans 'Selected month' %}</label>
+                                                    <input type="date" name="date_month" required id="date_month" class="form-control">
+                                                </div>
+                                                <div class="form-group mb-1">
+                                                    <label for="description" class="form-label">{% trans 'Kassa' %}</label>
+                                                   <select name="cash" class="form-control" >
+                                                        <option value="{{request.user.cash.id}}">{{request.user}}</option>
+                                                        {% for c in cash %}
+                                                        <option value="{{c.id}}">{{c.name}}</option>
+                                                        {% endfor %}
+                                                   </select>
+                                                </div>
+                                                <div class="form-group mb-1"></div>
+                                                    <label for="description" class="form-label">{% trans 'Comment' %}</label>
+                                                    <input type="text" name="description" id="description" class="form-control" placeholder="Izoh">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                                        <span>{% trans "Close" %}</span>
+                                                    </button>
+                                                    <button type="submit" class="btn btn-primary ms-1">
+                                                        <span> {% trans "Save" %}</span>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        `;
+                        tbody.append(row);
+                    });
+                }
+            });
+        }
+    });
+});
+
+
     function updateAttendance(childId, is_active, date) {
     fetch('{% url "update-attendance" %}', {
         method: 'POST',

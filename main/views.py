@@ -233,7 +233,7 @@ class GroupDetailView(LoginRequiredMixin, View):
         payment_summa_dict = {pay['child_id']: pay['amount'] for pay in payment_summa}
 
         # Paginate children
-        paginator = Paginator(children, 25)
+        paginator = Paginator(children, 50)
         try:
             paginated_children = paginator.page(page)
         except PageNotAnInteger:
