@@ -1,6 +1,7 @@
 {% extends 'wrapper.html' %}
 {% block content %}
 {% load i18n %}
+{% load humanize %}
 <div class="form-group">
     <div class="row">
         <div class="col-3">
@@ -94,7 +95,7 @@
                                         </td>
                                        
                                         <td class="text-bold-500">{{ p.child.name }} </td>
-                                        <td class="text-bold-500">{{ p.amount }}</td>
+                                        <td class="text-bold-500">{{ p.amount |intcomma }}</td>
                                         <td class="text-bold-500">{{ p.user }}</td>
                                         <td class="text-bold-500"> 
                                             <a href="#"  id="info-{{p.id}}" 

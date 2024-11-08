@@ -1,7 +1,7 @@
 {% extends 'wrapper.html' %}
 {% block content %}
 {% load i18n %}
-
+{% load humanize %}
 <div class="form-group">
     <div class="row">
         <div class="col-6 col-md-3 col-lg-3">
@@ -11,7 +11,7 @@
                 {% trans 'Add' %}  
               </button>
          
-            <span class="text-end" id="total_amount"> {{total_amount}} Sum</span>
+            <span class="text-end" id="total_amount"> {{total_amount |intcomma }} Sum</span>
            
         </div>
          <div class="col-6 col-md-3 col-lg-3">
@@ -154,7 +154,7 @@
                                             <a style="color: blue;">{{ p.date|date:"d-m-Y" }}</a>
                                         </td>
                                         <td class="text-bold-500">{{ p.category.name }}</td>
-                                        <td class="text-bold-500">{{ p.amount }}</td>
+                                        <td class="text-bold-500">{{ p.amount |intcomma }}</td>
                                         <td class="text-bold-500">{{ p.user }}</td>
                                         <td class="text-bold-500"><a href="#"  id="info-{{p.id}}" 
                                             data-izoh="{{p.description}}"

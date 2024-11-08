@@ -1,6 +1,7 @@
 {% extends 'wrapper.html' %}
 {% block content %}
 {% load i18n %}
+{% load humanize %}
  <!-- Basic Tables start -->
 <link rel="stylesheet" href="/static/assets/date.css">
 
@@ -57,7 +58,7 @@
                                 <a href="{% url 'calendar_child' item.child.id %}">{{ item.child.name }}</a>
                             </td>
                             <td class="text-bold-500">{{ item.child.phone }}</td>
-                            <td class="text-bold-500"> <span style="color: brown;">{{item.child.tarif.amount}}  </span> / <span style="color: blue;">{{item.payment_summa}} </span>    </td>
+                            <td class="text-bold-500"> <span style="color: brown;">{{item.child.tarif.amount | intcomma }}  </span> / <span style="color: blue;">{{item.payment_summa | intcomma }} </span>    </td>
                             <td class="text-bold-500">  {{item.child.tarif.name}} / {{ item.attendance_monthly }}</td>
                             <td class="text-bold-500">
                                 <div class="form-check form-switch col-3">
@@ -85,7 +86,7 @@
                                                 {% csrf_token %}
                                                 <div class="form-group mb-1">
                                                     <label for="summa" class="form-label"> {% trans 'Som' %}</label>
-                                                    <input  name="summa" required id="summa"  value="{{item.remaining_amount}}"  class="form-control" >
+                                                    <input  name="summa" required id="summa"  value="{{item.remaining_amount }}"   class="form-control" >
                                                 </div>
                                                 <div class="form-group mb-1">
                                                     <label for="date_month" class="form-label">{% trans 'Selected month' %}</label>
@@ -416,7 +417,6 @@ function handleDateChange(url) {
 }
 
 displayRecentDaysDates();
-
 
 </script>
 
