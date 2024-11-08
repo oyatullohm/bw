@@ -275,7 +275,7 @@ def search_child(request):
     current_month = timezone.now().date().replace(day=1)  # faqat oy boshlanish sanasi bilan
     
     if query:
-        conditions = Q(name__icontains=query) | Q(phone__icontains=query) | Q(group__name__icontains=query)
+        conditions = Q(name__icontains=query) | Q(phone__icontains=query) 
         
         # Hozirgi oyga tegishli `payments` ob'ektlarini filtrlaymiz
         monthly_payments = Payment.objects.filter(company=request.user.company,date_month__gte=current_month, date_month__lt=current_month.replace(month=current_month.month % 12 + 1))
