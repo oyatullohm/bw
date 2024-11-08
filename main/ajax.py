@@ -299,11 +299,11 @@ def search_child(request):
             results_data.append({
                 'id': child.id,
                 'name': child.name,
-                'tarif__name': child.tarif.name,
-                'tarif__amount': child.tarif.amount,
+                'tarif__name': child.tarif.name if child.tarif else None,
+                'tarif__amount': child.tarif.amount if child.tarif else 0,
                 'birth_date': child.birth_date,
                 'phone': child.phone,
-                'group__name': child.group.name,
+                'group__name': child.group.name if child.group else None,
                 'payments': payment_amount,
                 'attendance':attendance
             })
