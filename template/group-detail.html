@@ -234,12 +234,41 @@
                     tbody.empty();
                   
                     data.forEach(item => {
+                        let row;
                         let isChecked = item.attendance ? 'checked' : '';
                         let currentDate = new Date().toISOString().split('T')[0];
-                        console.log(currentDate)
-                        let row = `
-                       
-                                <tr>
+                        let isMobile = window.innerWidth <= 768; 
+                        if (isMobile) {
+                           
+                        row = `
+                                    
+                        <div class="card mb-2">
+                            <div class="card-body">
+                                <p class="card-text">
+                                
+                                    <a href="/calendar/child/${item.id}/">${item.name} </a> <span style="color: brown;">${item.tarif__amount || ''}</span> /
+                                    <span style="color: blue;">${item.payments || ''}</span>
+                                    </p>
+
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" name="attendance_${item.id}" type="checkbox"
+                                        id="flexSwitchCheckDefault_${item.id}"
+                                        onchange='updateAttendance(${item.id}, this.checked, "${currentDate}")' ${isChecked}>
+                                    <label class="form-check-label" for="flexSwitchCheckDefault_${item.id}">Davomat</label>
+                                    {% if request.user.is_payment and request.user.cash.is_active == True %}
+                                    <a style="color:blue"  data-bs-toggle="modal"
+                                    data-bs-target="#inlineForm${item.id}">To'lov</a>
+                                    {% endif %}
+                                    </div>
+                            </div>
+                        </div>
+                            
+                        `}else{
+
+                            row=`
+
+
+                            <tr>
                                 <td class="text-bold-500">
                                     <a href="/calendar/child/${item.id}/">${item.name}</a>
                                 </td>
@@ -308,9 +337,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            
-                        `;
+                            </div>`
+                        };
                         tbody.append(row);
                     });
                 }
