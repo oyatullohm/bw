@@ -279,19 +279,29 @@ class ChildView(LoginRequiredMixin,View):
         page = request.GET.get('page')
         company = request.user.company
 
-        child = (
-            Child.objects
-            .filter(company=company, is_active=True)
-            .select_related('group', 'company', 'tarif')
-            .order_by('-id')
-        )
-        
+        if request.user.type == 1: 
+            child = (
+                Child.objects
+                .filter(company=company, is_active=True)
+                .select_related('group', 'company', 'tarif')
+                .order_by('-id')
+            )
+        else:
+            group = request.user.group_teachers
+            child = (
+                Child.objects
+                .filter(company=company, group=group, is_active=True)
+                .select_related('group', 'company', 'tarif')
+                .order_by('-id')
+            )
+            
         group = (
             Group.objects
             .filter(company=company, is_active=True)
             .select_related('company', 'teacher', 'helper')
             .order_by('-id')
         )
+    
         
         tarif = (
             TarifCompany.objects
@@ -299,7 +309,7 @@ class ChildView(LoginRequiredMixin,View):
             .select_related('company')
         )
         
-        paginator = Paginator(child,20)  
+        paginator = Paginator(child,30)  
         try:
             children = paginator.page(page)
         except PageNotAnInteger:
