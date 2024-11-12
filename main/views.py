@@ -359,7 +359,11 @@ class PaymentView(LoginRequiredMixin,View):
         
         page = request.GET.get('page')
         cash = Cash.objects.filter(company=request.user.company).exclude(name__isnull=True)
-        payments = Payment.objects.filter(company=request.user.company, payment_type=1)\
+        if request.user.type == 1:
+            payments = Payment.objects.filter(company=request.user.company, payment_type=1)\
+            .select_related('child','teacher','user').order_by('-id')
+        else:
+            payments = Payment.objects.filter(user=request.user ,company=request.user.company, payment_type=1)\
             .select_related('child','teacher','user').order_by('-id')
         paginator = Paginator(payments, 25)  # Sahifalarni 25 tadan ko'rsatish
         try:
@@ -384,9 +388,13 @@ class PaymentCostView(LoginRequiredMixin,View):
         page = request.GET.get('page')
         cash = Cash.objects.filter(company=request.user.company).exclude(name__isnull=True)
         category = PaymentCategory.objects.filter(company=request.user.company,)
-        payments = Payment.objects.filter(company=request.user.company, payment_type=2)\
-            .select_related('child','teacher','user').order_by('-id')
-            
+        if request.user.type == 1:
+            payments = Payment.objects.filter(company=request.user.company, payment_type=2)\
+                .select_related('child','teacher','user').order_by('-id')
+        else:
+            payments = Payment.objects.filter(company=request.user.company,user=request.user , payment_type=2)\
+                .select_related('child','teacher','user').order_by('-id')
+                
         total_amount = Payment.objects.filter(payment_type=2,
                 date__gte=date.today().replace(day=1),
                 is_active=True
@@ -478,7 +486,16 @@ class TransferView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self,request, *args, **kwargs):
         page = request.GET.get('page')
-        transfer = Transfer.objects.filter(company=request.user.company).order_by('-id')\
+        if request.user.type == 1:
+            transfer = Transfer.objects.filter(company=request.user.company).order_by('-id')\
+            .select_related('user','teacher_1', 'teacher_2')
+        else:
+            teacher_instance = request.user
+            transfer = Transfer.objects.filter(
+                company=request.user.company,
+                ).filter(
+                    Q(user=teacher_instance) | Q(teacher_1=teacher_instance)
+                ).order_by('-id')\
             .select_related('user','teacher_1', 'teacher_2')
         teachar = Teacher.objects.filter(company=request.user.company, cash__is_active = True)\
             .select_related('tarif','company')
