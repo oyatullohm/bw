@@ -1,6 +1,7 @@
 {% extends 'wrapper.html' %}
 {% block content %}
 {% load i18n %}
+{% load humanize %}
 <div class="form-group">
     <div class="row">
         <div class="col-3">
@@ -103,7 +104,7 @@
                                         <td class="text-bold-500">{{ t.user }} </td>
                                         <td class="text-bold-500">{{ t.teacher_1 }} </td>
                                         <td class="text-bold-500">{{ t.teacher_2 }}</td>
-                                        <td class="text-bold-500">{{ t.summa }}</td>
+                                        <td class="text-bold-500">{{ t.summa |intcomma}}</td>
                                         <td class="text-bold-500"><a href="#"  id="info-{{ t.id }}" 
                                             data-izoh="{{t.description}}"
                                             data-name_1="{{t.teacher_1}}"
