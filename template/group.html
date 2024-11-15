@@ -1,7 +1,7 @@
 {% extends 'wrapper.html' %}
 {% block content %}
 {% load i18n %}
-
+{% load humanize %}
  <!-- Basic Tables start -->
  <section class="section">
     <div class="row" id="basic-table">
@@ -81,8 +81,8 @@
                                         <td class="text-bold-500">{{i.name}}</td>
                                         <td class="text-bold-500">{{i.teacher}}</td>
                                         <td class="text-bold-500">{{i.child.all.count}}</td>
-                                        <td class="text-bold-500">{{i.expected_amount}}</td>
-                                        <td class="text-bold-500">{{i.current_amount}}</td>
+                                        <td class="text-bold-500">{{i.expected_amount |intcomma }}</td>
+                                        <td class="text-bold-500">{{i.current_amount |intcomma }}</td>
                                         <td class="text-bold-500"><a href="{% url 'group_detail' i.id %}">{% trans 'Info' %}</a></td>
                                     </tr>
                                 </tbody>
@@ -94,8 +94,8 @@
                                        <p class="card-text"><span class="fw-bold"> {% trans "Name" %} </span>:  {{i.name}}  </p>
                                        <p class="card-text"><span class="fw-bold">{% trans "Teacher" %}  </span> : {{i.teacher}}</p>
                                        <p class="card-text"><span class="fw-bold"> {% trans "Children" %} </span> : {{i.child.all.count}}</p>
-                                       <p class="card-text"><span class="fw-bold"> {% trans "Waiting" %} </span> : {{i.expected_amount}}</p>
-                                       <p class="card-text"><span class="fw-bold"> {% trans "Current" %} </span> : {{i.current_amount}}</p>
+                                       <p class="card-text"><span class="fw-bold"> {% trans "Waiting" %} </span> : {{i.expected_amount |intcomma }}</p>
+                                       <p class="card-text"><span class="fw-bold"> {% trans "Current" %} </span> : {{i.current_amount |intcomma }}</p>
                     
                                        
                                        <span><a href="{% url 'group_detail' i.id %}">{% trans 'Info'%}</a></span>
