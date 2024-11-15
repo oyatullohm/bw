@@ -173,7 +173,11 @@ class GroupView(LoginRequiredMixin,View):
     login_url = settings.LOGIN_URL
     def get(self,request,*args, **kwargs):
         company = request.user.company 
-        group =  Group.objects.filter(company=company, is_active = True)\
+        if request.user.type == 1:
+            group =  Group.objects.filter(company=company, is_active = True)\
+                .select_related('teacher', 'helper').prefetch_related('child')
+            return render(request,'group.html',{'group':group}) 
+        group =  Group.objects.filter(company=company, teacher=request.user, is_active = True)\
             .select_related('teacher', 'helper').prefetch_related('child')
         return render(request,'group.html',{'group':group}) 
     
