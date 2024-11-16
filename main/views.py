@@ -169,18 +169,50 @@ class TeacherDetailView(LoginRequiredMixin,View):
         return redirect (f'/{language}/teacher/{pk}/')
 
 
-class GroupView(LoginRequiredMixin,View):
+class GroupView(LoginRequiredMixin, View):
     login_url = settings.LOGIN_URL
-    def get(self,request,*args, **kwargs):
-        company = request.user.company 
-        if request.user.type == 1:
-            group =  Group.objects.filter(company=company, is_active = True)\
-                .select_related('teacher', 'helper').prefetch_related('child')
-            return render(request,'group.html',{'group':group}) 
-        group =  Group.objects.filter(company=company, teacher=request.user, is_active = True)\
-            .select_related('teacher', 'helper').prefetch_related('child')
-        return render(request,'group.html',{'group':group}) 
-    
+
+    def get(self, request, *args, **kwargs):
+        company = request.user.company
+        number_list = [i for i in range(1, 13)]
+        month = int(request.GET.get('month', datetime.now().month))
+        year = int(request.GET.get('year', datetime.now().year))
+        start_date = datetime(year, month, 1)
+        next_month = start_date.replace(day=28) + timedelta(days=4)
+        end_date = next_month - timedelta(days=next_month.day)
+
+        group_query = Group.objects.prefetch_related('child__tarif').filter(
+            company=company,
+            is_active=True
+        ).select_related('teacher', 'helper')
+
+        if request.user.type != 1:
+            group_query = group_query.filter(teacher=request.user)
+
+        # Faol bolalar uchun tanlangan vaqt oralig'ida to'lovlarni hisoblash
+        group_with_payments = group_query.annotate(
+            current_payment=Coalesce(
+                Sum(
+                    'child__payments__amount',
+                    filter=Q(child__payments__date__gte=start_date, child__payments__date__lte=end_date),
+                    output_field=DecimalField()  # DecimalField ni belgilash
+                    ),
+                    Value(0, output_field=DecimalField())  # Agar None bo'lsa, 0 Decimal ko'rinishida
+                ),
+            expected_amount=Coalesce(
+                Sum(
+                'child__tarif__amount',
+                filter=Q(child__is_active=True),
+                output_field=DecimalField()  # DecimalField ni belgilash
+                ),
+                Value(0, output_field=DecimalField())  # Agar None bo'lsa, 0 Decimal ko'rinishida
+                )
+                )
+        return render(request, 'group.html', {
+            'group': group_with_payments,
+            'number_list': number_list,
+            'selected_year': year,
+        })
     def post(self,request, *args, **kwargs):
         name = request.POST.get('name')
         Group.objects.create(
@@ -508,7 +540,7 @@ class TransferView(LoginRequiredMixin,View):
             transfer = Transfer.objects.filter(
                 company=request.user.company,
                 ).filter(
-                    Q(user=teacher_instance) | Q(teacher_1=teacher_instance)
+                    Q(user=teacher_instance) | Q(teacher_1=teacher_instance) |Q(teacher_2=teacher_instance)
                 ).order_by('-id')\
             .select_related('user','teacher_1', 'teacher_2')
         teachar = Teacher.objects.filter(company=request.user.company, cash__is_active = True)\

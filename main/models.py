@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
-from datetime import datetime, timedelta , date
-from django.db.models import Q, Sum, Case, When, DecimalField , F ,Prefetch
+from datetime import datetime, timedelta, date
+from django.db.models import Q, Sum, Case, When, DecimalField, F, Prefetch, Value
+from django.utils.functional import cached_property
 
 
 class Tarif(models.Model):
@@ -73,21 +74,8 @@ class Group(models.Model):
     teacher = models.OneToOneField(Teacher, on_delete=models.SET_NULL, null=True, blank=True,  related_name='group_teachers')
     helper = models.OneToOneField(Teacher, on_delete=models.SET_NULL, null=True, blank=True, related_name='group_helpers')
     is_active = models.BooleanField(default=True)
+  
 
-    @property
-    def expected_amount(self):
-        # Faol bolalarni tarif summasini hisoblash
-        return self.child.filter(is_active=True).aggregate(
-            total_tarif_summa=Sum('tarif__amount')  # 'amount' maydonini hisoblash
-        )['total_tarif_summa'] or 0
-
-    @property
-    def current_amount(self):
-        today = timezone.now()
-        return self.child.filter(is_active=True).aggregate(
-            total_payment_amount = Sum('payments__amount',filter=Q(payments__date__gte = today.replace(day=1) ) )
-        )['total_payment_amount'] or 0
-    
 class Child(models.Model):
     STATUS = (
         (1,"yigit"),

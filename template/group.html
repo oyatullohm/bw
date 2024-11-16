@@ -11,9 +11,28 @@
                     <h4 class="card-title">{% trans "Group" %}</h4>
                     <div class="container mt-5">
                         <div class="d-flex justify-content-between">
-                          <div class="text-start">
-                            <h5 class="text-bold-500"> {% trans "Teachers" %}</h5>
-                          </div>
+                            <div class="container mt-4">
+        
+                                <form method="get" action="" class="row g-3">
+                                    <div class="col-auto">
+                                        <label for="month">{% trans 'Month' %}:</label>
+                                        <select id="month" name="month" class="form-control">
+                                            {% for m in  number_list %}
+                                            <option value="{{ m }}" {% if m == selected_month %}selected{% endif %}>{{ m }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-auto">
+                                        <label for="year">{% trans "Year" %}:</label>
+                                        <input type="number" id="year" name="year" class="form-control" value="{{ selected_year }}">
+                                    </div>
+                                    <div class="">
+                                        <button type="submit" class="btn btn-primary">{% trans 'Filtering' %}</button>
+                                    </div>
+                                </form>
+                            </div>
+                        
+                          
                           <div class="text-end">
                             <div class="col-md-6 col-12">
                                             <div class="form-group">
@@ -82,7 +101,8 @@
                                         <td class="text-bold-500">{{i.teacher}}</td>
                                         <td class="text-bold-500">{{i.child.all.count}}</td>
                                         <td class="text-bold-500">{{i.expected_amount |intcomma }}</td>
-                                        <td class="text-bold-500">{{i.current_amount |intcomma }}</td>
+                                        <td class="text-bold-500">{{i.current_payment |intcomma }}</td>
+                                       
                                         <td class="text-bold-500"><a href="{% url 'group_detail' i.id %}">{% trans 'Info' %}</a></td>
                                     </tr>
                                 </tbody>
