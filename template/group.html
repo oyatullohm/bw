@@ -117,7 +117,7 @@
                                        <p class="card-text"><span class="fw-bold">{% trans "Teacher" %}  </span> : {{i.teacher}}</p>
                                        <p class="card-text"><span class="fw-bold"> {% trans "Children" %} </span> : {{i.child.all.count}}</p>
                                        <p class="card-text"><span class="fw-bold"> {% trans "Waiting" %} </span> : {{i.expected_amount |intcomma }}</p>
-                                       <p class="card-text"><span class="fw-bold"> {% trans "Current" %} </span> : {{i.current_amount |intcomma }}</p>
+                                       <p class="card-text"><span class="fw-bold"> {% trans "Current" %} </span> : {{i.current_payment |intcomma }}</p>
                     
                                        
                                        <span><a href="{% url 'group_detail' i.id %}">{% trans 'Info'%}</a></span>
