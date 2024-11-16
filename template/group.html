@@ -26,7 +26,7 @@
                                         <label for="year">{% trans "Year" %}:</label>
                                         <input type="number" id="year" name="year" class="form-control" value="{{ selected_year }}">
                                     </div>
-                                    <div class="">
+                                    <div class="col-avto">
                                         <button type="submit" class="btn btn-primary">{% trans 'Filtering' %}</button>
                                     </div>
                                 </form>
@@ -93,6 +93,8 @@
                                         <th>  {% trans "Info" %}</th>
                                     </tr>
                                 </thead>
+                                <br> 
+                              
                                 {% for i in group %}
                                 
                                 <tbody>

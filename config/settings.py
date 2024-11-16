@@ -137,6 +137,7 @@ USE_TZ = True
 gettext = lambda s:s
 LANGUAGES = (
     ('uz',gettext("Uzbek")),
+    # ('уз',gettext("Узвек")),
     ('en',gettext("English")),
     ('ru',gettext("Russian")),
 )
