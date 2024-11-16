@@ -218,8 +218,8 @@
               <div class="col-xl-6 col-sm-12  col-12">
                 
              
-
-
+                {% comment %}
+<!-- 
                 {% if request.user.is_main %}
                 <div class="card">
                     <div class="card-body">
@@ -260,13 +260,13 @@
 
 
 
-              {% endif %}   
+              {% endif %}    -->
 
 
 
 
              
-                {% if request.user.is_main %}
+                <!-- {% if request.user.is_main %}
                 <div class="card">
                     <div class="card-body">
                         <form action="{% url 'working_day' %}" method="post">
@@ -295,10 +295,10 @@
 
                     </div> 
                     
+                    {% endif %} -->
+    {% endcomment %}
 
 
-
-                    {% endif %}
                     <div class="card">
                         <br>
                         <div class="dropdown"  style="margin-left: 22px;">
