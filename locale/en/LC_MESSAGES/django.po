@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-15 22:57+0500\n"
+"POT-Creation-Date: 2024-11-16 21:29+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,14 +23,18 @@ msgid "Uzbek"
 msgstr ""
 
 #: config/settings.py:140
-msgid "English"
+msgid "Узбек"
 msgstr ""
 
 #: config/settings.py:141
+msgid "English"
+msgstr ""
+
+#: config/settings.py:142
 msgid "Russian"
 msgstr ""
 
-#: template/cash.html:9 template/child.html:69 template/group.html:23
+#: template/cash.html:9 template/child.html:69 template/group.html:42
 #: template/payment.cost.html:11 template/payment.html:11
 #: template/tarif.html:18 template/teacher-all.html:18
 msgid "Add"
@@ -41,20 +45,19 @@ msgid "Add a child"
 msgstr ""
 
 #: template/cash.html:27 template/child.html:80 template/child.html:152
-#: template/group.html:37 template/group.html:69 template/group.html:94
-#: template/settings.html:38 template/settings.html:88
-#: template/settings.html:188 template/tarif.html:32 template/tarif.html:92
-#: template/teacher-all.html:99 template/teacher.html:16
+#: template/group.html:56 template/group.html:88 template/group.html:116
+#: template/settings.html:92 template/settings.html:192 template/tarif.html:32
+#: template/tarif.html:92 template/teacher-all.html:99 template/teacher.html:16
 msgid "Name"
 msgstr ""
 
 #: template/cash.html:33 template/cash.html:93 template/child.html:48
 #: template/child.html:125 template/child.html:181 template/child.html:223
 #: template/child.html:227 template/group-detail.html:110
-#: template/group-detail.html:330 template/group.html:45
+#: template/group-detail.html:330 template/group.html:64
 #: template/payment.cost.html:120 template/payment.cost.html:192
 #: template/payment.html:59 template/payment.html:137
-#: template/settings.html:162 template/settings.html:196 template/tarif.html:52
+#: template/settings.html:166 template/settings.html:200 template/tarif.html:52
 #: template/tarif.html:139 template/teacher-all.html:59
 #: template/transfer.html:62
 msgid "Close"
@@ -62,27 +65,26 @@ msgstr ""
 
 #: template/cash.html:37 template/cash.html:97 template/child.html:52
 #: template/child.html:185 template/group-detail.html:113
-#: template/group-detail.html:333 template/group.html:49
+#: template/group-detail.html:333 template/group.html:68
 #: template/payment.cost.html:124 template/payment.cost.html:195
 #: template/payment.html:63 template/payment.html:140
-#: template/settings.html:199 template/settings.html:240
-#: template/settings.html:255 template/settings.html:291 template/tarif.html:56
-#: template/tarif.html:143 template/teacher-all.html:63
-#: template/teacher.html:83 template/teacher.html:104 template/teacher.html:130
+#: template/settings.html:203 template/tarif.html:56 template/tarif.html:143
+#: template/teacher-all.html:63 template/teacher.html:83
+#: template/teacher.html:104 template/teacher.html:130
 #: template/transfer.html:66
 msgid "Save"
 msgstr ""
 
-#: template/cash.html:52 template/payment.cost.html:183
+#: template/cash.html:52 template/group.html:18 template/payment.cost.html:183
 #: template/payment.html:124
 msgid "Month"
 msgstr ""
 
-#: template/cash.html:60
+#: template/cash.html:60 template/group.html:26
 msgid "Year"
 msgstr ""
 
-#: template/cash.html:64
+#: template/cash.html:64 template/group.html:30
 msgid "Filtering"
 msgstr ""
 
@@ -95,8 +97,8 @@ msgstr ""
 #: template/group-detail.html:308 template/payment.cost.html:93
 #: template/payment.cost.html:145 template/payment.cost.html:179
 #: template/payment.html:32 template/payment.html:85 template/payment.html:120
-#: template/settings.html:40 template/tarif.html:45 template/tarif.html:94
-#: template/tarif.html:132 template/transfer.html:51 template/transfer.html:94
+#: template/tarif.html:45 template/tarif.html:94 template/tarif.html:132
+#: template/transfer.html:51 template/transfer.html:94
 msgid "Som"
 msgstr ""
 
@@ -109,7 +111,7 @@ msgid "Name "
 msgstr ""
 
 #: template/child.html:27 template/child.html:81 template/child.html:156
-#: template/settings.html:108 template/teacher-all.html:36
+#: template/settings.html:112 template/teacher-all.html:36
 #: template/teacher.html:20
 msgid "Phone"
 msgstr ""
@@ -128,8 +130,7 @@ msgstr ""
 msgid "Birthday"
 msgstr ""
 
-#: template/child.html:84 template/settings.html:229
-#: template/teacher-all.html:103
+#: template/child.html:84 template/teacher-all.html:103
 msgid "Tariff"
 msgstr ""
 
@@ -139,7 +140,7 @@ msgid "Update"
 msgstr ""
 
 #: template/child.html:94 template/child.html:111 template/child.html:132
-#: template/settings.html:148 template/settings.html:169
+#: template/settings.html:152 template/settings.html:173
 msgid "Delete"
 msgstr ""
 
@@ -163,34 +164,31 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: template/group.html:15
-msgid "Teachers"
-msgstr ""
-
-#: template/group.html:30
+#: template/group.html:49
 msgid "Add group"
 msgstr ""
 
-#: template/group.html:70 template/group.html:95 template/teacher-all.html:10
+#: template/group.html:89 template/group.html:117 template/teacher-all.html:10
 msgid "Teacher"
 msgstr ""
 
-#: template/group.html:71 template/group.html:96 template/index.html:59
+#: template/group.html:90 template/group.html:118 template/index.html:59
 #: template/teacher.html:63 template/wrapper.html:127
 msgid "Children"
 msgstr ""
 
-#: template/group.html:72 template/group.html:97
+#: template/group.html:91 template/group.html:119
 msgid "Waiting"
 msgstr ""
 
-#: template/group.html:73 template/group.html:98
+#: template/group.html:92 template/group.html:120
 msgid "Current"
 msgstr ""
 
-#: template/group.html:74 template/payment.cost.html:147
-#: template/payment.cost.html:164 template/payment.cost.html:581
-#: template/payment.html:87 template/payment.html:106 template/settings.html:72
+#: template/group.html:93 template/group.html:108 template/group.html:123
+#: template/payment.cost.html:147 template/payment.cost.html:164
+#: template/payment.cost.html:581 template/payment.html:87
+#: template/payment.html:106 template/settings.html:76
 #: template/transfer.html:95 template/transfer.html:117
 msgid "Info"
 msgstr ""
@@ -207,7 +205,7 @@ msgstr ""
 msgid "The month has arrived"
 msgstr ""
 
-#: template/index.html:77 template/settings.html:43
+#: template/index.html:77
 msgid "Groups"
 msgstr ""
 
@@ -231,7 +229,7 @@ msgstr ""
 msgid "Sign up"
 msgstr ""
 
-#: template/payment.cost.html:78 template/settings.html:180
+#: template/payment.cost.html:78 template/settings.html:184
 msgid "Add cost"
 msgstr ""
 
@@ -244,8 +242,7 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
-#: template/payment.cost.html:146 template/settings.html:42
-#: template/transfer.html:91
+#: template/payment.cost.html:146 template/transfer.html:91
 msgid "Employee"
 msgstr ""
 
@@ -253,7 +250,7 @@ msgstr ""
 msgid "Add Payment"
 msgstr ""
 
-#: template/payment.html:84 template/settings.html:41
+#: template/payment.html:84
 msgid "Child"
 msgstr ""
 
@@ -269,20 +266,16 @@ msgstr ""
 msgid "Enter your details to register from our app."
 msgstr ""
 
-#: template/settings.html:33 template/tarif.html:10 template/wrapper.html:141
-msgid "Tariffs"
-msgstr ""
-
-#: template/settings.html:98
+#: template/settings.html:102
 msgid "Work has begun"
 msgstr ""
 
-#: template/settings.html:124 template/settings.html:251
+#: template/settings.html:128
 msgid "Category Payment"
 msgstr ""
 
-#: template/settings.html:275
-msgid "Working day"
+#: template/tarif.html:10 template/wrapper.html:141
+msgid "Tariffs"
 msgstr ""
 
 #: template/tarif.html:25

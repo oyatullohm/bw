@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-16 21:29+0500\n"
+"POT-Creation-Date: 2024-11-16 21:36+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,11 +16,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: config/settings.py:139
 msgid "Uzbek"
-msgstr "Uzbek"
+msgstr ""
 
 #: config/settings.py:140
 msgid "Узбек"
@@ -28,28 +27,28 @@ msgstr ""
 
 #: config/settings.py:141
 msgid "English"
-msgstr "English"
+msgstr ""
 
 #: config/settings.py:142
 msgid "Russian"
-msgstr "Russian"
+msgstr ""
 
 #: template/cash.html:9 template/child.html:69 template/group.html:42
 #: template/payment.cost.html:11 template/payment.html:11
 #: template/tarif.html:18 template/teacher-all.html:18
 msgid "Add"
-msgstr "Q'shish"
+msgstr "Қўшиш"
 
 #: template/cash.html:19 template/child.html:15
 msgid "Add a child"
-msgstr "Bola qo;shish"
+msgstr "Бола Қўшиш"
 
 #: template/cash.html:27 template/child.html:80 template/child.html:152
 #: template/group.html:56 template/group.html:88 template/group.html:116
 #: template/settings.html:92 template/settings.html:192 template/tarif.html:32
 #: template/tarif.html:92 template/teacher-all.html:99 template/teacher.html:16
 msgid "Name"
-msgstr "Isim"
+msgstr "Исим"
 
 #: template/cash.html:33 template/cash.html:93 template/child.html:48
 #: template/child.html:125 template/child.html:181 template/child.html:223
@@ -61,7 +60,7 @@ msgstr "Isim"
 #: template/tarif.html:139 template/teacher-all.html:59
 #: template/transfer.html:62
 msgid "Close"
-msgstr "Yopish"
+msgstr "Бекор"
 
 #: template/cash.html:37 template/cash.html:97 template/child.html:52
 #: template/child.html:185 template/group-detail.html:113
@@ -73,24 +72,24 @@ msgstr "Yopish"
 #: template/teacher.html:104 template/teacher.html:130
 #: template/transfer.html:66
 msgid "Save"
-msgstr "Saqlash"
+msgstr "Сақлаш"
 
 #: template/cash.html:52 template/group.html:18 template/payment.cost.html:183
 #: template/payment.html:124
 msgid "Month"
-msgstr "Oy"
+msgstr "Oй"
 
 #: template/cash.html:60 template/group.html:26
 msgid "Year"
-msgstr "Yil"
+msgstr "Йил"
 
 #: template/cash.html:64 template/group.html:30
 msgid "Filtering"
-msgstr "Filter"
+msgstr "Филтирлаш"
 
 #: template/cash.html:77
 msgid "Cash Management"
-msgstr "Kassa boshqaru"
+msgstr "Касса Бошқару"
 
 #: template/cash.html:84 template/cash.html:114 template/cash.html:129
 #: template/child.html:85 template/group-detail.html:88
@@ -100,90 +99,90 @@ msgstr "Kassa boshqaru"
 #: template/tarif.html:45 template/tarif.html:94 template/tarif.html:132
 #: template/transfer.html:51 template/transfer.html:94
 msgid "Som"
-msgstr "So'm"
+msgstr "Сўм"
 
 #: template/cash.html:111 template/cash.html:126
 msgid "Management"
-msgstr "Boshqaru"
+msgstr "Бошқару"
 
 #: template/child.html:23
 msgid "Name "
-msgstr "Isim"
+msgstr "Исим"
 
 #: template/child.html:27 template/child.html:81 template/child.html:156
 #: template/settings.html:112 template/teacher-all.html:36
 #: template/teacher.html:20
 msgid "Phone"
-msgstr "Telefon"
+msgstr "Телефон"
 
 #: template/child.html:31 template/child.html:160
 msgid "Date of birth"
-msgstr "Sana"
+msgstr "Туғилган куни"
 
 #: template/child.html:37 template/child.html:83 template/child.html:166
 #: template/group.html:11 template/teacher-all.html:102
 #: template/teacher.html:36
 msgid "Group"
-msgstr "Gruppa"
+msgstr "Группа"
 
 #: template/child.html:82
 msgid "Birthday"
-msgstr ""
+msgstr "Туғилган куни"
 
 #: template/child.html:84 template/teacher-all.html:103
 msgid "Tariff"
-msgstr "Tariffs"
+msgstr "Тариф"
 
 #: template/child.html:92 template/child.html:145
 #: template/payment.cost.html:172 template/payment.html:113
 msgid "Update"
-msgstr "Yangilash"
+msgstr "Янгилаш"
 
 #: template/child.html:94 template/child.html:111 template/child.html:132
 #: template/settings.html:152 template/settings.html:173
 msgid "Delete"
-msgstr "O'chirish"
+msgstr "ўчириш"
 
 #: template/group-detail.html:81 template/group-detail.html:133
 #: template/group-detail.html:301
 msgid "Payment"
-msgstr "To'lov"
+msgstr "Тўлов"
 
 #: template/group-detail.html:92 template/group-detail.html:312
 msgid "Selected month"
-msgstr "Oyni tallang"
+msgstr "Танланган ой"
 
 #: template/group-detail.html:96 template/group-detail.html:316
 #: template/payment.cost.html:97 template/payment.html:36
 msgid "Kassa"
-msgstr ""
+msgstr "Касса"
 
 #: template/group-detail.html:105 template/group-detail.html:325
 #: template/payment.cost.html:106 template/payment.cost.html:187
 #: template/payment.html:45 template/payment.html:132 template/transfer.html:55
 msgid "Comment"
-msgstr "Izoh"
+msgstr "Изоҳ"
 
 #: template/group.html:49
 msgid "Add group"
-msgstr "Gruppa q'shish"
+msgstr "Группа Қўшиш"
 
 #: template/group.html:89 template/group.html:117 template/teacher-all.html:10
 msgid "Teacher"
-msgstr "Ustoz"
+msgstr "Устоз"
 
 #: template/group.html:90 template/group.html:118 template/index.html:59
 #: template/teacher.html:63 template/wrapper.html:127
 msgid "Children"
-msgstr "Bolalar"
+msgstr "Боллалар"
 
 #: template/group.html:91 template/group.html:119
 msgid "Waiting"
-msgstr "Kutilmoqda"
+msgstr "Кутилмоқда"
 
 #: template/group.html:92 template/group.html:120
 msgid "Current"
-msgstr "Jory"
+msgstr "Ҳозирги"
 
 #: template/group.html:93 template/group.html:108 template/group.html:123
 #: template/payment.cost.html:147 template/payment.cost.html:164
@@ -191,212 +190,181 @@ msgstr "Jory"
 #: template/payment.html:106 template/settings.html:76
 #: template/transfer.html:95 template/transfer.html:117
 msgid "Info"
-msgstr "Malumot"
+msgstr "Малумот"
 
 #: template/index.html:5 template/teacher.html:74
 msgid "Statistics"
-msgstr "Statistika"
+msgstr "Статистика"
 
 #: template/index.html:23
 msgid "Came today"
-msgstr "Bugun Keldi"
+msgstr "Бугун келди"
 
 #: template/index.html:41
 msgid "The month has arrived"
-msgstr "Oy Keldi"
+msgstr "Ой келди"
 
 #: template/index.html:77
 msgid "Groups"
-msgstr "Gruppalar"
+msgstr "Группалар"
 
 #: template/index.html:91
 msgid "Annual report"
-msgstr "Yillik hisobot"
+msgstr "Йиллик ҳисобот"
 
 #: template/login.html:24 template/login.html:43 template/register.html:65
 msgid "Login"
-msgstr "Tizimga kirish"
+msgstr "Логин"
 
 #: template/login.html:41
 msgid "Keep me logged in"
-msgstr "Hisobim tizimga kirgan holatda qolsin"
+msgstr "Ҳисобим тизимга кирган ҳолатда қолсин"
 
 #: template/login.html:49
 msgid "Don't have an account"
-msgstr "Hisobingiz yoʻqmi"
+msgstr "Ҳисобингиз йўқ"
 
 #: template/login.html:49
 msgid "Sign up"
-msgstr "Ro'yxatdan o'tish"
+msgstr "Рўйхатдан ўтиш"
 
 #: template/payment.cost.html:78 template/settings.html:184
 msgid "Add cost"
-msgstr "Xarajat Qoshish"
+msgstr "Чиқим Қўшиш"
 
 #: template/payment.cost.html:143 template/payment.html:82
 #: template/tarif.html:95 template/transfer.html:90
 msgid "Date"
-msgstr "Sana"
+msgstr "Сана"
 
 #: template/payment.cost.html:144
 msgid "Category"
-msgstr ""
+msgstr "Турлар"
 
 #: template/payment.cost.html:146 template/transfer.html:91
 msgid "Employee"
-msgstr "Xodim"
+msgstr "ходим"
 
 #: template/payment.html:27
 msgid "Add Payment"
-msgstr " Tolov qo'shish"
+msgstr "Тўлов Қўшиш"
 
 #: template/payment.html:84
 msgid "Child"
-msgstr "Bola"
+msgstr "Бола"
 
 #: template/payment.html:86
 msgid "Who is"
-msgstr "Kim"
+msgstr "Ким"
 
 #: template/register.html:27 template/register.html:62
 msgid "Register"
-msgstr "Roʻyxatdan oʻtish"
+msgstr "Рўйхатдан ўтиш"
 
 #: template/register.html:28
 msgid "Enter your details to register from our app."
-msgstr "Ilovamizdan ro'yxatdan o'tish uchun ma'lumotlarni kiriting."
+msgstr "Иловамиздан рўйхатдан ўтиш учун маълумотларни киритинг"
 
 #: template/settings.html:102
 msgid "Work has begun"
-msgstr "Ish boshlandi"
+msgstr "Иш бошланди"
 
 #: template/settings.html:128
-#, fuzzy
-#| msgid "Payment"
 msgid "Category Payment"
-msgstr "To'lov"
+msgstr "Тўлов Турлари"
 
 #: template/tarif.html:10 template/wrapper.html:141
 msgid "Tariffs"
-msgstr "Tariflar"
+msgstr "Тарифлар"
 
 #: template/tarif.html:25
 msgid "Add tariff"
-msgstr "Tarif qo'shish"
+msgstr "Тариф Қўшиш"
+
 
 #: template/tarif.html:37 template/tarif.html:93
 msgid "Status"
-msgstr "Holati"
+msgstr "Ҳолат"
 
 #: template/teacher-all.html:25
-#, fuzzy
-#| msgid "Tariffs"
 msgid " Tariffs"
-msgstr "O'tkazma"
+msgstr "Тарифлар"
+
 
 #: template/teacher-all.html:40 template/teacher-all.html:101
 #: template/teacher.html:25
 msgid "Position"
-msgstr "Lavozimi"
+msgstr "Лавозим"
 
 #: template/teacher-all.html:100
-#, fuzzy
-#| msgid "Phone"
 msgid " Phone"
-msgstr "Telefon"
+msgstr "Телефон"
 
 #: template/teacher-all.html:105 template/teacher.html:138
 msgid "Attendance"
-msgstr "Davomat"
+msgstr "Давомат"
 
 #: template/teacher.html:55 template/wrapper.html:163
 msgid "Payments"
-msgstr "Tolovlar"
+msgstr "Тўловлар"
 
 #: template/teacher.html:59
 msgid "Main"
-msgstr "Asosy"
+msgstr "Асосй"
 
 #: template/teacher.html:70
 msgid "Active"
-msgstr "Active"
+msgstr "Аcтив"
 
 #: template/teacher.html:78
 msgid "Personal cash"
-msgstr "Shahsiy kassa"
+msgstr "Шахсий нақд пул"
 
 #: template/transfer.html:10 template/transfer.html:86
 #: template/wrapper.html:152
 msgid "Transfer"
-msgstr "O'tkazma"
+msgstr "Ўтказма"
 
 #: template/transfer.html:25
 msgid "Add transfer"
-msgstr "O'tkazma qo'shish"
+msgstr "Қўшиш"
 
 #: template/transfer.html:33 template/transfer.html:92
 msgid "From whom"
-msgstr "Kimdan"
+msgstr "Кимдан"
 
 #: template/transfer.html:43 template/transfer.html:93
 msgid "To whom"
-msgstr "Kimga"
+msgstr "Кимга"
 
 #: template/wrapper.html:97
 msgid "Home"
-msgstr "Uy"
+msgstr "Уй"
 
 #: template/wrapper.html:105
 msgid "Grup"
-msgstr "Gruppa"
+msgstr "Группа"
 
 #: template/wrapper.html:115 template/wrapper.html:120
 msgid "Educator"
-msgstr "Ustoz"
+msgstr "Устоз"
 
 #: template/wrapper.html:167
 msgid "Income"
-msgstr "Kirim"
+msgstr "Даромад"
 
 #: template/wrapper.html:172
 msgid "Expenses"
-msgstr "Xarajatlar"
+msgstr "харажатлар"
 
 #: template/wrapper.html:181
 msgid "Cash"
-msgstr "Kassa"
+msgstr "Касса"
 
 #: template/wrapper.html:190
 msgid "Settings"
-msgstr "Sozlanma"
+msgstr "Созланма"
 
 #: template/wrapper.html:200
 msgid "Logout"
-msgstr "Chiqish"
-
-#~ msgid "Teachers"
-#~ msgstr "Ustozlar"
-
-#~ msgid "Working day"
-#~ msgstr " ISh kuni"
-
-#~ msgid "Expense"
-#~ msgstr "Xarajat"
-
-#~ msgid "residual"
-#~ msgstr "Qoldiq"
-
-#~ msgid "Helper"
-#~ msgstr "Yordamchi"
-
-#~ msgid "Number of children"
-#~ msgstr "Bolalar soni"
-
-#~ msgid "Employees"
-#~ msgstr "Xodimlar"
-
-#~ msgid "Chald"
-#~ msgstr "Bola"
-
-#~ msgid "som"
-#~ msgstr "So'm"
+msgstr "Чиқиш"
