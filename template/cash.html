@@ -1,7 +1,7 @@
 {% extends 'wrapper.html' %}
 {% block content %}
 {% load i18n %}
-
+{% load humanize %}
 <div class="col-avto">
 
     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
@@ -67,7 +67,7 @@
     </div>
 
     <div class="row mt-4">
-        {{cash.amount}}  
+        {{ cash.amount | intcomma}}  
         {% for i in cash %}
 
         <div class="modal fade text-left" id="inlineForm{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
@@ -111,7 +111,7 @@
                     <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#inlineForm{{i.id}}">{% trans 'Management' %}</button>
                     {% endif %}
                     <div class="card-header">
-                        <h4><a href="#">{% if i.teacher.username %} {{i.teacher.username}} {% else %} {{i.name}} {% endif %}</a>  \   {{i.amount}} {% trans 'Som' %}</h4>
+                        <h4><a href="#">{% if i.teacher.username %} {{i.teacher.username}} {% else %} {{i.name}} {% endif %}</a>  \   {{i.amount | intcomma}} {% trans 'Som' %}</h4>
                     </div>
                     <div class="card-body">
                         <div id="chart-visitors-profile-{{ i.id }}"></div>
@@ -126,7 +126,7 @@
                     <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#inlineForm{{i.id}}">{% trans 'Management' %} {{request.user}}</button>
                     {% endif %}
                     <div class="card-header">
-                        <h4><a href="#">  {{request.user.cash.amount}} </a> {% trans 'Som' %}</h4>
+                        <h4><a href="#">  {{request.user.cash.amount | intcomma}} </a> {% trans 'Som' %}</h4>
                     </div>
                     <div class="card-body">
                         <div id="chart-visitors-profile-{{ i.id }}"></div>

@@ -1,7 +1,7 @@
 {% extends 'wrapper.html' %}
 {% block content %}
 {% load i18n %}
-
+{% load humanize %}
 <div class="form-group">
     <div class="row">
 
@@ -82,7 +82,7 @@
                         <br><span class="fw-bold">{% trans 'Birthday' %}: </span>{{i.birth_date}}
                         <br><span class="fw-bold">{% trans 'Group' %}: </span>{{ i.group.name }}
                         <br> <span class="fw-bold">{% trans 'Tariff' %}: </span>{{ i.tarif.name }}
-                        <br><span class="fw-bold">{% trans 'Som' %}: </span>{{i.tarif.amount}}
+                        <br><span class="fw-bold">{% trans 'Som' %}: </span>{{i.tarif.amount | intcomma }}
                         <br>
                         <br>
                         <br>

@@ -39,9 +39,6 @@ class HomeView(LoginRequiredMixin, View):
         revenue_data = json.loads(cache.get(revenue_cache_key) or '[]')
         cost_data = json.loads(cache.get(cost_cache_key) or '[]')
         profit_data = json.loads(cache.get(profit_cache_key) or '[]')
-        print(profit_data)
-        print(profit_data)
-        print(profit_data)
         if not revenue_data or not cost_data or not profit_data:
 
             # Kirim va chiqim uchun to'liq so'rovlar
