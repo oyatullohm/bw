@@ -29,13 +29,24 @@ class HomeView(LoginRequiredMixin, View):
             return redirect(f'/{language}/')
         today = timezone.now()
         last_12_months = [(today - relativedelta(months=i)).strftime("%Y-%m") for i in range(11, -1, -1)]
-        revenue_data = json.loads(cache.get('revenue_data') or '[]')
-        cost_data = json.loads(cache.get('cost_data') or '[]')
-        profit_data = json.loads(cache.get('profit_data') or '[]')
+        
+        company_id = request.user.company.id
+        revenue_cache_key = f'revenue_data_{company_id}'
+        cost_cache_key = f'cost_data_{company_id}'
+        profit_cache_key = f'profit_data_{company_id}'
+
+        # Redis'dan ma'lumotlarni olish
+        revenue_data = json.loads(cache.get(revenue_cache_key) or '[]')
+        cost_data = json.loads(cache.get(cost_cache_key) or '[]')
+        profit_data = json.loads(cache.get(profit_cache_key) or '[]')
+        print(profit_data)
+        print(profit_data)
+        print(profit_data)
         if not revenue_data or not cost_data or not profit_data:
-        # Kirim va chiqim uchun to'liq so'rovlar
+
+            # Kirim va chiqim uchun to'liq so'rovlar
             payments = Payment.objects.filter(
-                company=request.user.company,
+                company_id=company_id,
                 date__gte=today - relativedelta(years=1)
             ).annotate(month=TruncMonth('date')).values('month', 'payment_type')\
                 .annotate(total_amount=Sum('amount')).order_by('month')
@@ -49,12 +60,11 @@ class HomeView(LoginRequiredMixin, View):
             profit_data = [revenue - cost for revenue, cost in zip(revenue_data, cost_data)]
 
             # Ma'lumotlarni Redis'ga saqlash
-            cache.set('revenue_data', json.dumps(revenue_data), timeout=timedelta(days=1).total_seconds())  # 1 kun
-            cache.set('cost_data', json.dumps(cost_data), timeout=timedelta(days=1).total_seconds())
-            cache.set('profit_data', json.dumps(profit_data), timeout=timedelta(days=1).total_seconds())
-
+            cache.set(revenue_cache_key, json.dumps(revenue_data), timeout=timedelta(days=1).total_seconds())  # 1 kun
+            cache.set(cost_cache_key, json.dumps(cost_data), timeout=timedelta(days=1).total_seconds())
+            cache.set(profit_cache_key, json.dumps(profit_data), timeout=timedelta(days=1).total_seconds())
+            
         cild = Child.objects.filter(company = request.user.company, is_active=True).count()
-        
         # keldi  bugun 
         attendance_month =  Attendance.objects.filter(company=request.user.company,child__isnull=False, is_active= True, date__gte =  today.replace(day=1) )
         attendance =  attendance_month.filter( date=timezone.now().date() )
