@@ -8,6 +8,7 @@ from dateutil.relativedelta import relativedelta
 from django.db.models.functions import Coalesce
 from datetime import datetime, timedelta
 from django.utils import translation
+from django.core.cache import cache
 from django.contrib import messages
 from django.db.models import Count
 from django.conf import settings
@@ -28,29 +29,35 @@ class HomeView(LoginRequiredMixin, View):
             return redirect(f'/{language}/')
         today = timezone.now()
         last_12_months = [(today - relativedelta(months=i)).strftime("%Y-%m") for i in range(11, -1, -1)]
-
+        revenue_data = json.loads(cache.get('revenue_data') or '[]')
+        cost_data = json.loads(cache.get('cost_data') or '[]')
+        profit_data = json.loads(cache.get('profit_data') or '[]')
+        if not revenue_data or not cost_data or not profit_data:
         # Kirim va chiqim uchun to'liq so'rovlar
-        payments = Payment.objects.filter(
-            company=request.user.company,
-            date__gte=today - relativedelta(years=1)
-        ).annotate(month=TruncMonth('date')).values('month', 'payment_type')\
-            .annotate(total_amount=Sum('amount')).order_by('month')
+            payments = Payment.objects.filter(
+                company=request.user.company,
+                date__gte=today - relativedelta(years=1)
+            ).annotate(month=TruncMonth('date')).values('month', 'payment_type')\
+                .annotate(total_amount=Sum('amount')).order_by('month')
 
-        # Kirim va chiqimni to'plab olish
-        revenue_dict = {item['month'].strftime("%Y-%m"): item['total_amount'] for item in payments if item['payment_type'] == 1}
-        cost_dict = {item['month'].strftime("%Y-%m"): item['total_amount'] for item in payments if item['payment_type'] == 2}
+            # Kirim va chiqimni to'plab olish
+            revenue_dict = {item['month'].strftime("%Y-%m"): item['total_amount'] for item in payments if item['payment_type'] == 1}
+            cost_dict = {item['month'].strftime("%Y-%m"): item['total_amount'] for item in payments if item['payment_type'] == 2}
 
-        revenue_data = [float(revenue_dict.get(month, 0)) for month in last_12_months]
-        cost_data = [float(cost_dict.get(month, 0)) for month in last_12_months]
-        profit_data = [revenue - cost for revenue, cost in zip(revenue_data, cost_data)]
+            revenue_data = [float(revenue_dict.get(month, 0)) for month in last_12_months]
+            cost_data = [float(cost_dict.get(month, 0)) for month in last_12_months]
+            profit_data = [revenue - cost for revenue, cost in zip(revenue_data, cost_data)]
+
+            # Ma'lumotlarni Redis'ga saqlash
+            cache.set('revenue_data', json.dumps(revenue_data), timeout=timedelta(days=1).total_seconds())  # 1 kun
+            cache.set('cost_data', json.dumps(cost_data), timeout=timedelta(days=1).total_seconds())
+            cache.set('profit_data', json.dumps(profit_data), timeout=timedelta(days=1).total_seconds())
+
         cild = Child.objects.filter(company = request.user.company, is_active=True).count()
         
-        
         # keldi  bugun 
-
-        
-        attendance =  Attendance.objects.filter(company=request.user.company, child__isnull=False,  is_active= True,date = timezone.now().date() ).count()
-        attendance_month =  Attendance.objects.filter(company=request.user.company,child__isnull=False, is_active= True, date__gte =  today.replace(day=1) ).count()
+        attendance_month =  Attendance.objects.filter(company=request.user.company,child__isnull=False, is_active= True, date__gte =  today.replace(day=1) )
+        attendance =  attendance_month.filter( date=timezone.now().date() )
 
         context = {
             'apex_series': [
@@ -72,8 +79,8 @@ class HomeView(LoginRequiredMixin, View):
             ],
             'last_12_months': last_12_months,
             'cild':cild,
-            'attendance':attendance,
-            'attendance_month':attendance_month
+            'attendance':attendance.count(),
+            'attendance_month':attendance_month.count()
         }
         return render(request, 'index.html', context)
 
