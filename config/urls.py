@@ -13,7 +13,8 @@ urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
 ]
 urlpatterns += i18n_patterns (
-    path('',include('main.urls')),
+    path('',include('main.urls')), 
+    path('food/',include('food.urls')), 
     path('login/',LoginView.as_view(),name='login'),
     path('register/',RegisterView.as_view(),name='register'),
     path('kattaadmin/',admin.site.urls),
