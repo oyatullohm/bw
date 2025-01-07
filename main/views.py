@@ -148,6 +148,7 @@ class TeacherDetailView(LoginRequiredMixin,View):
         salary = request.POST.get('salary')
         child = request.POST.get('child')
         active = request.POST.get('active')
+        food = request.POST.get('food')
         main = request.POST.get('main')
         cahs = request.POST.get('cahs')
         user = get_object_or_404(Teacher, id=pk)
@@ -159,6 +160,7 @@ class TeacherDetailView(LoginRequiredMixin,View):
         user.is_child = child  == 'on' 
         user.is_active = active == 'on'
         user.is_main = main == 'on'
+        user.is_food = food == 'on'
         user.cash.is_active = cahs == 'on'
         user.cash.save()
         user.save()

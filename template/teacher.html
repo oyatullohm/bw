@@ -77,7 +77,14 @@
                                         <input class="form-check-input" name="cahs"  type="checkbox" {% if teacher.cash.is_active %}checked{% endif %} id="flexSwitchCheckDefault">
                                         <label class="form-check-label" for="flexSwitchCheckDefault">  {% trans 'Personal cash' %} </label>
                                     </div>
-                                </div><br>
+                                    <br>
+                                    <br>
+                                    <div class="form-check form-switch col-4">
+                                        <input class="form-check-input" name="food"  type="checkbox" {% if teacher.is_food %}checked{% endif %} id="flexSwitchCheckDefault">
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">  {% trans 'Food' %} </label>
+                                    </div>
+                                </div>
+                                <br>
 
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">  {% trans 'Save' %}</button>

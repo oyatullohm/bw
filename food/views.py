@@ -163,6 +163,7 @@ def create_product(request):
     
     Product.objects.create(
         company = request.user.company,
+        user=request.user,
         type=1,
         product=product,
         unit=unit,
@@ -175,7 +176,7 @@ def create_product(request):
 
 @login_required
 def create_food(request):
-    # try:
+    try:
         data = json.loads(request.body)  # JSON ma'lumotni o'qing
         company = request.user.company
         name = data[0].get('name', None)
@@ -185,7 +186,7 @@ def create_food(request):
 
         with transaction.atomic():  # Transaction orqali barcha operatsiyalarni boshqarish
             # Yangi food yaratish
-            food = Food.objects.create(company=company, name=name)
+            food = Food.objects.create(company=company,user=request.user, name=name)
 
             # `Product` modellarini yaratish uchun vaqtinchalik saqlash
             products_to_create = []
@@ -237,5 +238,5 @@ def create_food(request):
         
         return JsonResponse({'success': True})
 
-    # except Exception as e:
-    #     return JsonResponse({'error': str(e)}, status=500)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

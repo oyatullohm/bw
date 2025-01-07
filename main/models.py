@@ -63,6 +63,7 @@ class Teacher(AbstractUser):
     is_salary = models.BooleanField(default=False)
     is_main = models.BooleanField(default=False)
     is_child = models.BooleanField(default=False)
+    is_food = models.BooleanField(default=False)
     
     def __str__(self):
         return self.username

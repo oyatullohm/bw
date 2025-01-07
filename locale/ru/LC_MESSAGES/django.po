@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-16 21:29+0500\n"
+"POT-Creation-Date: 2025-01-06 16:55+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,25 +20,25 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: config/settings.py:139
+#: config/settings.py:141
 msgid "Uzbek"
 msgstr "Uzbek"
 
-#: config/settings.py:140
+#: config/settings.py:142
 msgid "Узбек"
-msgstr ""
+msgstr "Узбек"
 
-#: config/settings.py:141
+#: config/settings.py:143
 msgid "English"
 msgstr "English"
 
-#: config/settings.py:142
+#: config/settings.py:144
 msgid "Russian"
 msgstr "Russian"
 
-#: template/cash.html:9 template/child.html:69 template/group.html:42
-#: template/payment.cost.html:11 template/payment.html:11
-#: template/tarif.html:18 template/teacher-all.html:18
+#: template/cash.html:9 template/child.html:69 template/food/food.html:33
+#: template/group.html:42 template/payment.cost.html:11
+#: template/payment.html:11 template/tarif.html:18 template/teacher-all.html:18
 msgid "Add"
 msgstr "Добавлять"
 
@@ -47,6 +47,9 @@ msgid "Add a child"
 msgstr "Добавить ребенок"
 
 #: template/cash.html:27 template/child.html:80 template/child.html:152
+#: template/food/food.html:147 template/food/food.html:172
+#: template/food/product.html:25 template/food/product.html:26
+#: template/food/product.html:104 template/food/warehouse.html:76
 #: template/group.html:56 template/group.html:88 template/group.html:116
 #: template/settings.html:92 template/settings.html:192 template/tarif.html:32
 #: template/tarif.html:92 template/teacher-all.html:99 template/teacher.html:16
@@ -55,30 +58,32 @@ msgstr "Имя"
 
 #: template/cash.html:33 template/cash.html:93 template/child.html:48
 #: template/child.html:125 template/child.html:181 template/child.html:223
-#: template/child.html:227 template/group-detail.html:110
-#: template/group-detail.html:330 template/group.html:64
-#: template/payment.cost.html:120 template/payment.cost.html:192
-#: template/payment.html:59 template/payment.html:137
-#: template/settings.html:166 template/settings.html:200 template/tarif.html:52
-#: template/tarif.html:139 template/teacher-all.html:59
-#: template/transfer.html:62
+#: template/child.html:227 template/food/food.html:67
+#: template/food/product.html:39 template/food/warehouse.html:51
+#: template/group-detail.html:110 template/group-detail.html:330
+#: template/group.html:64 template/payment.cost.html:120
+#: template/payment.cost.html:192 template/payment.html:59
+#: template/payment.html:137 template/settings.html:166
+#: template/settings.html:200 template/tarif.html:52 template/tarif.html:139
+#: template/teacher-all.html:59 template/transfer.html:62
 msgid "Close"
 msgstr "Закрывать"
 
 #: template/cash.html:37 template/cash.html:97 template/child.html:52
-#: template/child.html:185 template/group-detail.html:113
-#: template/group-detail.html:333 template/group.html:68
-#: template/payment.cost.html:124 template/payment.cost.html:195
-#: template/payment.html:63 template/payment.html:140
-#: template/settings.html:203 template/tarif.html:56 template/tarif.html:143
-#: template/teacher-all.html:63 template/teacher.html:83
-#: template/teacher.html:104 template/teacher.html:130
+#: template/child.html:185 template/food/food.html:71
+#: template/food/product.html:43 template/food/warehouse.html:55
+#: template/group-detail.html:113 template/group-detail.html:333
+#: template/group.html:68 template/payment.cost.html:124
+#: template/payment.cost.html:195 template/payment.html:63
+#: template/payment.html:140 template/settings.html:203 template/tarif.html:56
+#: template/tarif.html:143 template/teacher-all.html:63
+#: template/teacher.html:83 template/teacher.html:104 template/teacher.html:130
 #: template/transfer.html:66
 msgid "Save"
 msgstr "Сохранять"
 
-#: template/cash.html:52 template/group.html:18 template/payment.cost.html:183
-#: template/payment.html:124
+#: template/cash.html:52 template/food/food.html:106 template/group.html:18
+#: template/payment.cost.html:183 template/payment.html:124
 msgid "Month"
 msgstr "Месяц"
 
@@ -130,7 +135,7 @@ msgstr "Группа"
 
 #: template/child.html:82
 msgid "Birthday"
-msgstr ""
+msgstr "День рождения"
 
 #: template/child.html:84 template/teacher-all.html:103
 msgid "Tariff"
@@ -146,6 +151,77 @@ msgstr "Обновлять"
 msgid "Delete"
 msgstr "Удалить"
 
+#: template/food/food.html:47
+#, fuzzy
+#| msgid "Add cost"
+msgid "Add Food"
+msgstr "Добавить стоимость"
+
+#: template/food/food.html:146 template/food/product.html:103
+#: template/payment.cost.html:143 template/payment.html:82
+#: template/tarif.html:95 template/transfer.html:90
+msgid "Date"
+msgstr "Дата"
+
+#: template/food/food.html:148 template/food/warehouse.html:77
+msgid "Summa"
+msgstr "Сумма"
+
+#: template/food/food.html:173 template/food/product.html:106
+#: template/food/warehouse.html:79
+msgid "Quantity"
+msgstr "Количество"
+
+#: template/food/food.html:174 template/food/warehouse.html:46
+msgid "price"
+msgstr "цена"
+
+#: template/food/food.html:175
+msgid "summa"
+msgstr "Сумма"
+
+#: template/food/food.html:305 template/food/warehouse.html:43
+msgid "count"
+msgstr "считать"
+
+#: template/food/product.html:9 template/food/product.html:17
+msgid "Add Product Name"
+msgstr "Добавить название продукта"
+
+#: template/food/product.html:54
+msgid "Product Acceptance "
+msgstr "Приемка продукта"
+
+#: template/food/product.html:105 template/food/warehouse.html:78
+msgid "Unit"
+msgstr "единица"
+
+#: template/food/product.html:107
+msgid "Price"
+msgstr "Цена"
+
+#: template/food/product.html:108
+msgid "Total"
+msgstr "Общий"
+
+#: template/food/warehouse.html:10
+msgid "Add Products Acceptance"
+msgstr "Добавить приемку продуктов"
+
+#: template/food/warehouse.html:20
+#, fuzzy
+#| msgid "Add group"
+msgid "Add Product"
+msgstr "Добавить группу"
+
+#: template/food/warehouse.html:72
+msgid "Products"
+msgstr "Продукция"
+
+#: template/food/warehouse.html:80
+msgid "Total summa"
+msgstr "Общая сумма"
+
 #: template/group-detail.html:81 template/group-detail.html:133
 #: template/group-detail.html:301
 msgid "Payment"
@@ -158,7 +234,7 @@ msgstr "Выбранный месяц"
 #: template/group-detail.html:96 template/group-detail.html:316
 #: template/payment.cost.html:97 template/payment.html:36
 msgid "Kassa"
-msgstr ""
+msgstr "Касса"
 
 #: template/group-detail.html:105 template/group-detail.html:325
 #: template/payment.cost.html:106 template/payment.cost.html:187
@@ -234,11 +310,6 @@ msgstr "Зарегистрироваться"
 #: template/payment.cost.html:78 template/settings.html:184
 msgid "Add cost"
 msgstr "Добавить стоимость"
-
-#: template/payment.cost.html:143 template/payment.html:82
-#: template/tarif.html:95 template/transfer.html:90
-msgid "Date"
-msgstr "Дата"
 
 #: template/payment.cost.html:144
 msgid "Category"
@@ -364,11 +435,23 @@ msgstr "Затраты"
 msgid "Cash"
 msgstr "Наличные"
 
-#: template/wrapper.html:190
+#: template/wrapper.html:191 template/wrapper.html:196
+msgid "Food"
+msgstr "Еда"
+
+#: template/wrapper.html:199
+msgid "Warehous"
+msgstr "Склад"
+
+#: template/wrapper.html:203
+msgid "Product"
+msgstr "Продукт"
+
+#: template/wrapper.html:218
 msgid "Settings"
 msgstr "Настройки"
 
-#: template/wrapper.html:200
+#: template/wrapper.html:228
 msgid "Logout"
 msgstr "Выйти"
 

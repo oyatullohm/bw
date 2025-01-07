@@ -64,6 +64,7 @@ class RegisterView(View):
                         is_salary = True,
                         is_child = True, 
                         is_main  = True,
+                        is_food  = True,
                         password=password                  
             )
             Cash.objects.get_or_create(

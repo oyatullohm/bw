@@ -1,4 +1,4 @@
-from main.models import Company, timezone, date, datetime, timedelta, F, Sum, DecimalField
+from main.models import Company, Teacher, timezone, date, datetime, timedelta, F, Sum, DecimalField
 from django.db import models
 from decimal import Decimal, ROUND_DOWN
 
@@ -9,6 +9,8 @@ UNIT = (
         ('lt', 'Liter'),
         ('ml', 'Millilitre')
     )
+
+
 class ProductCount(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='product_counts')
     name = models.CharField(max_length=100)  # Mahsulot nomi (olma, yog', go'sht va h.k.)
@@ -31,6 +33,7 @@ class ProductCount(models.Model):
 
 class Food(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='daily_usages')
+    user = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='food_users') 
     name = models.CharField(max_length=100)  # Ovqat nomi (osh, manti, sho'rva va h.k.)
     # product = models.ManyToManyField(Product, related_name='daily_usages')  # Qaysi mahsulot
     date = models.DateField(default=timezone.now) # Ovqat tayyorlangan sana
@@ -43,6 +46,7 @@ class Product(models.Model):
         (2,'Chqim')
     )
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='products')
+    user = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='product_users') 
     type = models.PositiveIntegerField( choices=TYPE, default=1)  # Mahsulot nomi (olma, yog', go'sht va h.k.)
     unit = models.CharField(max_length=20,choices=UNIT)  # O'lchov birlig
     food = models.ForeignKey(Food,on_delete=models.CASCADE, null=True, blank=True, related_name='foods')

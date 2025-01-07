@@ -184,13 +184,13 @@
             {% endif %}
 
 
+            {% if request.user.is_food %}
             <li
             class="sidebar-item  has-sub">
             <a href="#" class='sidebar-link'>
                 <i class="bi bi-basket"></i>
                 <span>  {% trans 'Food' %}</span>
             </a>
-            
             <ul class="submenu ">
                 <li class="submenu-item  ">
                     <a href="{% url 'food' %}" class="submenu-link">  {% trans 'Food' %}</a>
@@ -209,7 +209,7 @@
             
 
         </li>
-
+        {% endif %}
         
         <li
             class="sidebar-item  ">
