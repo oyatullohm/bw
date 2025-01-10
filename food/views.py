@@ -180,13 +180,14 @@ def create_food(request):
         data = json.loads(request.body)  # JSON ma'lumotni o'qing
         company = request.user.company
         name = data[0].get('name', None)
+        user = request.user
 
         if not name:
             return JsonResponse({'error': 'Food name is required'}, status=400)
 
         with transaction.atomic():  # Transaction orqali barcha operatsiyalarni boshqarish
             # Yangi food yaratish
-            food = Food.objects.create(company=company,user=request.user, name=name)
+            food = Food.objects.create(company=company,user=user, name=name)
 
             # `Product` modellarini yaratish uchun vaqtinchalik saqlash
             products_to_create = []
@@ -207,6 +208,7 @@ def create_food(request):
                 products_to_create.append(
                     Product(
                         company=company,
+                        user=user,
                         type=2,
                         product = p_count,
                         unit=unit,
@@ -215,6 +217,7 @@ def create_food(request):
                         price = p_count.price, 
                         summa = Product(
                             company=company,
+                            user=user,
                             type=2,
                             product_id=product_id,
                             unit=unit,
