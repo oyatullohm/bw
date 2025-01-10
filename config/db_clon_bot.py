@@ -1,6 +1,6 @@
 from aiogram.types.input_file import FSInputFile
-from local_db_ import LOCAL_DATABASE
 from datetime import datetime, date
+from local_db_ import DB_CONFIG
 from decimal import Decimal
 from psycopg2 import sql
 from aiogram import Bot
@@ -9,7 +9,6 @@ import environ
 import asyncio
 import json
 import os
-
 env = environ.Env()
 env.read_env()
 
@@ -47,7 +46,7 @@ async def send_file():
 
 
     try:
-        conn = psycopg2.connect(**LOCAL_DATABASE)
+        conn = psycopg2.connect(**DB_CONFIG)
         cursor = conn.cursor()
 
         # Jadval nomlarini olish
