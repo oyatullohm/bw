@@ -221,6 +221,25 @@
               <div class="col-xl-6 col-sm-12  col-12">
                 
              
+                  {% if request.user.is_main %}
+                  <div class="card">
+                    <div class="card-body">
+                        <form action="{% url 'create_payment_category' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="amount" class="form-label">{% trans 'Category Payment' %} </label>
+                                <input type="text" class="form-control" name="category" required>
+                            </div> 
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary"> {% trans 'Save' %}</button>
+                            </div>  
+                        </form>
+                    </div>
+                </div>  
+
+
+
+              {% endif %} 
                 {% comment %}
 <!-- 
                 {% if request.user.is_main %}

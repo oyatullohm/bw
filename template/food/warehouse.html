@@ -79,10 +79,10 @@
                                     <tr>
                                         
                                         <td class="text-bold-5000 "> {{ p.name }}</td>
-                                        <td class="text-bold-500">{{ p.price | intcomma}}</td>
+                                        <td class="text-bold-500">{{ p.price |floatformat:0 | intcomma}}</td>
                                         <td class="text-bold-500">{{ p.unit }}</td>
-                                        <td class="text-bold-500">{{ p.formatted_count }}</td>
-                                        <td class="text-bold-500">{{ p.total_summa |intcomma }}</td>
+                                        <td class="text-bold-500">{{ p.formatted_count|floatformat:1 }}</td>
+                                        <td class="text-bold-500">{{ p.total_summa  |floatformat:0|intcomma }}</td>
                                     </tr>
                                      
                                     {% endfor %}

@@ -10,7 +10,7 @@ import re
 class LoginView(View):
     def get(self,request):
         return render(request, 'login.html')
-    # @method_decorator(csrf_protect)
+    @method_decorator(csrf_protect)
     def post(self, request):
         username = self.sanitize_input(request.POST.get('username'))
         password = self.sanitize_input(request.POST.get('password'))

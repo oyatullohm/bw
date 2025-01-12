@@ -117,9 +117,9 @@
                             <td>{{ p.date|date:"Y-m-d" }}</td>
                             <td>{{ p.product.name }}</td>
                             <td>{{ p.unit}}</td>
-                            <td>{{ p.quantity}}</td>
-                            <td>{{ p.price}}</td>
-                            <td>{{ p.summa}}</td>
+                            <td>{{ p.quantity|floatformat:1}}</td>
+                            <td>{{ p.price |floatformat:0 | intcomma}}</td>
+                            <td>{{ p.summa |floatformat:0 | intcomma}}</td>
                             <td>{{ p.user}}</td>
 
                          
