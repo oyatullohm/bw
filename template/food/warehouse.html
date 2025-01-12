@@ -27,18 +27,12 @@
                     <div class="form-group mb-1">
                         <select name="product"class="form-control  ">
                             {% for i in products %}
-                            <option value="{{i.id}}">{{i.name}}</option>
+                            <option value="{{i.id}}">{{i.name}}---{{i.unit}}</option>
                             {% endfor %}
                         </select>
                         
                     </div>
-                    <div class="form-group mb-1">
-                        <select name="unit"class="form-control ">
-                            {% for i in unit %}
-                                <option value="{{i.id}}">{{i.name}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+
                     <div class="form-group mb-1">
                         <input  step="any" required  class="form-control" name="count" placeholder="{% trans 'count' %}">
                     </div>
@@ -61,7 +55,7 @@
     </div>
 </div>
 
-<h1>{{total_summa_all | intcomma }}</h1>
+<h1>{{total_summa_all|floatformat:0 | intcomma }}</h1>
 <section class="section">
     <div class="row" id="basic-table">
         <div class="col-12 col-md-12">

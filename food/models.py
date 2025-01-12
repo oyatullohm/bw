@@ -50,7 +50,7 @@ class Product(models.Model):
     type = models.PositiveIntegerField( choices=TYPE, default=1)  # Mahsulot nomi (olma, yog', go'sht va h.k.)
     unit = models.CharField(max_length=20,choices=UNIT)  # O'lchov birlig
     food = models.ForeignKey(Food,on_delete=models.CASCADE, null=True, blank=True, related_name='foods')
-    quantity = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # miqdor
+    quantity = models.DecimalField(max_digits=10, decimal_places=3, null=True, blank=True)  # miqdor
     product = models.ForeignKey(ProductCount, on_delete=models.CASCADE, related_name='products')
     price = models.DecimalField(max_digits=10,decimal_places=2, null=True, blank=True)
     summa = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # Mahsulotning narxi (ixtiyoriy)

@@ -32,7 +32,7 @@
             data-bs-target="#inlineForm-food">
             {% trans 'Add' %}
         </button>
-        <span style="font-size: 20px;">{{food_summa |intcomma}} Sum</span>
+        <span style="font-size: 20px;">{{food_summa |floatformat:0 |intcomma }} Sum</span>
     </div>
     
 </div>
@@ -146,6 +146,7 @@
                             <th>{% trans "Date" %}</th>
                             <th>{% trans "Name" %}</th>
                             <th>{% trans "Summa" %}</th>
+                            <th>{% trans "User" %}</th>
                     
                            
                         </tr>
@@ -156,6 +157,7 @@
                             <td>{{ f.date|date:"Y-m-d" }}</td>
                             <td>{{ f.name }}</td>
                             <td>{{ f.total_summa | intcomma }}</td>
+                            <td>{{ f.user }}</td>
                             <td>
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{ f.id }}" aria-expanded="false" aria-controls="collapseOne{{ f.id }}">
                                  
@@ -278,33 +280,28 @@
         const newRow = `
         <div class="col-md-4 mb-2">
    
-        </div><div class="col-md-4 mb-2">
+        </div>
+        <div class="col-md-4 mb-2">
    
-        </div><div class="col-md-4 mb-2">
+        </div>
+        <div class="col-md-4 mb-2">
    
         </div>
 
         <div class="row mt-2 dynamic-row">
-            <div class="col-md-3 col-6">
+            <div class="col-md-4 col-6">
                 <select name="product" class="form-control">
                     {% for i in product %}
-                    <option value="{{ i.id }}">{{ i.name }}</option>
+                    <option value="{{ i.id }}" data-count="{{i.count}}">{{ i.name }}----{{i.unit}}</option>
                     {% endfor %}
                 </select>
             </div>
-            <div class="col-md-3 col-6">
-                <select name="unit" class="form-control">
-                    {% for i in unit %}
-                    <option value="{{ i.id }}">{{ i.name }}</option>
-                    
-                    {% endfor %}
-                </select>
-            </div>
+
         
-            <div class="col-md-3 col-6">
+            <div class="col-md-4 col-6">
                 <input type="number" step="any" required  class="form-control" name="count" placeholder="{% trans 'count' %}">
             </div>
-            <div class="col-md-3 col-1">
+            <div class="col-md-4 col-1">
                 <button type="button" class="btn btn-light-secondary btn-sm ms-2 remove-row">🗑</button>
             </div>
         </div>`;
@@ -313,7 +310,6 @@
         document.getElementById('dynamic-form').insertAdjacentHTML('beforeend', newRow);
         const removeButtons = document.querySelectorAll('.remove-row');
         removeButtons.forEach(button => {
-            console.log(111)
             button.addEventListener('click', function() {
             this.closest('.dynamic-row').remove();
         });
@@ -332,15 +328,23 @@
         rows.forEach(row => {
             let name = document.querySelector('#food-name').value;
 
-            let product = row.querySelector('select[name="product"]').value;
-            let unit = row.querySelector('select[name="unit"]').value;
+            let productSelect = row.querySelector('select[name="product"]');
+            let productId = productSelect.value;
+
+//           Tanlangan mahsulotning `data-count` qiymatini olish
+            let selectedOption = productSelect.options[productSelect.selectedIndex];
+            let dataCount = selectedOption.dataset.count;
+
+         
             let count = row.querySelector('input[name="count"]').value;
+           
+                
             
             data.push({
                 name:name,
-                product: product,
-                unit: unit,
-                count: count
+                product: productId,
+                count: count,
+                dataCount,dataCount
             });
         });
 

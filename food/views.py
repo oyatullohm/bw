@@ -70,8 +70,7 @@ class FoodView(LoginRequiredMixin, View):
             start_date = datetime.strptime(start_date, "%Y-%m-%d")
             end_date = datetime.strptime(end_date, "%Y-%m-%d")
  
-        product = ProductCount.objects.filter(company=request.user.company)
-        
+        product = ProductCount.objects.filter(company=request.user.company,count__gt=0)
         food = Food.objects.filter(company=request.user.company).order_by('-id')\
             .prefetch_related('foods__product')\
             .annotate(
@@ -147,13 +146,12 @@ def create_product_count(request):
         name=name,
         unit = unit
     )
-    return redirect('/food')
+    return redirect('/food/product')
 
 
 @login_required
 def create_product(request):
     product = request.POST.get('product')
-    unit = request.POST.get('unit')
     count = request.POST.get('count')
     price = request.POST.get('price')
     product = ProductCount.objects.get(id=int(product))
@@ -166,7 +164,7 @@ def create_product(request):
         user=request.user,
         type=1,
         product=product,
-        unit=unit,
+        unit=product.unit,
         price= price,
         quantity=Decimal(count)
         
@@ -176,7 +174,7 @@ def create_product(request):
 
 @login_required
 def create_food(request):
-    try:
+    # try:
         data = json.loads(request.body)  # JSON ma'lumotni o'qing
         company = request.user.company
         name = data[0].get('name', None)
@@ -195,15 +193,19 @@ def create_food(request):
 
             for item in data:
                 product_id = item.get('product')
-                unit = item.get('unit')
-                count = item.get('count')
+                count = Decimal(item.get('count'))
+                dataCount = Decimal(item.get('dataCount').split(',')[0])
+                
+                if Decimal(count) > dataCount:
+                    count = dataCount
+                
                 # Har bir mahsulot uchun tekshirish
                 if not all([product_id, unit, count]):
                     return JsonResponse({'error': 'Incomplete data in request'}, status=400)
 
                 # Unit konvertatsiyasi
-                unit_conversion = 1000 if unit in ['g', 'ml'] else 1
-                adjusted_count = Decimal(count) / Decimal(unit_conversion)
+                # unit_conversion = 1000 if unit in ['g', 'ml'] else 1
+                # adjusted_count = count / Decimal(unit_conversion)
                 p_count = ProductCount.objects.get(id=product_id)
                 products_to_create.append(
                     Product(
@@ -211,8 +213,8 @@ def create_food(request):
                         user=user,
                         type=2,
                         product = p_count,
-                        unit=unit,
-                        quantity=Decimal(count),
+                        unit=p_count.unit,
+                        quantity=count,
                         food = food,
                         price = p_count.price, 
                         summa = Product(
@@ -220,8 +222,8 @@ def create_food(request):
                             user=user,
                             type=2,
                             product_id=product_id,
-                            unit=unit,
-                            quantity=Decimal(count),
+                            unit=p_count.unit,
+                            quantity=count,
                             food=food,
                             ).calculate_summa(), 
                     )
@@ -232,7 +234,7 @@ def create_food(request):
             product_counts_to_update = [
                 ProductCount(
                     id=product_id, 
-                    count=F('count') - adjusted_count  # O'zini ishlatamiz, quantity emas
+                    count=F('count') - count  # O'zini ishlatamiz, quantity emas
                 )
                 for product_id in product_ids
             ]
@@ -241,5 +243,5 @@ def create_food(request):
         
         return JsonResponse({'success': True})
 
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+    # except Exception as e:
+    #     return JsonResponse({'error': str(e)}, status=500)
