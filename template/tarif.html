@@ -29,21 +29,14 @@
                                                     <form action="" method="post">
                                                         {% csrf_token %}
                                                         <div class="form-group mb-1">
-                                                            <label for="name" class="form-label">{% trans 'Name' %}</label>
-                                                            <input type="text" name="name" required id="name" class="form-control" placeholder="Name">
+                                                           
+                                                            <input type="text" name="name" required id="name" class="form-control" placeholder="{% trans 'Name' %}">
                                                         </div>
 
+
                                                         <div class="form-group mb-1">
-                                                            <label for="status" class="form-label"> {% trans 'Status' %}</label>
-                                                            <select name="status" id="status" class="form-control">
-                                                                {% for i in status %}
-                                                                <option value="{{ i.0 }}">{{ i.1 }}  </option>
-                                                                {% endfor %}
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group mb-1">
-                                                            <label for="amount" class="form-label">  {% trans 'Som' %}</label>
-                                                            <input type="number" name="amount" required id="amount" class="form-control">
+
+                                                            <input type="number" name="amount" required id="amount"placeholder="{% trans 'Som' %}"  class="form-control">
                                                         </div> 
 
                                                         <div class="modal-footer">
@@ -115,8 +108,8 @@
                                                                 <label for="name" class="form-label">name</label>
                                                                 <input type="text" name="name" required id="name" class="form-control" value="{{i.name}}" placeholder="Name">
                                                             </div>
-    
-                                                            <div class="form-group mb-1">
+                                                      
+                                                            <!-- <div class="form-group mb-1">
                                                                 <label for="status" class="form-label">Status</label>
                                                                 <select name="status" id="status" class="form-control">
                                                                     {% for f in status %}
@@ -127,10 +120,12 @@
                                                                     {% endif %}
                                                                     {% endfor %}
                                                                 </select>
-                                                            </div>
+                                                            </div> -->
+                                                           
+                                                            
                                                             <div class="form-group mb-1">
                                                                 <label for="amount" class="form-label">{% trans 'Som' %}</label>
-                                                                <input type="number" name="amount" required id="amount" value="{{i.amount}}" class="form-control">
+                                                                <input type="number" name="amount" required id="amount" value="{{i.amount }}" class="form-control">
                                                             </div> 
     
                                                             <div class="modal-footer">

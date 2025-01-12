@@ -36,7 +36,7 @@ class Company(models.Model):
     
 class TarifCompany(models.Model):
     STATUS = (
-        # (1,'Hodimlar'),
+        (1,'Bolalar'),
         (2,'Bolalar')
     )
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='salaries')

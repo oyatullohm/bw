@@ -357,7 +357,7 @@ class ChildView(LoginRequiredMixin,View):
         
         tarif = (
             TarifCompany.objects
-            .filter(company=company, is_active=True, status=2)
+            .filter(company=company, is_active=True, status=1)
             .select_related('company')
         )
         
@@ -401,12 +401,12 @@ class TarifCompanyView(LoginRequiredMixin,View):
         return render(request,'tarif.html',{'tarif':tarif_company,'status':status})
     def post (self,request):
         name = request.POST.get('name')
-        status = request.POST.get('status')
+        # status = request.POST.get('status')
         amount = request.POST.get('amount')
         TarifCompany.objects.create(
             company = request.user.company,
             name = name,
-            status = status,
+            # status = status,
             amount = amount,
             created = timezone.now()
         )
@@ -610,10 +610,10 @@ def working_day(request):
 def edit_tarif(request,pk):
     tarif = TarifCompany.objects.get(id=pk)
     name = request.POST.get('name')
-    status = request.POST.get('status')
+    # status = request.POST.get('status')
     amount = request.POST.get('amount')
     tarif.name = name
-    tarif.status = int(status)
+    # tarif.status = int(status)
     tarif.amount = amount
     tarif.created = timezone.now()
     tarif.save()
